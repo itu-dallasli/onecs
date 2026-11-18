@@ -1,0 +1,38 @@
+tests/api_acceptance.py
+  s_33606f1badd0ee::t_a6a5287f0f6464 2017,2104
+  s_afb2411286d11c::t_573e1862b2988f 2,71,126,275,1479,2050,2093,2098,2101,2105,2117
+  s_3b528300c749b0::t_8b808b16524b3e 1768,1771-1779,1783
+  s_3b528300c749b0::t_1b7b92677d97b1 1780-1781
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ba98af47eb01a3795a91e66dd92125c1eeebf0ae",
+  "prompts": {},
+  "sessions": {
+    "s_33606f1badd0ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1ee54-1b6c-7ef0-b47e-4e038554eb03",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "EREN UYGUN <eren.uygun@turkcell.com.tr>"
+    },
+    "s_3b528300c749b0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1ee2b-b58f-71e1-bf6c-31b213b126f9",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "EREN UYGUN <eren.uygun@turkcell.com.tr>"
+    },
+    "s_afb2411286d11c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1eed8-e58d-7213-9490-4e5bcb6353da",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "EREN UYGUN <eren.uygun@turkcell.com.tr>"
+    }
+  }
+}
