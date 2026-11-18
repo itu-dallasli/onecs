@@ -1,0 +1,19 @@
+tests/api_acceptance.py
+  s_afb2411286d11c::t_6b3b8b2327ea3d 2,71,126,275,1479,2017,2050,2093,2098,2101,2104-2105,2117
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "63b756731fd79d3b0498467b704b51623c714b46",
+  "prompts": {},
+  "sessions": {
+    "s_afb2411286d11c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1eed8-e58d-7213-9490-4e5bcb6353da",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "EREN UYGUN <eren.uygun@turkcell.com.tr>"
+    }
+  }
+}
