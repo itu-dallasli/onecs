@@ -9,11 +9,11 @@ from rest_framework.exceptions import APIException, ValidationError
 
 from core.models import BackgroundJob, OutboxEvent, Report, User, WorkItem
 from core.services import create_sla, generate_report, snapshot_source
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 from core.worker import claim_job, process_outbox
 
 
-class ReportJobRecoveryTests(AtlasTestCase):
+class ReportJobRecoveryTests(OnecsTestCase):
     def report_job(self, **extra):
         work = WorkItem.objects.create(
             title="Review evidence",
@@ -189,7 +189,7 @@ class ReportJobRecoveryTests(AtlasTestCase):
         self.assertTrue(report.job.payload["access_fingerprint"])
 
 
-class NotificationRecoveryTests(AtlasTestCase):
+class NotificationRecoveryTests(OnecsTestCase):
     def pending(self, **extra):
         work = WorkItem.objects.create(
             title="Sensitive work title",

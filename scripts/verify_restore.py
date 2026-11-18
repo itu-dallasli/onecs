@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify a consistent Atlas PostgreSQL backup in a new disposable database."""
+"""Verify a consistent onecs PostgreSQL backup in a new disposable database."""
 
 from __future__ import annotations
 
@@ -39,14 +39,14 @@ def main():
             "Bu doğrulayıcı yalnız yerel geliştirme PostgreSQL üzerinde çalışır."
         )
     source_name = parsed.path.lstrip("/")
-    restore_name = "atlas_restore_" + uuid.uuid4().hex[:12]
+    restore_name = "onecs_restore_" + uuid.uuid4().hex[:12]
     RUNTIME.mkdir(exist_ok=True)
-    dump_file = RUNTIME / "atlas-verified-backup.dump"
+    dump_file = RUNTIME / "onecs-verified-backup.dump"
     cli_env = dict(
         env,
         PGHOST=parsed.hostname,
         PGPORT=str(parsed.port or 5432),
-        PGUSER=unquote(parsed.username or "atlas"),
+        PGUSER=unquote(parsed.username or "onecs"),
         PGPASSWORD=unquote(parsed.password or ""),
     )
     pg_dump = shutil.which("pg_dump", path=env["PATH"])

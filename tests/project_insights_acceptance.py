@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atlas yeni özellikleri: yalnız yerel sentetik ortamda gerçek HTTP kabulü.
+"""onecs yeni özellikleri: yalnız yerel sentetik ortamda gerçek HTTP kabulü.
 
 Haricî AI/LDAP ayarına dokunmaz. Raporlar açık RULE_BASED modunda istenir.
 Bu dosyayı çalıştırmak root'un DB/HTTP test koordinasyonu GO kararını gerektirir.
@@ -1045,7 +1045,7 @@ class ProjectInsightsAcceptance(unittest.TestCase):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
-    parser.add_argument("--password-env", default="ATLAS_DEMO_PASSWORD")
+    parser.add_argument("--password-env", default="ONECS_DEMO_PASSWORD")
     parser.add_argument(
         "--env-file", default=str(Path(__file__).resolve().parents[1] / ".env")
     )
@@ -1094,7 +1094,7 @@ def main():
     suite = unittest.TestSuite(ProjectInsightsAcceptance(name) for name in names)
     result = unittest.TextTestRunner(verbosity=2, resultclass=EvidenceResult).run(suite)
     evidence = {
-        "application": "Atlas",
+        "application": "onecs",
         "run_key": ProjectInsightsAcceptance.run_key,
         "suite": "project-insights-and-person-workload",
         "timestamp_utc": dt.datetime.now(dt.UTC).isoformat(),

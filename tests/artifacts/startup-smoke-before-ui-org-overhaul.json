@@ -1,5 +1,5 @@
 {
-  "application": "Atlas",
+  "application": "Onecs",
   "at": "2026-11-18T12:04:44.733427+00:00",
   "status": "passed",
   "startup_command": ".venv/bin/python scripts/dev.py --seed",
@@ -17,5 +17,10 @@
     0.098,
     0.121
   ],
-  "measurement_scope": "Three sequential reads on clean local demo; not a concurrent load test."
+  "measurement_scope": "Three sequential reads on clean local demo; not a concurrent load test.",
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "31dbfd71e5224a9c99506a712b0c9d71b1b332ee06e99a11bb87e1c08fd19959"
+  }
 }

@@ -1,5 +1,3 @@
-from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema
 import hashlib
 import json
 import uuid
@@ -23,6 +21,8 @@ from rest_framework.decorators import (
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError, NotFound
+from drf_spectacular.utils import extend_schema
+from drf_spectacular.types import OpenApiTypes
 from .exceptions import Conflict
 from .models import (
     Announcement,
@@ -68,8 +68,11 @@ from .policy import (
     can_manage_project,
     can_manage_work,
     can_open_case,
+    can_publish_announcement,
     can_read_progress,
+    can_read_project,
     can_read_project_detail,
+    can_read_case,
     can_read_work,
     can_reroute_project,
     can_update_work,
@@ -89,8 +92,6 @@ from .policy import (
     visible_participations,
     visible_projects,
     visible_work,
-    can_read_project,
-    can_read_case,
 )
 from .serializers import (
     AnnouncementSerializer,
@@ -106,6 +107,9 @@ from .serializers import (
     PMSerializer,
     ParticipationSerializer,
     PersonSerializer,
+    PersonWorkSerializer,
+    PersonProgressSerializer,
+    PersonCaseSerializer,
     PollSerializer,
     ProgressSerializer,
     ProjectSerializer,
@@ -113,9 +117,6 @@ from .serializers import (
     ReportSerializer,
     SLAPolicySerializer,
     WorkSerializer,
-    PersonWorkSerializer,
-    PersonProgressSerializer,
-    PersonCaseSerializer,
 )
 from .services import (
     TERMINAL,
@@ -288,6 +289,49 @@ def logout_view(request):
 
 
 class DomainViewSet(viewsets.GenericViewSet):
+    # Shared form extras are handled after the authorized domain action, inside
+    # this dispatcher's existing state/audit/outbox/idempotency transaction.
+    record_create_actions = {
+        ("ProjectViewSet", "create"): ("project", Project),
+        ("ProjectViewSet", "tasks"): ("work", WorkItem),
+        ("WorkViewSet", "create"): ("work", WorkItem),
+        ("WorkViewSet", "children"): ("work", WorkItem),
+        ("CaseViewSet", "create"): ("case", Case),
+        ("CaseViewSet", "actions"): ("work", WorkItem),
+        ("CaseNoticeViewSet", "create"): ("case_notice", CaseNotice),
+        ("AnnouncementViewSet", "create"): ("announcement", Announcement),
+        ("CommunityViewSet", "create"): ("community", CommunityCard),
+        ("EventViewSet", "create"): ("event", Event),
+        ("CredentialViewSet", "create"): ("credential", Credential),
+    }
+    record_publish_actions = {
+        ("ProjectViewSet", "submit"): ("project", Project),
+        ("AnnouncementViewSet", "publish"): ("announcement", Announcement),
+        ("CommunityViewSet", "publish"): ("community", CommunityCard),
+    }
+    record_extra_keys = {"attachment_ids", "send_email", "notification_recipient_ids"}
+
+    def apply_record_extras(self, request, response, extras):
+        from .attachments import bind_attachments
+        from .record_notifications import (
+            dispatch_record_email_preference, save_record_email_preference,
+        )
+
+        operation = (type(self).__name__, self.action)
+        target = self.record_create_actions.get(operation)
+        if target and extras:
+            resource_type, model = target
+            obj = model.objects.select_for_update().get(pk=response.data["id"])
+            if "attachment_ids" in extras:
+                bind_attachments(request.user, resource_type, obj, extras["attachment_ids"], initial=True)
+            if {"send_email", "notification_recipient_ids"} & extras.keys():
+                save_record_email_preference(request.user, resource_type, obj, extras)
+        publish_target = self.record_publish_actions.get(operation)
+        if publish_target:
+            resource_type, model = publish_target
+            obj = model.objects.select_for_update().get(pk=response.data["id"])
+            dispatch_record_email_preference(request.user, resource_type, obj)
+
     def list(self, request):
         qs = self.filter_queryset(self.get_queryset())
         query = request.query_params.get("search", "").strip()
@@ -381,10 +425,25 @@ class DomainViewSet(viewsets.GenericViewSet):
                 else:
                     response = None
                 if response is None:
+                    extras = (
+                        {k: request.data[k] for k in self.record_extra_keys if k in request.data}
+                        if request.method == "POST" else {}
+                    )
+                    if extras and (type(self).__name__, self.action) not in self.record_create_actions:
+                        raise ValidationError({k: "Bu alan bu işlemle kullanılamaz." for k in extras})
                     handler = getattr(
                         self, request.method.lower(), self.http_method_not_allowed
                     )
-                    response = handler(request, *args, **kwargs)
+                    # Domain handlers keep their explicit input allowlists. The
+                    # canonical retry digest above still includes every extra.
+                    for extra_key in extras:
+                        request.data.pop(extra_key)
+                    try:
+                        response = handler(request, *args, **kwargs)
+                    finally:
+                        request.data.update(extras)
+                    if response.status_code < 400 and request.method == "POST":
+                        self.apply_record_extras(request, response, extras)
                     if response.status_code < 400 and uid:
                         IdempotencyRecord.objects.create(
                             actor=request.user,
@@ -1896,17 +1955,18 @@ class AnnouncementViewSet(DomainViewSet):
         audience = request.data.get("audience_org_ids") or [str(org.pk)]
         obj.audience.set(OrgNode.objects.filter(pk__in=audience, active=True))
         audit(request.user, "announcement.proposed", obj)
+        from .notifications import notify_announcement_proposed
+        notify_announcement_proposed(obj)
         return Response(self.get_serializer(obj).data, status=201)
 
     @action(detail=True, methods=["post"])
     def publish(self, request, pk=None):
         obj = self.locked()
-        ensure(
-            obj.owner_org_id
-            in manager_scope_ids(request.user, ("DIRECTOR", "UNIT_HEAD"))
-        )
-        if obj.status == "PUBLISHED":
-            raise ValidationError("Anons zaten yayında.")
+        ensure(can_publish_announcement(request.user, obj))
+        if obj.status != "DRAFT":
+            raise ValidationError("Yalnız yayın kararı bekleyen anons yayımlanabilir.")
+        if obj.ends_at and obj.ends_at <= timezone.now():
+            raise ValidationError("Yayın süresi dolmuş anons yayımlanamaz.")
         obj.status = "PUBLISHED"
         bump(obj)
         audit(
@@ -1920,6 +1980,8 @@ class AnnouncementViewSet(DomainViewSet):
                 ],
             },
         )
+        from .notifications import notify_announcement_published
+        notify_announcement_published(obj)
         return Response(self.get_serializer(obj).data)
 
     @action(detail=True, methods=["post"])
@@ -2387,7 +2449,8 @@ class ReportViewSet(DomainViewSet):
             pk__in=[
                 r.pk
                 for r in qs
-                if (api_scope_ids(user) is None or bool(r.sources))
+                if isinstance(r.sources, list)
+                and (api_scope_ids(user) is None or bool(r.sources))
                 and all(
                     source_visibility_valid(self.request.user, source)
                     for source in r.sources
@@ -2403,6 +2466,18 @@ class ReportViewSet(DomainViewSet):
                     "Rapordaki kaynağa erişiminiz kaldırıldı. Yeni rapor hazırlayın."
                 )
         return Response(self.get_serializer(obj).data)
+
+    @action(detail=True, methods=["get"])
+    def pivot(self, request, pk=None):
+        from .report_pivot import build_report_pivot
+
+        obj = self.get_object()
+        for source in obj.sources:
+            if not source_visibility_valid(request.user, source):
+                raise PermissionDenied(
+                    "Rapordaki kaynağa erişiminiz kaldırıldı. Yeni rapor hazırlayın."
+                )
+        return Response(build_report_pivot(obj, request.user))
 
     def create(self, request):
         ensure(
@@ -2523,85 +2598,74 @@ class ReportViewSet(DomainViewSet):
 class NotificationViewSet(DomainViewSet):
     serializer_class = NotificationSerializer
 
+    def authorized_queryset(self):
+        if not hasattr(self, "_authorized_notifications"):
+            from .notifications import authorized_notifications
+            self._authorized_notifications, self._notification_urls = authorized_notifications(self.request.user)
+        return self._authorized_notifications
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["notification_urls"] = getattr(self, "_notification_urls", {})
+        return context
+
     def get_queryset(self):
-        qs = Notification.objects.filter(recipient=self.request.user).order_by(
-            "-created_at"
-        )
-        ids = []
-        for n in qs:
-            if n.resource_type in ("work", "project", "case"):
-                if report_source(self.request.user, n.resource_type, n.resource_id):
-                    ids.append(n.pk)
-            elif n.resource_type == "community":
-                if visible_cards(self.request.user).filter(pk=n.resource_id).exists():
-                    ids.append(n.pk)
-            elif n.resource_type == "credential":
-                if (
-                    visible_credentials(self.request.user)
-                    .filter(pk=n.resource_id)
-                    .exists()
-                ):
-                    ids.append(n.pk)
-            elif n.resource_type == "participation":
-                if (
-                    visible_participations(self.request.user)
-                    .filter(
-                        pk=n.resource_id,
-                        target_org_id__in=manager_scope_ids(self.request.user),
-                    )
-                    .exists()
-                ):
-                    ids.append(n.pk)
-            elif n.resource_type == "announcement":
-                if (
-                    visible_announcements(self.request.user)
-                    .filter(pk=n.resource_id)
-                    .exists()
-                ):
-                    ids.append(n.pk)
-            elif n.resource_type == "event":
-                if (
-                    api_narrow(
-                        self.request.user,
-                        Event.objects.filter(
-                            Q(invitees=self.request.user)
-                            | Q(owner_org_id__in=manager_scope_ids(self.request.user))
-                        ),
-                    )
-                    .filter(pk=n.resource_id)
-                    .exists()
-                ):
-                    ids.append(n.pk)
-            elif api_scope_ids(self.request.user) is None:
-                ids.append(n.pk)
-        qs = qs.filter(pk__in=ids)
+        queryset = self.authorized_queryset()
+        if self.action != "list":
+            return queryset
         status = self.request.query_params.get("status", "all")
         if status == "unread":
-            return qs.filter(read_at__isnull=True)
+            return queryset.filter(read_at__isnull=True)
         if status == "read":
-            return qs.filter(read_at__isnull=False)
+            return queryset.filter(read_at__isnull=False)
         if status != "all":
             raise ValidationError("Bildirim durumu all, unread veya read olmalıdır.")
-        return qs
+        return queryset
+
+    def list(self, request):
+        def page_number(name, default, minimum, maximum):
+            raw = request.query_params.get(name, str(default))
+            try:
+                value = int(raw)
+            except (ValueError, TypeError):
+                raise ValidationError({name: "Geçerli sayfa değeri gerekiyor."}) from None
+            if not minimum <= value <= maximum:
+                raise ValidationError({name: "Sayfa değeri izin verilen aralığın dışında."})
+            return value
+
+        limit = page_number("limit", 50, 1, 100)
+        offset = page_number("offset", 0, 0, 10000000)
+        queryset = self.get_queryset()
+        query = request.query_params.get("search", "").strip()
+        if query:
+            queryset = queryset.filter(title__icontains=query[:240])
+        total = queryset.count()
+        return Response({
+            "results": self.get_serializer(queryset[offset:offset + limit], many=True).data,
+            "count": total,
+            "unread_count": self.authorized_queryset().filter(read_at__isnull=True).count(),
+            "limit": limit,
+            "offset": offset,
+            "next_offset": offset + limit if offset + limit < total else None,
+        })
 
     @action(detail=True, methods=["post"])
     def read(self, request, pk=None):
         obj = self.get_object()
+        obj = Notification.objects.select_for_update().get(pk=obj.pk)
         read_state = request.data.get("read", True)
         if not isinstance(read_state, bool):
             raise ValidationError("read alanı boolean olmalıdır.")
-        obj.read_at = timezone.now() if read_state else None
-        obj.save(update_fields=["read_at"])
-        audit(
-            request.user,
-            "notification.read" if read_state else "notification.unread",
-            obj,
-        )
+        changed = (obj.read_at is not None) != read_state
+        if changed:
+            obj.read_at = timezone.now() if read_state else None
+            obj.save(update_fields=["read_at"])
+            audit(request.user, "notification.read" if read_state else "notification.unread", obj)
         return Response(self.get_serializer(obj).data)
 
     @action(detail=False, methods=["post"], url_path="mark-all-read")
     def mark_all_read(self, request):
-        visible = self.get_queryset().filter(read_at__isnull=True)
+        visible = self.authorized_queryset().filter(read_at__isnull=True)
         updated = visible.update(read_at=timezone.now())
         audit(request.user, "notification.all_read", request.user, {"updated": updated})
         return Response({"updated": updated})
@@ -2748,13 +2812,23 @@ def dashboard_view(request):
                 ),
             }
         )
+    announcement_limit = 5
+    announcement_queryset = visible_announcements(user).order_by(
+        "-pinned", "-created_at", "id"
+    )
     announcements = [
         a
-        for a in visible_announcements(user).filter(
-            status="PUBLISHED", starts_at__lte=now
-        )
+        for a in announcement_queryset.filter(status="PUBLISHED", starts_at__lte=now)
         if (not a.ends_at or a.ends_at > now) and audience_visible(user, a)
     ]
+    pending_announcements = [
+        a
+        for a in announcement_queryset.filter(status="DRAFT")
+        if a.created_by_id == user.pk or can_publish_announcement(user, a)
+    ]
+    decisions += sum(
+        1 for a in pending_announcements if can_publish_announcement(user, a)
+    )
     cards = visible_cards(user).filter(status="PUBLISHED").order_by("-created_at")[:5]
     return Response(
         {
@@ -2766,7 +2840,21 @@ def dashboard_view(request):
             },
             "agenda": agenda[:5],
             "unit_summaries": units,
-            "announcements": AnnouncementSerializer(announcements, many=True).data,
+            "announcements": AnnouncementSerializer(
+                announcements[:announcement_limit],
+                many=True,
+                context={"request": request},
+            ).data,
+            "pending_announcements": AnnouncementSerializer(
+                pending_announcements[:announcement_limit],
+                many=True,
+                context={"request": request},
+            ).data,
+            "announcement_counts": {
+                "published": len(announcements),
+                "pending": len(pending_announcements),
+            },
+            "announcement_limit": announcement_limit,
             "community": CardSerializer(
                 cards, many=True, context={"request": request}
             ).data,
@@ -2835,7 +2923,7 @@ def health_view(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT 1")
         cursor.fetchone()
-    return Response({"status": "ok", "application": "Atlas", "database": "connected"})
+    return Response({"status": "ok", "application": "onecs", "database": "connected"})
 
 
 class ApiClientViewSet(DomainViewSet):
@@ -3189,7 +3277,7 @@ def test_mode_view(request):
 
     real = getattr(request, "real_user", request.user)
     require_admin(real)
-    allowed = settings.ATLAS_ENV in ("test", "demo") and settings.ATLAS_TEST_GOD_MODE
+    allowed = settings.ONECS_ENV in ("test", "demo") and settings.ONECS_TEST_GOD_MODE
     if request.method == "POST":
         ensure(
             allowed,
@@ -3198,8 +3286,8 @@ def test_mode_view(request):
         mode = request.data.get("mode")
         if mode == "simulate":
             person = fetch(User, request.data.get("user_id"), is_active=True)
-            request.session["atlas_effective_user"] = str(person.pk)
-            request.session["atlas_god_mode"] = False
+            request.session["onecs_effective_user"] = str(person.pk)
+            request.session["onecs_god_mode"] = False
             audit(
                 real,
                 "test.simulation.started",
@@ -3207,22 +3295,22 @@ def test_mode_view(request):
                 {"effective_actor": str(person.pk)},
             )
         elif mode == "god":
-            request.session.pop("atlas_effective_user", None)
-            request.session["atlas_god_mode"] = True
+            request.session.pop("onecs_effective_user", None)
+            request.session["onecs_god_mode"] = True
             audit(real, "test.god.started", real)
         elif mode in ("stop", "normal"):
-            request.session.pop("atlas_effective_user", None)
-            request.session.pop("atlas_god_mode", None)
+            request.session.pop("onecs_effective_user", None)
+            request.session.pop("onecs_god_mode", None)
             audit(real, "test.identity.stopped", real)
         else:
             raise ValidationError("simulate, god veya stop seçin.")
     return Response(
         {
             "available": allowed,
-            "environment": settings.ATLAS_ENV,
-            "god_mode": bool(request.session.get("atlas_god_mode"))
-            and not request.session.get("atlas_effective_user"),
-            "effective_user_id": request.session.get("atlas_effective_user"),
+            "environment": settings.ONECS_ENV,
+            "god_mode": bool(request.session.get("onecs_god_mode"))
+            and not request.session.get("onecs_effective_user"),
+            "effective_user_id": request.session.get("onecs_effective_user"),
             "real_actor_id": str(real.pk),
         }
     )
@@ -3232,13 +3320,13 @@ def test_mode_data(request):
     from django.conf import settings
 
     real = getattr(request, "real_user", request.user)
-    available = settings.ATLAS_ENV in ("test", "demo") and settings.ATLAS_TEST_GOD_MODE
+    available = settings.ONECS_ENV in ("test", "demo") and settings.ONECS_TEST_GOD_MODE
     return {
         "available": available,
-        "environment": settings.ATLAS_ENV,
-        "god_mode": bool(request.session.get("atlas_god_mode"))
-        and not request.session.get("atlas_effective_user"),
-        "effective_user_id": request.session.get("atlas_effective_user"),
+        "environment": settings.ONECS_ENV,
+        "god_mode": bool(request.session.get("onecs_god_mode"))
+        and not request.session.get("onecs_effective_user"),
+        "effective_user_id": request.session.get("onecs_effective_user"),
         "real_actor_id": str(real.pk) if real.is_authenticated else None,
         "real_admin": real.is_authenticated and is_system_admin(real),
     }

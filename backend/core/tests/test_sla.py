@@ -19,7 +19,7 @@ from core.models import (
     WorkItem,
 )
 from core.services import assign_work, calculate_due, create_sla, scan_slas, stop_sla
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
 class SLACalendarTests(SimpleTestCase):
@@ -56,7 +56,7 @@ class SLACalendarTests(SimpleTestCase):
         self.assertEqual(calculate_due(start, 1, "MONTHS"), expected)
 
 
-class SLALifecycleTests(AtlasTestCase):
+class SLALifecycleTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.start = datetime(2026, 1, 31, 9, tzinfo=timezone.utc)

@@ -1,0 +1,17 @@
+{
+  "executed_at": "2026-11-18T13:33:05.458042+00:00",
+  "database": "PostgreSQL isolated test database",
+  "test_database": "test_onecs_report_pivot_qa",
+  "scope": "Synthetic malformed snapshot fields and missing legacy field behavior only",
+  "labels": [
+    "core.tests.test_report_pivot.ReportPivotTests.test_malformed_optional_snapshot_fields_fail_closed_but_missing_legacy_fields_are_valid"
+  ],
+  "failure_count": 0,
+  "duration_seconds": 3.107,
+  "output": "Found 1 test(s).\nCreating test database for alias 'default' ('test_onecs_report_pivot_qa')...\nOperations to perform:\n  Synchronize unmigrated apps: drf_spectacular, rest_framework, staticfiles\n  Apply all migrations: administration, auth, contenttypes, core, sessions\nSynchronizing apps without migrations:\n  Creating tables...\n    Running deferred SQL...\nRunning migrations:\n  Applying contenttypes.0001_initial... OK\n  Applying contenttypes.0002_remove_content_type_name... OK\n  Applying auth.0001_initial... OK\n  Applying auth.0002_alter_permission_name_max_length... OK\n  Applying auth.0003_alter_user_email_max_length... OK\n  Applying auth.0004_alter_user_username_opts... OK\n  Applying auth.0005_alter_user_last_login_null... OK\n  Applying auth.0006_require_contenttypes_0002... OK\n  Applying auth.0007_alter_validators_add_error_messages... OK\n  Applying auth.0008_alter_user_username_max_length... OK\n  Applying auth.0009_alter_user_last_name_max_length... OK\n  Applying auth.0010_alter_group_name_max_length... OK\n  Applying auth.0011_update_proxy_permissions... OK\n  Applying auth.0012_alter_user_first_name_max_length... OK\n  Applying core.0001_initial... OK\n  Applying administration.0001_initial... OK\n  Applying administration.0002_aiusage_request_fingerprint_aiusage_result_and_more... OK\n  Applying administration.0003_aiusage_settings_version_and_more... OK\n  Applying administration.0004_ldapmanagedgrant... OK\n  Applying core.0002_alter_outboxevent_status... OK\n  Applying core.0003_communitycard_content_approved_by... OK\n  Applying core.0004_orgnode_is_demo_user_profile_kind... OK\n  Applying core.0005_search_extensions... OK\n  Applying core.0006_project_insights... OK\n  Applying core.0007_record_extras... OK\n  Applying core.0008_attachment_purge... OK\n  Applying core.0009_onecs_brand... OK\n  Applying sessions.0001_initial... OK\nSystem check identified no issues (0 silenced).\ntest_malformed_optional_snapshot_fields_fail_closed_but_missing_legacy_fields_are_valid (core.tests.test_report_pivot.ReportPivotTests.test_malformed_optional_snapshot_fields_fail_closed_but_missing_legacy_fields_are_valid) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.240s\n\nOK\nDestroying test database for alias 'default' ('test_onecs_report_pivot_qa')...\n",
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "d949464f436142f8e958a3a7303d95b787d107732eb2351fdc0c8573d6c8236e"
+  }
+}

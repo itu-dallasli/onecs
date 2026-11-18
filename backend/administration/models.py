@@ -97,6 +97,25 @@ class LDAPIdentity(models.Model):
     synced_at = models.DateTimeField(null=True)
 
 
+class LDAPManagedGrant(models.Model):
+    """Only these grants are reconciled from verified directory membership."""
+
+    identity = models.ForeignKey(
+        LDAPIdentity, on_delete=models.CASCADE, related_name="managed_grants"
+    )
+    grant = models.OneToOneField(
+        "core.RoleGrant", on_delete=models.CASCADE, related_name="ldap_managed"
+    )
+    key = models.CharField(max_length=64)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["identity", "key"], name="ldap_managed_grant_unique"
+            )
+        ]
+
+
 class AIConnectionProfile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)

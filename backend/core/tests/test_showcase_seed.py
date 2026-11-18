@@ -20,7 +20,7 @@ from core.showcase_catalog import DEMO_FOOTER, PEOPLE, PROJECTS
 HAS_INSIGHTS = any(m.__name__ == "ProjectTeamPlan" for m in apps.get_models())
 
 
-@override_settings(ATLAS_ENV="test")
+@override_settings(ONECS_ENV="test")
 class ShowcaseSeedTests(TestCase):
     def setUp(self):
         self.root = OrgNode.objects.create(code="ICT-CS", name="Cyber Security", kind="DIRECTORATE")
@@ -145,7 +145,7 @@ class ShowcaseSeedTests(TestCase):
         self.assertFalse(Project.objects.exists())
         self.assertFalse(AuditEvent.objects.exists())
 
-    @override_settings(ATLAS_ENV="production")
+    @override_settings(ONECS_ENV="production")
     def test_production_seed_is_rejected(self):
         with self.assertRaises(CommandError):
             self.seed()

@@ -1,0 +1,41 @@
+.onecs-settings-ldap-mappings-body {
+  padding: 0 20px 14px;
+}
+.onecs-settings-ldap-mappings-hint {
+  font-size: 13.75px;
+  line-height: 1.65;
+  color: var(--muted, #70808e);
+  margin: 16px 0 0;
+}
+.onecs-settings-ldap-mappings-body > .onecs-settings-notice {
+  margin-top: 16px;
+}
+.onecs-settings-ldap-mapping-editor {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid var(--line, #dbe2e9);
+  border-radius: 7px;
+}
+.onecs-settings-ldap-mapping-editor h4 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.onecs-settings-ldap-mapping-dn {
+  max-width: 430px;
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono, monospace);
+  font-size: 12.5px;
+}
+.onecs-settings-ldap-mapping-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+@media (max-width: 640px) {
+  .onecs-settings-ldap-mappings > .onecs-settings-config-title {
+    flex-direction: column;
+  }
+  .onecs-settings-ldap-mapping-editor {
+    padding: 13px;
+  }
+}

@@ -21,9 +21,9 @@ def env_bool(key, default="false"):
 
 
 SECRET_KEY = os.environ.get(
-    "ATLAS_SECRET_KEY",
+    "ONECS_SECRET_KEY",
     os.environ.get(
-        "DJANGO_SECRET_KEY", "atlas-local-development-only-change-before-deployment"
+        "DJANGO_SECRET_KEY", "onecs-local-development-only-change-before-deployment"
     ),
 )
 DEBUG = env_bool("DJANGO_DEBUG", "true")
@@ -67,13 +67,13 @@ TEMPLATES = [
     }
 ]
 _db = urlparse(
-    os.environ.get("DATABASE_URL", "postgresql://atlas@127.0.0.1:55432/atlas")
+    os.environ.get("DATABASE_URL", "postgresql://onecs@127.0.0.1:55432/onecs")
 )
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": _db.path.lstrip("/"),
-        "USER": _db.username or "atlas",
+        "USER": _db.username or "onecs",
         "PASSWORD": _db.password or "",
         "HOST": _db.hostname or "127.0.0.1",
         "PORT": _db.port or 55432,
@@ -118,8 +118,8 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {"anon": "60/min"},
 }
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Atlas API",
-    "DESCRIPTION": "Rol ve kayıt kapsamı ile korunan Atlas yönetişim API. Dış JWT tüketicileri salt okunurdur.",
+    "TITLE": "onecs API",
+    "DESCRIPTION": "Rol ve kayıt kapsamı ile korunan onecs yönetişim API. Dış JWT tüketicileri salt okunurdur.",
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
     "SERVE_AUTHENTICATION": ["rest_framework.authentication.SessionAuthentication"],
@@ -127,18 +127,28 @@ SPECTACULAR_SETTINGS = {
 EMAIL_BACKEND = os.environ.get(
     "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
 )
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "atlas@example.test")
-ATLAS_ENV = os.environ.get("ATLAS_ENV", "development")
-ATLAS_TEST_GOD_MODE = os.environ.get("ATLAS_TEST_GOD_MODE", "false").lower() == "true"
-if ATLAS_TEST_GOD_MODE and ATLAS_ENV not in ("test", "demo"):
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "onecs@example.test")
+ONECS_ENV = os.environ.get("ONECS_ENV", "development")
+ONECS_TEST_GOD_MODE = os.environ.get("ONECS_TEST_GOD_MODE", "false").lower() == "true"
+if ONECS_TEST_GOD_MODE and ONECS_ENV not in ("test", "demo"):
     raise RuntimeError("God Mode yalnız sentetik test/demo ortamında açılabilir.")
-if not DEBUG and SECRET_KEY.startswith("atlas-local-"):
+if not DEBUG and SECRET_KEY.startswith("onecs-local-"):
     raise RuntimeError("Üretim için DJANGO_SECRET_KEY zorunludur.")
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
-JWT_ISSUER = "atlas"
-JWT_AUDIENCE = "atlas-readonly-api"
+JWT_ISSUER = "onecs"
+JWT_AUDIENCE = "onecs-readonly-api"
 
 SPECTACULAR_SETTINGS["PREPROCESSING_HOOKS"] = ["core.schema.canonical_endpoints"]
-SESSION_COOKIE_NAME = "atlas_sessionid"
-CSRF_COOKIE_NAME = "atlas_csrftoken"
+SESSION_COOKIE_NAME = "onecs_sessionid"
+CSRF_COOKIE_NAME = "onecs_csrftoken"
+
+# Never serve this directory through MEDIA_URL or the web server's static root.
+ONECS_UPLOAD_ROOT = Path(os.environ.get("ONECS_UPLOAD_ROOT", str(BASE_DIR.parent / ".runtime" / "private-uploads")))
+ONECS_UPLOAD_MAX_BYTES = int(os.environ.get("ONECS_UPLOAD_MAX_BYTES", str(10 * 1024 * 1024)))
+ONECS_UPLOAD_MAX_FILES = 5
+ONECS_UPLOAD_SCANNER_COMMAND = os.environ.get("ONECS_UPLOAD_SCANNER_COMMAND", "")
+ONECS_UPLOAD_SCANNER_TIMEOUT = 30
+# Local development must opt in explicitly. This flag never bypasses production scanning.
+ONECS_UPLOAD_ALLOW_UNSCANNED = env_bool("ONECS_UPLOAD_ALLOW_UNSCANNED", "false")
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024

@@ -1,10 +1,18 @@
-# Atlas QA raporu
+# onecs QA raporu
+
+## onecs marka ve teknik adlandırma geçişi
+
+Arayüz ve kaynak dokümanlarda ürün adı `onecs` olarak standartlaştırıldı. Yapılandırma anahtarları, cookie/session ve tarayıcı tercih anahtarları, API güvenlik şeması, JWT issuer/audience ve genel okuma kapsamı aynı adlandırmaya taşındı. Mevcut secret/şifreleme değerleri ve veritabanı kayıtları korunur; dolu kurulum yükseltme adımları [README](../README.md#yerel-kurulum) içindedir. Yeni kaynak ve dokümanlar için kural [geliştirme yönergesine](AGENTS.md) yazıldı.
+
+Geçmiş kanıtların proje içindeki adlandırması normalleştirilirken açıklama eklendi; özgün dosyalar proje dışındaki arşivde korunur. Geçmiş test sayıları ve sonuçları değiştirilmedi; bu kayıtlar güncel adlandırma geçişinin yeniden test edildiği anlamına gelmez. Güncel doğrulamada **404 PostgreSQL backend testi geçti** (36,230 saniye); migration modülünün son tekrarında **2 test geçti** (0,036 saniye). Bu tekrar, tam koşunun toplamına eklenmez. **13 dosyada 73 frontend testi** ve `npm run build` geçti. `manage.py check`, `makemigrations --check --dry-run` ve `spectacular --validate` başarılıdır. [Backend koşu çıktısı](../tests/artifacts/onecs-rebrand-backend-tests.txt), [frontend ve derleme kontrolü](../tests/artifacts/onecs-rebrand-frontend.json).
+
+Yerel veritabanında `core.0009_onecs_brand` uygulandı. Canlı giriş, kullanıcı bilgisi, dashboard ve OpenAPI yanıtları 200; yeni cookie adları ve kayıtlı sırların çözülmesi doğrulandı. Önceden mevcut kullanıcıların korunması kontrol edildi; eşzamanlı diğer işler kullanıcı ekleyebildiğinden bu kontrol sabit toplam kullanıcı sayısı iddiası taşımaz. [Yerel canlı kontrol](../tests/artifacts/onecs-rebrand-live.json).
 
 ## Proje içgörüleri ve kişi iş yükü ek kabulü
 
 18 Kasım 2026 · Yeni proje teslimat/anket/rapor akışı için **21/21 gerçek HTTP testi geçti**, 27,618 saniye; hata veya atlama yok. [Yeni koşu](../tests/artifacts/project-insights-acceptance.json), [kabul planı ve eşleme](testing/FEATURE_ACCEPTANCE.md). Testler PM/Unit Head ayrımı, iki seviyeli ağırlık, eksik veride `null`, davetli/sürümlü tek yanıt, insan rapor düzenlemesi, değişmez kaynak/hesaplanan skor, kapanış yayını, JWT organizasyon kapsamı ve kişi iş yükü gizliliğini doğruladı. Yeni raporlar açık `RULE_BASED` modunda gerçek worker ile tamamlandı; bu 21 test canlı AI başarısı sayılmaz.
 
-**Özelliğin ayrı kaynak snapshot'ı da doğrulandı:** Başlangıç sürümü üzerine yalnız bu özellik değişiklikleri alınarak **234 backend testi + 45 alt senaryo** (19,598 saniye), **17 frontend testi**, strict TypeScript ve production build geçti. Strict OpenAPI üretimi uyarısız; migration drift kontrolü `No changes detected` verdi. Ayrı özelliğe ayrılmış geçici PostgreSQL veritabanı kullanıldı ve koşu sonunda kaldırıldı; canlı DB, seed ve servisler çalıştırılmadı. İki ldap3/pyasn1 deprecation uyarısı ve 543,22 kB entry bundle için Vite boyut uyarısı vardır (build 245 ms). Bu snapshot eşzamanlı LDAP ilk giriş, Atlas marka, dosya eki ve anons değişikliklerini içermez. [Ayrı snapshot kanıtı](../tests/artifacts/project-feature-snapshot.json) ilk 48 kaynak dosyasının `ddc2e453…` tree hash'ini kapsamıyla birlikte kaydeder; bu hash son commit'in tüm ağacı olarak sunulmaz.
+**Özelliğin ayrı kaynak snapshot'ı da doğrulandı:** Başlangıç sürümü üzerine yalnız bu özellik değişiklikleri alınarak **234 backend testi + 45 alt senaryo** (19,598 saniye), **17 frontend testi**, strict TypeScript ve production build geçti. Strict OpenAPI üretimi uyarısız; migration drift kontrolü `No changes detected` verdi. Özelliğe ayrılmış geçici PostgreSQL veritabanı kullanıldı ve koşu sonunda kaldırıldı; canlı DB, seed ve servisler çalıştırılmadı. İki ldap3/pyasn1 deprecation uyarısı ve 543,22 kB entry bundle için Vite boyut uyarısı vardır (build 245 ms). Bu snapshot eşzamanlı LDAP ilk giriş, onecs marka, dosya eki ve anons değişikliklerini içermez. [Ayrı snapshot kanıtı](../tests/artifacts/project-feature-snapshot.json) ilk 48 kaynak dosyasının `ddc2e453…` tree hash'ini kapsamıyla birlikte kaydeder; bu hash son commit'in tüm ağacı olarak sunulmaz.
 
 Mevcut 46 senaryonun tekrarında **45 geçti, 1 gerçek AI raporu kaynak referansı kontrolü başarısız oldu**; 57,295 saniye, atlama yok. Model `AI` modunda yanıt verdi fakat seçilmiş kritik kaydın referansı metinde yoktu. [Başarısız koşu korunuyor](../tests/artifacts/api-acceptance-project-insights-regression.json). Sunucunun kaynak dizini düzeltmesinden sonra **yalnız ilgili test yeniden çalıştırıldı ve geçti**, 10,220 saniye: gerçek `AI` çıktısında snapshot'ın **9/9 kaynak referansı** korundu. [Hedefli son kontrol](../tests/artifacts/api-report-source-index-recheck.json). Böylece **67 farklı HTTP senaryosu** doğrulandı; bu ifade tek seferde yapılmış 67 testlik tam koşu anlamına gelmez.
 
@@ -22,10 +30,19 @@ Bu akışların ekranları: [ekip ağırlıklı ilerleme](../tests/artifacts/ui-
 
 **Güncel geri yükleme:** Kaynakta read-only consistent snapshot alınıp yeni disposable PostgreSQL veritabanına restore edildi; **62 tablo / 910 satır sayısı ve foreign key kontrolü geçti**, 0,824 saniye. Geçici restore DB silindi; dump 0600 izinle ignored runtime'dadır. [Yeni restore kanıtı](../tests/artifacts/restore-project-insights.json) dump'ın kendi migration kaydını taşır: core `0006_project_insights`, administration `0004_ldapmanagedgrant` dahil; daha sonra canlıda görülen `0007_record_extras` / `0008_attachment_purge` bu kanıtın kapsamı dışındadır. Önceki `restore-check.json` içeriği aynen korundu; aşağıdaki 53 tablo / 573 satır sonucu eski sürüme aittir.
 
-
 18 Kasım 2026 · Resmî 7 unit organizasyonu + yeni arayüz/LDAP/AI profil sürümü · Yerel kabul
 
 ## Son doğrulama
+
+**LDAP ilk giriş ve grup yetkisi ek kabulü:** Kullanıcı kararıyla önceden kişi aktarımı zorunluluğu kaldırıldı. Başarılı kişisel bind sonrası otomatik hesap, sabit kimlik ve yalnız LDAP yönetimli rol senkronizasyonu eklendi. Tam CN–organizasyon kodu eşleşmesi yapılandırılmış grup kökünde çalışan kapsamı verir; açık grup–rol kuralları yönetici rolünü ve kapsamını belirler. **146 PostgreSQL testi** (44 yeni LDAP senaryosu dahil), **16 frontend testi**, TypeScript/Vite build, hedefli Ruff ve migration drift kontrolü geçti. Yanlış parola ve eşleşmeyen grup hiçbir hesap açmaz; kimlik çakışması, devre dışı hesap, gerçek direktör kapsamı dışı kural, God Mode bypass, rol kaybı ve audit rollback reddi sınandı. İki gerçek PostgreSQL bağlantısıyla eşzamanlı ilk giriş tek kullanıcı/kimlik/yönetilen grant üretti. [Backend çıktısı](../tests/artifacts/ldap-auto-login-tests.json), [frontend çıktısı](../tests/artifacts/ldap-auto-login-frontend.json).
+
+Canlı dizinde servis bind'i, tekil kullanıcı araması ve yeni politikanın ekip/çalışan eşlemesi salt okunur doğrulandı. Kişisel parola alınmadı; bu kontrol gerçek kullanıcının login başarısı olarak sunulmaz. [Canlı politika kontrolü](../tests/artifacts/ldap-first-login-live-policy.json). Sürekli LDAP oturum iptali uygulanmış değildir; grup değişimi sonraki başarılı bind'de değerlendirilir.
+
+Canlı yerel veritabanına `administration.0004_ldapmanagedgrant` yedek sonrası uygulandı; API/worker/frontend yeni kodla yeniden başlatıldı. Otomatik ilk giriş ve organizasyon grubu eşlemesi etkin; auth'sız API 401, frontend 200 doğrulandı. [Dağıtım kontrolü](../tests/artifacts/ldap-first-login-deployment.json).
+
+**18 Kasım LDAP/AI bağlantı düzeltmesi:** DNS/TCP erişimi vardı; uygulama LDAP tarafında sistem CA deposundaki eski ara sertifika nedeniyle, AI tarafında HTTPX/certifi'nin kurum zincirini bulamaması nedeniyle TLS'de duruyordu. Eski ara sertifikanın süresi **15 Kasım 2026 00:16:18 Türkiye saatiyle** sona ermişti; sunucuların leaf sertifikaları geçerliydi. LDAP'ın sunduğu güncel ara CA mevcut güvenilir root'larla bağımsız doğrulandı. Yeni güven çıpası eklemeden hazırlanan yerel CA dosyasıyla LDAP StartTLS ve iki AI hedefinin TLS el sıkışması geçti. `CERT_REQUIRED`, sunucu adı ve zaman kontrolü korundu; partial-chain güveni kapalıydı. Yerel `.env` içindeki LDAP/AI CA dosyaları bağlandı, API/worker/frontend yeni ayarlarla yeniden başlatıldı; seed ve bekleyen migration çalıştırılmadı. [Canlı TLS kanıtı](../tests/artifacts/integration-tls-diagnosis.json).
+
+Bu yeni koşuda **LDAP bind/Base DN okuması veya model isteği yapılmadı**; eski başarısız bağlantı testleri başarıya çevrilmedi. Yönetici yeniden **Test et** ile kimlik/model aşamasını doğrulamalıdır. Güvenli Türkçe hata sınıfları, kalıcı AI kart mesajı, failure → success → ayar değişiminde hazır durumunun iptali, negatif yetki ve kalıcılık için **75 PostgreSQL testi** geçti; bu sentetik adaptör testleri haricî kimlik doğrulama kanıtı değildir. **11 frontend testi, TypeScript/Vite üretim derlemesi ve hedefli Ruff kontrolleri de geçti.** [Backend çıktısı](../tests/artifacts/connection-diagnostics-tests.json), [frontend çıktısı](../tests/artifacts/connection-diagnostics-frontend.json). Önceki tam ürün kabul koşusu aşağıdadır.
 
 Gerçek HTTP kabul koşusu **46/46 geçti; hata, başarısızlık ve atlanan test yok**. Koşu **21,621 saniye** sürdü ve **18 Kasım 2026 12:23:03 UTC** zamanında tamamlandı. API `http://127.0.0.1:8000`, arayüz `http://127.0.0.1:3100`, veri katmanı PostgreSQL'dir. Dokuz ayrı kullanıcı/cookie/CSRF oturumu kullanıldı; testler God Mode veya doğrudan veritabanı değişikliği kullanmadı. [Makine tarafından üretilen HTTP kanıtı](../tests/artifacts/api-acceptance.json).
 
@@ -55,7 +72,7 @@ Backend regresyonları:
 .venv/bin/python -m pytest -q
 ```
 
-Koşucu parolayı `ATLAS_DEMO_PASSWORD` ortam değerinden veya yerel `.env` dosyasından veri olarak okur. Parola, session cookie ve JWT token rapora yazılmaz. Yalnız loopback hedeflerine izin verir; benzersiz `QA-` başlıklarıyla sentetik kayıt oluşturur. Gerçek kurumsal veri üzerinde çalıştırılmaz. Worker kapalıysa raporun tamamlanma kontrolü başarısız olur; sahte başarıyla geçilmez. Ayrıntı [test yönergelerinde](testing/README.md).
+Koşucu parolayı `ONECS_DEMO_PASSWORD` ortam değerinden veya yerel `.env` dosyasından veri olarak okur. Parola, session cookie ve JWT token rapora yazılmaz. Yalnız loopback hedeflerine izin verir; benzersiz `QA-` başlıklarıyla sentetik kayıt oluşturur. Gerçek kurumsal veri üzerinde çalıştırılmaz. Worker kapalıysa raporun tamamlanma kontrolü başarısız olur; sahte başarıyla geçilmez. Ayrıntı [test yönergelerinde](testing/README.md).
 
 ## Yeni sürümün ek kabul kanıtı
 
@@ -132,3 +149,43 @@ Son sabit frontend sürümünde 11:53:31 UTC sonrası bu QA sekmesinde kaydedile
 - **Uyarılar:** Son backend koşusunda ldap3/pyasn1 kaynaklı iki deprecation uyarısı var; test hatası veya atlama yok.
 
 Bu sonuçlar bütün olası akışların veya üretim koşullarının hatasız olduğu iddiası değildir. Yerel kabul kanıtı, kurum pilotu ve kullanıcı ölçümü birbirinden ayrılmıştır.
+
+## Dashboard anonsları ve bildirim düzeltmesi — 18.11.2026
+
+Dashboard yayındaki anonsları ve yayın kararı bekleyen önerileri iki ayrı bölümde, ilk beş kayıt ve toplam sayılarıyla gösterir. Kişi kendi önerisini görebilir; yayın izni yalnız güncel kapsam yetkisinden gelir. Süresi dolmuş taslakta yayın düğmesi kapalıdır. Bildirim sayacı tüm yetkili okunmamış kayıtları sayar; filtre/sayfa boyutuna bağlı değildir. Okundu/okunmadı ve tümünü okundu işlemleri audit ile kalıcıdır. Bildirim bağlantıları ilgili talep/vaka bildirimi/anons ayrıntısını açar; kaynak erişimi iptalinde bildirim ve sayaçtan çıkar. Yeni anons önerisi/yayını uygulama içi bildirim üretir, bu otomatik akış e-posta göndermez.
+
+- **324 PostgreSQL testi geçti**: 29 yeni anons/bildirim testi dahil core regresyonu ve LDAP/TLS entegrasyon regresyonları, anonslara ayrılmış geçici veritabanı. [Koşu çıktısı](../tests/artifacts/dashboard-announcements-notifications-tests.json).
+- **61 frontend testi geçti**, TypeScript ve üretim derlemesi başarılı. Çok sayfalı global sayaç, geç polling yanıtı, filtreler, rol iptali, okundu kalıcılığı, offset kaymasında ID tekilleştirme ve doğrudan talep/vaka bildirimi ayrıntıları kapsandı. [Vitest çıktısı](../tests/artifacts/dashboard-announcements-notifications-frontend.json).
+- Canlı localhost proxy üzerinden mevcut sentetik hesabın normal parola girişi 200; dashboard 1 yayın ve 1 bekleyen anons, bildirim filtreleri birbirinden bağımsız aynı global okunmamış toplamını döndürdü. Gerçek kişi/kaynak başlıkları ve secret kanıta yazılmadı. [Salt okunur HTTP kontrolü](../tests/artifacts/dashboard-announcements-notifications-live.json). Gerçek kullanıcı oturumu veya kurumsal e-posta teslimi denenmiş sayılmaz.
+- `manage.py check`, Ruff, migration drift ve ilgili dosyalarda `git diff --check` geçti. Bu kapsam yeni migration gerektirmez.
+- Aynı anda geliştirilen bağımsız attachment özelliğinin tam shared-tree koşusunda bir connection-closed testi hatası görüldü; OpenAPI serializer tanım eksikliği de sonradan bağımsız özellik sahibi tarafından giderildi. [348 testlik başarısız koşu](../tests/artifacts/dashboard-announcements-notifications-shared-tree-tests.json) korundu ve sorumlu sohbete iletildi; 324 testi geçen son koşu attachment test dosyasını açıkça dışlar. Son `spectacular --validate --fail-on-warn` geçti; NotificationInbox yanıtının dizi yerine gerçek nesne zarfını tanımladığı ayrıca kontrol edildi.
+- Arayüz bildirimleri 15 saniyelik yenilemeyle alır; push teslimi, yayın sonrası katılan kişiler için geçmiş bildirim backfill'i ve yük testi bu değişiklikte uygulanmadı.
+
+Son koordineli API yeniden başlatması sonrasında dashboard UI 200, kimliksiz API 401 döndü; bu kapsamın runtime kodu yüklendi. [Aktivasyon kontrolü](../tests/artifacts/dashboard-announcements-notifications-deployment.json).
+
+
+## 18 Kasım kayıt ekleri ve e-posta alıcıları
+
+Oluşturma formları ve özel upload/claim/download akışı tamamlandı. Kaynak işlemi, dosya bağı, audit ve e-posta niyeti aynı transaction'da; taslak başvuru/yayın tercihleri kalıcıdır. Ortak çalışma alanında PostgreSQL üzerinde **381 test + 173 alt senaryo**, frontendde **61 test** geçti. Son şema/UUID/ilk vaka claim kontrollerinden sonra hedefli **58 test + 41 alt senaryo** tekrar geçti; tip kontrolü/üretim derlemesi, Ruff, migration drift ve fail-on-warn OpenAPI doğrulaması temiz. [Backend kanıtı](../tests/artifacts/record-extras-backend.json), [frontend kanıtı](../tests/artifacts/record-extras-frontend.json).
+
+Gerçek yerel tarayıcıda ayrı sentetik kullanıcıyla çoklu dosya ve fotoğraf önizleme/kaldırma, alıcı seçimi, dosya ekli kayıt oluşturma ve yenileme sonrası kalıcılık doğrulandı; son konsol hata listesi boştu. Ek ayrıntıda tarama bekliyor olarak kaldı. Test kullanıcısında e-posta adresi boş olduğundan tek mail niyeti BLOCKED kaldı, dışarı posta gönderilmedi. Yeni oluşturulan sentetik kullanıcı/birim/kayıt/dosya temizlendi. [UI kanıtı](../tests/artifacts/record-extras-ui.json), [form](../tests/artifacts/ui-record-extras-form.jpg), [kayıt eki](../tests/artifacts/ui-record-extras-detail.jpg).
+
+Gerçek kurumsal SMTP ve antivirüs entegrasyonu bu koşuda test edilmedi. Varsayılan yapılandırmada scanner olmayan dosya indirilemez; bu durum arayüzde açıkça gösterilir. İşletim sınırları [servis sözleşmesinde](services/RECORD_EXTRAS.md) tutulur.
+
+## Dashboard yerleşimi — 18.11.2026
+
+Yönetim özeti kutusu ve tek kalan anonsu daraltan sağ sütun sarmalı kaldırıldı. Grid başlangıç hizalaması gündem kartının altındaki gereksiz beyaz alanı kaldırır. Normal yerel demo direktör oturumunda 1440/1000/390 px kontrollerinde gündem alt bağlantısı ile kartın alt kenarı arasında yalnız 1 px sınır kaldığı, tablet/mobil anons genişliğinin grid genişliğine eşit olduğu ve yatay taşma olmadığı ölçüldü. Üstteki haftalık rapor bağlantısı mevcut. [Ölçümler](../tests/artifacts/dashboard-layout-checks.json), [masaüstü](../tests/artifacts/ui-dashboard-layout-desktop.jpg), [tablet](../tests/artifacts/ui-dashboard-layout-tablet.jpg), [mobil](../tests/artifacts/ui-dashboard-layout-mobile.jpg).
+
+`npm run build` başarılı; mevcut 61 frontend testi geçti ([Vitest çıktısı](../tests/artifacts/dashboard-layout-frontend.json)). Yeni test eklenmedi. Derleme ve tarayıcı kontrolleri sırasında diğer sohbetlerin aynı çalışma alanındaki bağımsız değişiklikleri kapsam dışında tutuldu.
+
+Son kontrol sırasında ortak yerel stack kapandığından `scripts/dev.py --skip-migrations` ile mevcut veritabanı üzerinde tekrar başlatıldı; seed ve migration çalıştırılmadı. UI 200, kimliksiz API 401. Normal demo direktör girişi sonrası yenilenen dashboard 1280 px görünümde de doğru açıldı; console error listesi boştu. [Son görünüm](../tests/artifacts/ui-dashboard-layout-result.jpg).
+
+## Rapor modalı ve ekip pivotu — 18.11.2026
+
+Rapor modalı Genel Rapor ilk satır/sekme olacak şekilde ekip tablosu ve kaynak bölümleriyle açılır. Ekip seçimi genel AI metnini ekip çıktısı gibi göstermez. Güncel kaynak yetkisi, rapor kimliği/sürümü/hash'i ve kullanıcı değişiminde tüm çalışma alanının sıfırlanması korunur.
+
+Kullanıcının son “testlere gerek yok, main'e push” isteğinden **önce** tamamlanan doğrulama: **376 PostgreSQL testi** (14 yeni pivot testi; worker/rollup, kaynak/JWT yetkisi, kalıcılık, bildirim, ekler ve LDAP/TLS regresyonları dahil) ve **76 frontend testi** geçti; TypeScript/Vite build, Ruff, migration drift ve OpenAPI fail-on-warn başarılı. [Backend](../tests/artifacts/report-pivot-backend-tests.json), [frontend](../tests/artifacts/report-pivot-frontend-tests.json). İstekten sonra yeni test çalıştırılmadı.
+
+Sentetik iki ekip/dört kaynaklı ayrı veritabanında normal oturumla Genel Rapor, ekip seçimi ve Home/End klavye geçişi tarayıcıda doğrulandı. [UI kanıtı](../tests/artifacts/report-pivot-ui.json), [pivot tablo](../tests/artifacts/ui-report-pivot-team.jpg), [bölümler](../tests/artifacts/ui-report-pivot-sections.jpg). Mobil tarayıcı ve fiziksel yazdırma/PDF akışı ayrıca denenmedi. Geçici test sunucuları kapatıldı; canlı ortama test kaydı eklenmedi.
+
+Çalışan 3100 proxy'sinde mevcut yerel test hesabının normal girişi, rapor detayı ve pivot yanıtı 200; sekiz kaynak/altı ekip toplamı ve id/sürüm/hash eşleşmesi doğrulandı. [Canlı HTTP kanıtı](../tests/artifacts/report-pivot-live.json). Görünüm AI çağrısı veya rapor kaydı değişikliği üretmedi. Eşzamanlı marka değişimi sırasında ilk odaklı koşuda yakalanan geçici ayar/scope hatası [ayrı çıktıda](../tests/artifacts/report-pivot-backend-during-brand-rename.json) korundu; son koşular bu geçiş tamamlandıktan sonra geçti.

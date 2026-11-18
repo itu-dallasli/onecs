@@ -13,13 +13,13 @@ from core.models import (
     SLAInstance,
     WorkItem,
 )
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
 WORK_URL = "/api/v1/work/"
 
 
-class WorkAPITests(AtlasTestCase):
+class WorkAPITests(OnecsTestCase):
     def create_work(self, actor=None, assignee=None, **extra):
         actor = actor or self.unit_head
         data = {

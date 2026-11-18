@@ -1,7 +1,9 @@
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { AlertCircle, ChevronRight, Inbox, Loader2, X } from "lucide-react";
+import { AlertCircle, ChevronRight, Inbox, X } from "lucide-react";
+import ProductLogo from "./ProductLogo";
+import "../styles/loading.css";
 export function Button({
   children,
   variant = "primary",
@@ -82,9 +84,25 @@ export function Loading({
   label?: string;
 }) {
   return (
-    <div className="loading" role="status">
-      <Loader2 size={20} className="spin" />
-      {label}
+    <div
+      className="loading onecs-loading"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div className="onecs-loading-emblem" aria-hidden="true">
+        <span className="onecs-loading-orbit" />
+        <span className="onecs-loading-orbit-inner" />
+        <ProductLogo className="onecs-loading-logo" decorative />
+      </div>
+      <div className="onecs-loading-copy">
+        <span className="onecs-loading-label">{label}</span>
+        <span className="onecs-loading-dots" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
+      </div>
     </div>
   );
 }
@@ -143,10 +161,10 @@ const modalStack: HTMLElement[] = [];
 let unlockedBodyOverflow = "";
 const priorInertState = new Map<HTMLElement, boolean>();
 function modalHost() {
-  let host = document.getElementById("atlas-modal-root");
+  let host = document.getElementById("onecs-modal-root");
   if (!host) {
     host = document.createElement("div");
-    host.id = "atlas-modal-root";
+    host.id = "onecs-modal-root";
     document.body.append(host);
   }
   return host;
@@ -172,12 +190,14 @@ export function Drawer({
   children,
   onClose,
   wide = false,
+  className = "",
 }: {
   title: string;
   subtitle?: string;
   children: ReactNode;
   onClose: () => void;
   wide?: boolean;
+  className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
@@ -191,7 +211,7 @@ export function Drawer({
       unlockedBodyOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       for (const node of Array.from(document.body.children)) {
-        if (node instanceof HTMLElement && node.id !== "atlas-modal-root") {
+        if (node instanceof HTMLElement && node.id !== "onecs-modal-root") {
           priorInertState.set(node, node.inert);
           node.inert = true;
         }
@@ -259,7 +279,7 @@ export function Drawer({
     };
   }, []);
   return createPortal(
-    <div className="drawer-layer atlas-modal-layer">
+    <div className="drawer-layer onecs-modal-layer">
       <button
         type="button"
         className="drawer-scrim"
@@ -275,7 +295,7 @@ export function Drawer({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`drawer atlas-modal ${wide ? "drawer-wide" : ""}`}
+        className={`drawer onecs-modal ${wide ? "drawer-wide" : ""} ${className}`}
       >
         <div className="drawer-header">
           <div>

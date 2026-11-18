@@ -319,6 +319,12 @@ def assign_work(actor, work, assignee):
 
 
 def snapshot_source(obj, kind, actor=None):
+    owner_org = obj.owner_org
+    org_snapshot = {
+        "id": str(owner_org.pk),
+        "name": owner_org.name,
+        "code": owner_org.code,
+    }
     if (
         kind == "project"
         and actor is not None
@@ -336,6 +342,7 @@ def snapshot_source(obj, kind, actor=None):
             "description": content.get("expected_outcome", ""),
             "due_at": content.get("due_at"),
             "visibility": "SUMMARY",
+            "owner_org": org_snapshot,
         }
     return {
         "type": kind,
@@ -349,6 +356,7 @@ def snapshot_source(obj, kind, actor=None):
         if getattr(obj, "due_at", None)
         else None,
         "visibility": "DETAIL",
+        "owner_org": org_snapshot,
     }
 
 
@@ -498,6 +506,19 @@ def access_fingerprint(user):
 
 
 def source_visibility_valid(actor, source):
+    if not isinstance(source, dict):
+        return False
+    if not isinstance(source.get("type"), str) or not source.get("id"):
+        return False
+    if any(
+        key in source and not isinstance(source[key], str)
+        for key in ("status", "priority", "title", "description")
+    ):
+        return False
+    if "version" in source and (
+        type(source["version"]) is not int or source["version"] < 1
+    ):
+        return False
     obj = report_source(actor, source["type"], source["id"])
     if obj is None:
         return False

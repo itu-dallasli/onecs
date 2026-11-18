@@ -6,7 +6,7 @@ from core.worker import run_tick
 
 
 class Command(BaseCommand):
-    help = "Atlas kalıcı iş, SLA ve bildirim workerı."
+    help = "onecs kalıcı iş, SLA ve bildirim workerı."
 
     def add_arguments(self, parser):
         parser.add_argument("--once", action="store_true")
@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 if options["once"]:
                     raise
                 self.stderr.write(
-                    "Atlas worker: geçici işlem hatası; sonraki turda yeniden denenecek."
+                    "onecs worker: geçici işlem hatası; sonraki turda yeniden denenecek."
                 )
             if options["once"]:
                 break

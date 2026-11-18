@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        if settings.ATLAS_ENV not in ("development", "demo", "test"):
+        if settings.ONECS_ENV not in ("development", "demo", "test"):
             raise CommandError("Gösterim verileri üretim ortamına yüklenemez.")
         # Never adopt an LDAP, reference or personal account just because its
         # username happens to match a demo username. No identities/grants change.

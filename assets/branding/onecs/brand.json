@@ -1,0 +1,15 @@
+{
+  "display_name": "onecs",
+  "subtitle": "Siber Güvenlik Yönetim Uygulaması",
+  "source": "User-supplied approved image; copied without raster modification",
+  "asset": "frontend/public/onecs-logo.png",
+  "source_dimensions": {
+    "width": 800,
+    "height": 320
+  },
+  "display_viewbox": "200 105 400 160",
+  "logo_component": "frontend/src/components/ProductLogo.tsx",
+  "brand_component": "frontend/src/components/OnecsBrand.tsx",
+  "loading_component": "frontend/src/components/ui.tsx",
+  "technical_identifiers": "Environment settings, database defaults, cookies, scopes and source identifiers use onecs."
+}

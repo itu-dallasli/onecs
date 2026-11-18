@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import {
   Activity,
-  Bell,
   BookOpen,
   CalendarDays,
   ChevronRight,
@@ -36,19 +35,13 @@ import {
   Award,
   ArrowRight,
 } from "lucide-react";
-import { api, list, setCsrfToken, useResource, date } from "./lib/api";
+import { api, list, setCsrfToken, useResource } from "./lib/api";
 import type { Person } from "./lib/types";
 import { organizationLabel } from "./lib/organization";
 import { AuthContext } from "./lib/auth";
-import {
-  Badge,
-  Button,
-  Drawer,
-  ErrorState,
-  Field,
-  Loading,
-} from "./components/ui";
-import AtlasBrand from "./components/AtlasBrand";
+import { Button, ErrorState, Field, Loading } from "./components/ui";
+import OnecsBrand from "./components/OnecsBrand";
+import Notifications from "./components/Notifications";
 import "./styles/shell.css";
 import Dashboard from "./pages/Dashboard";
 import Records from "./pages/Records";
@@ -57,7 +50,7 @@ import Community from "./pages/Community";
 import Reports from "./pages/Reports";
 import Announcements from "./pages/Announcements";
 import Settings from "./pages/Settings";
-const sidebarPreferenceKey = "atlas.sidebar.collapsed";
+const sidebarPreferenceKey = "onecs.sidebar.collapsed";
 function initialSidebarCollapsed() {
   try {
     return window.localStorage.getItem(sidebarPreferenceKey) === "true";
@@ -78,7 +71,7 @@ const nav = [
   { to: "/credentials", label: "Sertifikalar", icon: Award },
 ];
 function Brand() {
-  return <AtlasBrand />;
+  return <OnecsBrand />;
 }
 const roleNames: Record<string, string> = {
   DIRECTOR: "Direktör",
@@ -145,7 +138,7 @@ function Login({ onLogin }: { onLogin: (user: Person) => void }) {
             Yetkili erişim · İzlenebilir kararlar
           </div>
         </div>
-        <small>ATLAS / SİBER GÜVENLİK</small>
+        <small>onecs / SİBER GÜVENLİK</small>
       </div>
       <main className="login-main">
         <div className="login-form-wrap">
@@ -153,7 +146,7 @@ function Login({ onLogin }: { onLogin: (user: Person) => void }) {
             <Brand />
           </div>
           <span className="eyebrow">ÇALIŞMA ALANINIZA HOŞ GELDİNİZ</span>
-          <h2>Atlas’a giriş yapın</h2>
+          <h2>onecs’e giriş yapın</h2>
           <p>Kurumsal veya sistem hesabınızla devam edin.</p>
           <div
             className="segmented login-method"
@@ -231,7 +224,7 @@ function Login({ onLogin }: { onLogin: (user: Person) => void }) {
           </p>
         </div>
         <footer>
-          Atlas · Siber Güvenlik Direktörlüğü<span>Kontrollü erişim</span>
+          onecs · Siber Güvenlik Direktörlüğü<span>Kontrollü erişim</span>
         </footer>
       </main>
     </div>
@@ -264,10 +257,6 @@ function Shell({
   }, [sidebarCollapsed]);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
-  const [noticeOpen, setNoticeOpen] = useState(false);
-  const [noticeFilter, setNoticeFilter] = useState("all");
-  const [noticeError, setNoticeError] = useState("");
-  const [noticeBusy, setNoticeBusy] = useState<string | null>(null);
   const [searchIndex, setSearchIndex] = useState(-1);
   const [accountOpen, setAccountOpen] = useState(false);
   const [dark, setDark] = useState(false);
@@ -277,10 +266,6 @@ function Shell({
     undefined,
     0,
   );
-  const notifications = useResource<any>("/notifications", undefined, 15000);
-  const unread = list(notifications.data).filter(
-    (n: any) => !n.is_read && !n.read_at,
-  ).length;
   const current = nav.find((n) => location.pathname.startsWith(n.to)) || {
     label: "Ayarlar",
   };
@@ -297,7 +282,6 @@ function Shell({
       }
       if (e.key === "Escape") {
         setSearchOpen(false);
-        setNoticeOpen(false);
         setAccountOpen(false);
         setMobile(false);
       }
@@ -326,11 +310,6 @@ function Shell({
       setSearchIndex(-1);
     }
   }
-  const visibleNotifications = list<any>(notifications.data).filter(
-    (n) =>
-      noticeFilter === "all" ||
-      (noticeFilter === "unread" ? !n.read_at : !!n.read_at),
-  );
   return (
     <AuthContext.Provider value={{ user, refresh }}>
       <div
@@ -348,13 +327,13 @@ function Shell({
         )}
         <aside
           className="app-sidebar"
-          id="atlas-sidebar"
-          aria-label="Atlas gezinme alanı"
+          id="onecs-sidebar"
+          aria-label="onecs gezinme alanı"
         >
           <NavLink
             className="sidebar-brand"
             to="/dashboard"
-            aria-label="Atlas ana sayfa"
+            aria-label="onecs ana sayfa"
           >
             <Brand />
           </NavLink>
@@ -365,7 +344,7 @@ function Shell({
               className="sidebar-collapse-toggle"
               onClick={() => setSidebarCollapsed((value) => !value)}
               aria-expanded={!sidebarCollapsed}
-              aria-controls="atlas-primary-navigation"
+              aria-controls="onecs-primary-navigation"
               aria-label={
                 sidebarCollapsed ? "Yan menüyü genişlet" : "Yan menüyü daralt"
               }
@@ -380,7 +359,7 @@ function Shell({
               )}
             </button>
           </div>
-          <nav aria-label="Ana gezinme" id="atlas-primary-navigation">
+          <nav aria-label="Ana gezinme" id="onecs-primary-navigation">
             {nav.map((item, index) => (
               <div key={item.to}>
                 {index === 5 && <div className="sidebar-divider" />}
@@ -414,7 +393,7 @@ function Shell({
               </>
             )}
           </nav>
-          <div className="sidebar-bottom" title="Atlas · Güvenli çalışma alanı">
+          <div className="sidebar-bottom" title="onecs · Güvenli çalışma alanı">
             <div className="environment-dot" />
             <span className="sidebar-status-label">Güvenli çalışma alanı</span>
             <span className="version">v0.1</span>
@@ -426,7 +405,7 @@ function Shell({
               className="icon-button mobile-menu"
               aria-label="Menüyü aç"
               aria-expanded={mobile}
-              aria-controls="atlas-sidebar"
+              aria-controls="onecs-sidebar"
               onClick={() => setMobile(true)}
             >
               <Menu size={20} />
@@ -475,16 +454,16 @@ function Shell({
                       );
                     }
                   }}
-                  placeholder="Atlas’ta ara…"
-                  aria-label="Atlas genelinde tam metin ara"
+                  placeholder="onecs’te ara…"
+                  aria-label="onecs genelinde tam metin ara"
                   aria-expanded={searchOpen && !!query}
-                  aria-controls="atlas-search-results"
+                  aria-controls="onecs-search-results"
                   aria-autocomplete="list"
                   aria-activedescendant={
                     searchOpen &&
                     searchIndex >= 0 &&
                     searchIndex < searchRows.length
-                      ? `atlas-search-result-${searchIndex}`
+                      ? `onecs-search-result-${searchIndex}`
                       : undefined
                   }
                   role="combobox"
@@ -493,7 +472,7 @@ function Shell({
                 {searchOpen && query && (
                   <div
                     className="search-results"
-                    id="atlas-search-results"
+                    id="onecs-search-results"
                     role="listbox"
                     aria-label="Arama sonuçları"
                   >
@@ -505,7 +484,7 @@ function Shell({
                       list(search.data).map((r: any, index: number) => (
                         <button
                           key={`${r.resource_type || r.kind || r.type}:${r.id}`}
-                          id={`atlas-search-result-${index}`}
+                          id={`onecs-search-result-${index}`}
                           role="option"
                           aria-selected={index === searchIndex}
                           onClick={() => openSearchResult(r)}
@@ -537,123 +516,14 @@ function Shell({
               >
                 <Moon size={17} />
               </button>
-              <div className="topbar-popover">
-                <button
-                  className="icon-button notification-button"
-                  aria-label={`Bildirimler, ${unread} okunmamış`}
-                  onClick={() => {
-                    setNoticeOpen(!noticeOpen);
-                    setNoticeError("");
-                    setAccountOpen(false);
-                    setSearchOpen(false);
-                  }}
-                >
-                  <Bell size={18} />
-                  {unread > 0 && (
-                    <span className="notification-count">
-                      {unread > 99 ? "99+" : unread}
-                    </span>
-                  )}
-                </button>
-                {noticeOpen && (
-                  <Drawer
-                    title="Bildirimler"
-                    subtitle="GÜNCEL GELİŞMELER VE ATAMALAR"
-                    onClose={() => setNoticeOpen(false)}
-                    wide
-                  >
-                    <div className="atlas-notifications">
-                      <div className="popover-title">
-                        <p>
-                          Atamalarınızı ve önemli gelişmeleri buradan izleyin.
-                          Bir bildirimi açtığınızda okundu olarak işaretlenir.
-                        </p>
-                        <Badge>{unread} okunmamış</Badge>
-                      </div>
-                      <div
-                        className="notification-filters"
-                        role="group"
-                        aria-label="Bildirim görünümü"
-                      >
-                        {[
-                          ["all", "Tümü"],
-                          ["unread", "Okunmamış"],
-                          ["read", "Okunmuş"],
-                        ].map(([value, label]) => (
-                          <button
-                            key={value}
-                            className={noticeFilter === value ? "selected" : ""}
-                            aria-pressed={noticeFilter === value}
-                            onClick={() => setNoticeFilter(value)}
-                          >
-                            {label}
-                          </button>
-                        ))}
-                      </div>
-                      {noticeError && <ErrorState message={noticeError} />}
-                      {notifications.error && (
-                        <ErrorState
-                          message={notifications.error}
-                          onRetry={notifications.refresh}
-                        />
-                      )}
-                      <div className="notification-list">
-                        {visibleNotifications.length ? (
-                          visibleNotifications.map((n: any) => (
-                            <button
-                              className={`notification-row ${!n.is_read && !n.read_at ? "unread" : ""}`}
-                              key={n.id}
-                              disabled={noticeBusy === n.id}
-                              onClick={async () => {
-                                setNoticeBusy(n.id);
-                                setNoticeError("");
-                                try {
-                                  if (!n.read_at)
-                                    await api(`/notifications/${n.id}/read`, {
-                                      method: "POST",
-                                      body: { version: n.version },
-                                    });
-                                  notifications.refresh();
-                                  const destination =
-                                    n.url ||
-                                    recordPath(n.resource_type, n.resource_id);
-                                  if (destination) {
-                                    setNoticeOpen(false);
-                                    navigate(destination);
-                                  }
-                                } catch (error) {
-                                  setNoticeError((error as Error).message);
-                                } finally {
-                                  setNoticeBusy(null);
-                                }
-                              }}
-                            >
-                              <div className="notification-heading">
-                                <span
-                                  className="notification-read-dot"
-                                  aria-hidden="true"
-                                />
-                                <strong>{n.title}</strong>
-                                <span
-                                  className={`read-state ${n.read_at ? "read" : "new"}`}
-                                >
-                                  {n.read_at ? "Okundu" : "Okunmadı"}
-                                </span>
-                              </div>
-                              <span>{n.message || n.body}</span>
-                              <small>{date(n.created_at, true)}</small>
-                            </button>
-                          ))
-                        ) : (
-                          <p className="notification-empty">
-                            Bu görünümde bildiriminiz bulunmuyor.
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </Drawer>
-                )}
-              </div>
+              <Notifications
+                key={user.id}
+                ownerKey={user.id}
+                onOpen={() => {
+                  setAccountOpen(false);
+                  setSearchOpen(false);
+                }}
+              />
               <div className="topbar-popover">
                 <button
                   className="account-button"
@@ -723,7 +593,7 @@ function Shell({
               </div>
             )}
           <main id="main-content" className="workspace-content">
-            <Routes>
+            <Routes key={location.pathname}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/projects" element={<Records kind="projects" />} />
               <Route path="/work" element={<Records kind="work" />} />
@@ -754,7 +624,7 @@ function Shell({
             </Routes>
           </main>
           <footer className="workspace-footer">
-            <span>Atlas · Siber Güvenlik Direktörlüğü</span>
+            <span>onecs · Siber Güvenlik Direktörlüğü</span>
             <span>
               <ShieldCheck size={12} />
               Yetkiniz kapsamındaki kayıtları görüyorsunuz
@@ -765,7 +635,7 @@ function Shell({
     </AuthContext.Provider>
   );
 }
-function AtlasApp() {
+function OnecsApp() {
   const [user, setUser] = useState<Person | null>(null);
   const [loading, setLoading] = useState(true);
   const [initialError, setInitialError] = useState("");
@@ -785,13 +655,12 @@ function AtlasApp() {
   useEffect(() => {
     void refresh();
     const h = () => setUser(null);
-    window.addEventListener("atlas:session-expired", h);
-    return () => window.removeEventListener("atlas:session-expired", h);
+    window.addEventListener("onecs:session-expired", h);
+    return () => window.removeEventListener("onecs:session-expired", h);
   }, []);
   if (loading)
     return (
       <div className="boot-screen">
-        <Brand />
         <Loading label="Güvenli çalışma alanı hazırlanıyor…" />
       </div>
     );
@@ -849,7 +718,7 @@ class AppErrorBoundary extends Component<
 export default function App() {
   return (
     <AppErrorBoundary>
-      <AtlasApp />
+      <OnecsApp />
     </AppErrorBoundary>
   );
 }

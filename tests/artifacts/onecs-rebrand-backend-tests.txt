@@ -1,0 +1,60 @@
+Creating test database for alias 'default'...
+....................................................................................................................................................................................Bad Request: /api/v1/work/
+.Not Found: /api/v1/attachments/
+.Bad Request: /api/v1/work/5d596677-89f4-4297-9524-c6de031fd090/progress/
+.Not Found: /api/v1/attachments/92292e22-a8c2-4f5b-ab41-5e41af2277f8/download/
+.Forbidden: /api/v1/work/
+............................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 404 tests in 36.230s
+
+OK
+Destroying test database for alias 'default'...
+Found 404 test(s).
+System check identified no issues (0 silenced).
+Creating test database for alias 'default' ('test_onecs')...
+Found 2 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: drf_spectacular, rest_framework, staticfiles
+  Apply all migrations: administration, auth, contenttypes, core, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0001_initial... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying core.0001_initial... OK
+  Applying administration.0001_initial... OK
+  Applying administration.0002_aiusage_request_fingerprint_aiusage_result_and_more... OK
+  Applying administration.0003_aiusage_settings_version_and_more... OK
+  Applying administration.0004_ldapmanagedgrant... OK
+  Applying core.0002_alter_outboxevent_status... OK
+  Applying core.0003_communitycard_content_approved_by... OK
+  Applying core.0004_orgnode_is_demo_user_profile_kind... OK
+  Applying core.0005_search_extensions... OK
+  Applying core.0006_project_insights... OK
+  Applying core.0007_record_extras... OK
+  Applying core.0008_attachment_purge... OK
+  Applying core.0009_onecs_brand... OK
+  Applying sessions.0001_initial...test_scope_rename_and_reverse_preserve_client_authorization_boundaries (core.tests.test_brand_migration.ProductScopeMigrationTests.test_scope_rename_and_reverse_preserve_client_authorization_boundaries) ... ok
+test_seed_description_rename_preserves_customized_human_text (core.tests.test_brand_migration.ProductScopeMigrationTests.test_seed_description_rename_preserves_customized_human_text) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.036s
+
+OK
+Destroying test database for alias 'default' ('test_onecs')...
+ OK
+System check identified no issues (0 silenced).

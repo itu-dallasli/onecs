@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-11-18T13:24:39.940930+00:00",
+  "target": "http://127.0.0.1:3100",
+  "actor": "Existing synthetic demo account, normal credential login; no bypass",
+  "login_status": 200,
+  "dashboard": {
+    "status": 200,
+    "limit": 5,
+    "preview_lengths": {
+      "announcements": 1,
+      "pending_announcements": 1
+    },
+    "totals": {
+      "published": 1,
+      "pending": 1
+    },
+    "permissions_present": true
+  },
+  "notifications_all": {
+    "status": 200,
+    "count": 4,
+    "unread_count": 4,
+    "preview_length": 1,
+    "canonical_url_field_present": true
+  },
+  "notifications_read": {
+    "status": 200,
+    "count": 0,
+    "unread_count": 4,
+    "preview_length": 0,
+    "canonical_url_field_present": true
+  },
+  "notifications_unread": {
+    "status": 200,
+    "count": 4,
+    "unread_count": 4,
+    "preview_length": 1,
+    "canonical_url_field_present": true
+  },
+  "global_unread_independent_of_list_filter": true,
+  "data_changes": "Only normal synthetic login session/audit; no announcements, read states, roles or real user records modified"
+}

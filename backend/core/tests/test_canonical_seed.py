@@ -33,7 +33,7 @@ class CanonicalSeedTests(TestCase):
 
     def setUp(self):
         self.environment = patch.dict(
-            os.environ, {"ATLAS_DEMO_PASSWORD": "Atlas-canonical-test-2026!"}
+            os.environ, {"ONECS_DEMO_PASSWORD": "Onecs-canonical-test-2026!"}
         )
         self.environment.start()
         self.addCleanup(self.environment.stop)

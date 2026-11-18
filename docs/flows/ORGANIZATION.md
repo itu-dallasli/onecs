@@ -1,4 +1,4 @@
-# Atlas · Organizasyon ve ekip rehberi
+# onecs · Organizasyon ve ekip rehberi
 
 Bu belge çalışan ilk sürümü ve [kurumsal şema referansı/arama/bildirim sözleşmesini](../services/DIRECTORY_SEARCH_NOTIFICATIONS.md) açıklar; [Revizyon 3 planı](../UYGULAMA_PLANI.md) hedef kapsamı ayrıca tanımlar.
 

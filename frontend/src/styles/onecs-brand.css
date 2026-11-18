@@ -1,0 +1,68 @@
+.onecs-brand {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 212px;
+  max-width: 100%;
+  min-width: 0;
+  vertical-align: middle;
+}
+
+.onecs-brand-artwork {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.5;
+  height: auto;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.sidebar-brand:has(.onecs-brand) {
+  height: auto;
+  min-height: 148px;
+  flex-shrink: 0;
+}
+
+.onecs-brand-subtitle {
+  color: #6b8095;
+  font-size: 0.55rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.onecs-brand.onecs-brand-compact {
+  width: 152px;
+}
+
+.login-intro .onecs-brand {
+  width: 300px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+html[data-theme="dark"]
+  :is(.sidebar-brand, .boot-screen, .recovery-screen)
+  .onecs-brand {
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+@media (min-width: 761px) {
+  html[data-theme="dark"] .sidebar-collapsed .sidebar-brand .onecs-brand {
+    padding: 3px;
+  }
+}
+
+@media (max-width: 760px) {
+  .mobile-brand .onecs-brand {
+    width: 244px;
+  }
+}

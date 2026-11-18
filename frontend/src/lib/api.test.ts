@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { api, ApiError, list, setCsrfToken } from "./api";
-describe("Atlas API client contracts", () => {
+describe("onecs API client contracts", () => {
   const fetchMock = vi.fn();
   beforeEach(() => {
     vi.stubGlobal("fetch", fetchMock);
     vi.stubGlobal("window", { dispatchEvent: vi.fn() });
-    vi.stubGlobal("document", { cookie: "csrftoken=cookie-value" });
+    vi.stubGlobal("document", { cookie: "onecs_csrftoken=cookie-value" });
     setCsrfToken("");
   });
   afterEach(() => {
@@ -62,6 +62,32 @@ describe("Atlas API client contracts", () => {
       "rotated",
     );
   });
+  it("preserves multipart boundaries and an explicit idempotency identity", async () => {
+    fetchMock.mockResolvedValue(
+      new Response('{"id":"file-1"}', {
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    const body = new FormData();
+    body.append(
+      "file",
+      new Blob(["proof"], { type: "text/plain" }),
+      "proof.txt",
+    );
+    await api("/attachments", {
+      method: "POST",
+      body,
+      headers: {
+        "X-Request-ID": "chosen-request-id",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const request = fetchMock.mock.calls[0][1];
+    expect(request.body).toBe(body);
+    expect(request.headers.has("Content-Type")).toBe(false);
+    expect(request.headers.get("X-Request-ID")).toBe("chosen-request-id");
+    expect(request.headers.get("X-CSRFToken")).toBe("cookie-value");
+  });
   it("preserves human-readable integration test failures", async () => {
     fetchMock.mockResolvedValue(
       new Response(
@@ -72,6 +98,18 @@ describe("Atlas API client contracts", () => {
     await expect(
       api("/admin/integrations/ldap/test", { method: "POST" }),
     ).rejects.toThrow("TLS doğrulaması başarısız");
+  });
+  it("signals expired sessions using the onecs event contract", async () => {
+    fetchMock.mockResolvedValue(
+      new Response('{"detail":"Oturum sona erdi."}', {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    await expect(api("/auth/me")).rejects.toMatchObject({ status: 401 });
+    expect(window.dispatchEvent).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "onecs:session-expired" }),
+    );
   });
   it("turns field validation errors into actionable feedback", async () => {
     fetchMock.mockResolvedValue(

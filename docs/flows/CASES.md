@@ -1,4 +1,4 @@
-# Atlas · Vaka koordinasyonu ve kapanış doğrulaması
+# onecs · Vaka koordinasyonu ve kapanış doğrulaması
 
 Tek resmî vaka farklı ekiplerin kabul edilmiş aksiyonlarını toplar; ham teknik kanıtın yerine paylaşılabilir koordinasyon özeti tutulur.
 

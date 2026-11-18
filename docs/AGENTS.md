@@ -1,6 +1,7 @@
-# Atlas geliştirme kuralları
+# onecs geliştirme kuralları
 
-- Ürünün adı Atlas’tır. Türkçe arayüz, React/TypeScript + Django/DRF + PostgreSQL temelini koru.
+- Ürünün adı her yerde küçük harfle `onecs` olarak yazılır; arayüz, dokümanlar, API, yapılandırma, dosya/dizin adları ve yeni test kayıtlarında bu adı kullan. Teknik sabitlerde `ONECS_`, kod tanımlayıcılarında dilin adlandırma kuralına uygun onecs biçimini kullan.
+- Türkçe arayüz, React/TypeScript + Django/DRF + PostgreSQL temelini koru.
 - `docs/UYGULAMA_PLANI.md` ve `docs/MIMARI_TASARIM.md` güncel gereksinim kaynağıdır. Proje ölçümü ek kararları `docs/flows/PROJECT_INSIGHTS.md` altında tutulur. Uygulanmayan kapsamı tamamlandı diye gösterme.
 - Proje yönetimini PM kapsamından, unit işlerini organizasyon kapsamından, vaka aksiyonlarını vaka üyeliğinden yetkilendir. Okuma hakkı yazma/onay hakkı değildir.
 - API ve worker aynı domain/policy servislerini kullanır. Kritik işlem, audit ve outbox aynı transaction’da yazılır.

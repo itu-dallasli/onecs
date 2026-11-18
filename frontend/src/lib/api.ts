@@ -24,7 +24,7 @@ function csrfCookie() {
   return (
     document.cookie
       .split("; ")
-      .find((item) => item.startsWith("atlas_csrftoken="))
+      .find((item) => item.startsWith("onecs_csrftoken="))
       ?.split("=")
       .slice(1)
       .join("=") ||
@@ -43,12 +43,15 @@ export async function api<T = any>(
 ): Promise<T> {
   const method = (options.method || "GET").toUpperCase();
   const headers = new Headers(options.headers);
+  const multipart = options.body instanceof FormData;
   headers.set("Accept", "application/json");
-  if (options.body !== undefined)
+  if (options.body !== undefined && !multipart)
     headers.set("Content-Type", "application/json");
+  if (multipart) headers.delete("Content-Type");
   if (!["GET", "HEAD", "OPTIONS"].includes(method)) {
     headers.set("X-CSRFToken", csrfToken || decodeURIComponent(csrfCookie()));
-    headers.set("X-Request-ID", crypto.randomUUID());
+    if (!headers.has("X-Request-ID"))
+      headers.set("X-Request-ID", crypto.randomUUID());
   }
   let response: Response;
   const [pathname, search = ""] = path.split("?");
@@ -65,7 +68,11 @@ export async function api<T = any>(
         method,
         headers,
         body:
-          options.body === undefined ? undefined : JSON.stringify(options.body),
+          options.body === undefined
+            ? undefined
+            : multipart
+              ? (options.body as FormData)
+              : JSON.stringify(options.body),
         credentials: "same-origin",
       },
     );
@@ -83,7 +90,7 @@ export async function api<T = any>(
   }
   if (!response.ok) {
     if (response.status === 401)
-      window.dispatchEvent(new CustomEvent("atlas:session-expired"));
+      window.dispatchEvent(new CustomEvent("onecs:session-expired"));
     throw new ApiError(
       typeof body?.detail === "string"
         ? body.detail

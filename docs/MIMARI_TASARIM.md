@@ -1,4 +1,4 @@
-# Atlas — Siber Güvenlik Yönetim Platformu Mimari Tasarımı
+# onecs — Siber Güvenlik Yönetim Platformu Mimari Tasarımı
 
 18 Kasım 2026 · Revizyon 4 · Hedef mimari ve kararlar. Çalışan sürümün kapsamı [README](../README.md), doğrulama sonuçları [QA Raporu](QA_REPORT.md) içindedir; hedeflerin tamamı uygulanmış kabul edilmez.
 
@@ -476,6 +476,8 @@ AI yalnız yetkili kaynakların kısa güncel değişikliklerini özetler; her m
 
 Rapor onayı `report_version + content_hash + source_manifest + audience_hash` üzerinden karşılaştırmalı kaydedilir. Paylaşım kartı onayı da içerik ve hedef kitle sürümünü sabitler. Ekran açıkken taslak/kitle değişmişse 409 ve yeniden inceleme gerekir; onay yeni içeriğe taşınmaz. Kaynaklar ve okuyucu erişimi onay/yayında tekrar doğrulanır. Güncellik istisnası için gerekçe kaydetmek kaldırılmış erişimi aşamaz.
 
+Rapor pivotu salt okunur `GET /reports/{id}/pivot/` üzerinden aynı rapor/kaynak politikasını uygular. Genel ve ekip toplamları kaynak kimliği/türüyle tekilleştirilir; ekip metaverisi yeni snapshot içinde sabitlenir. Mevcut rapor metni ve hash'i değişmeden bölüm/ekip görünümü hesaplanır. Eski snapshot için güncel yetkili kaynaktan çözülen ekip bilgisi provenance ile ayrılır. İstemci rapor kimliği, sürümü ve içerik hash'i eşleşmeden pivot içeriğini göstermez. Ayrıntılar [rapor servisindedir](services/REPORTING.md).
+
 ### 11.4 Düşük token maliyeti ve güvenilir çıktı
 
 - Kritik/gecikmiş hesaplamaları, yetkilendirme, rapor seçkisi ve sayı üretimi AI kullanmaz. Yalnız metin özetleme ve isteğe bağlı ilişki önerisi model çağırır.
@@ -529,6 +531,8 @@ Swagger UI erişimi yetkilendirilir; örnekler sentetiktir ve secret içermez. A
 
 Hedef üründe iki giriş yöntemi zorunlu kapsamdır: **sistem kullanıcısı** ve **LDAP/AD**. İlk sentetik ürün diliminde framework’ün güvenli parola hash’i ve sunucu oturumuyla lokal giriş çalışır. Kurumsal pilot kapısında gerçek LDAP/AD bağlantısı, TLS/sertifika doğrulaması, servis hesabı yetki sınırı, güvenli arama/bind ve kontrollü grup–rol eşlemesi test edilir. Kurum SSO/IdP kullanıyorsa ek adaptör kararı alınabilir; LDAP gereksinimi sessizce kaldırılmaz. LDAP kapalıysa kullanıcıya hazırmış gibi sunulmaz.
 
+İlk LDAP girişi, önce servis hesabıyla tekil dizin sorgusu ve aynı kişinin gerçek DN adresine kişisel bind, sonra sürüm doğrulamalı atomik hesap/grup senkronizasyonu yapar. Önceden manuel kişi aktarımı zorunlu değildir. Yapılandırılmış grup kapsamındaki tam CN–organizasyon kodu eşleşmesi yalnız o organizasyonda çalışan yetkisi verir; açık tam DN kuralları onaylı yönetim rollerini belirler. `LDAPManagedGrant` otomatik rollerin sahipliğini manuel rollerden ayırır. Sonraki başarılı girişte kaybolan grup rolleri iptal edilir; kullanıcı, kimlik, rol ve audit aynı transaction içindedir. Oturum açıkken periyodik LDAP iptal denetimi ayrıca pilot kabul işidir.
+
 Hesaplar sabit dış kimlikle eşleşir; aynı isim/e-posta lokal ve kurumsal hesabı sessizce birleştirmez. Kurumsal hesabın bağlantı hatası lokal parola denemesine otomatik düşmez. Grup eşlemesi kendiliğinden PM yetkisi, direktörlük veya God Mode vermez; iş rolü onayları korunur.
 
 Tarayıcı aynı origin session cookie, HTTPS, HttpOnly/Secure ve CSRF koruması kullanır. Kimlik bilgileri localStorage'a konulmaz. Login hız sınırlaması, oturum iptali ve yönetici kimliğine uygun MFA kurum politikasına göre uygulanır. Kurumsal hesap kapatma yerel oturumları ve bekleyen işlemleri etkiler; yalnız sonraki girişe bırakılmaz. Pilot için eşitleme/iptal hedef süresi kurumla belirlenir ve ölçülür.
@@ -543,7 +547,7 @@ Parola, session/JWT token, LDAP/posta/AI sırrı, hassas vaka açıklaması, ham
 
 ### 13.3 Ekler ve entegrasyonlar
 
-İlk sürüm kanıt ve belge için kontrollü kaynak bağlantıları kullanır; uygulama bu URL'leri kendiliğinden indirip işlemez. Upload pilotta açılırsa özel depo, tür/boyut doğrulama, tarama/karantina ve her indirmede yetki gerekir. Bildirim mailine dosya eki konulmaz.
+Kanıt ve belge için kontrollü kaynak bağlantıları korunur; uygulama bu URL'leri kendiliğinden indirip işlemez. 18 Kasım ek uygulamasında oluşturma formları için özel dosya deposu, tür/boyut doğrulama, tarama/karantina, ilişkisiz yüklemeyi transaction içinde kayda bağlama ve her indirmede güncel yetki uygulandı. Scanner yapılandırılmamış üretimde indirme kapalıdır. Bildirim mailine dosya eki konulmaz. Veri/API ve işletim sözleşmesi [Kayıt Ekleri](services/RECORD_EXTRAS.md) belgesindedir.
 
 Posta, LDAP, Teams ve AI sırları secret altyapısında referansla tutulur; yönetim API’si sır değerini geri döndürmez. Bağlantı testleri yalnız izinli hedef/protokollere gider; kullanıcı tarafından verilen keyfî URL ile genel ağ erişimi sağlanmaz. Doğrulanmamış sertifikayı kabul etme seçeneği üretime taşınmaz. SMTP/servis adresi ve gönderen değişikliği teknik yetki ve audit gerektirir. Test, pilot ve üretim verisi/anahtarları ayrıdır.
 
@@ -649,6 +653,7 @@ Tam hedefte iki giriş yöntemi, Teams ve API/MCP entegrasyonları korunur; ilk 
 İlerleyen AI özelliklerinde de veri toplamadan önce yetki, kaynak kimlik/sürümleri, insan önizlemesi ve sınırlı bütçe korunur. AI erişim, yayın, atama veya kapanış kararının yerine geçmez. Anonim etkinlik geri bildirimi normal kullanıcı yanıtına “anonim” bayrağı koyarak açılmaz; kimlik/oy ayrımı, küçük grup ifşası ve log politikasını içeren ayrı mahremiyet tasarımı gerektirir.
 
 Bu revizyonun mimari sonucu: **projede PM, unit işinde organizasyon yöneticisi, vakada yetkili vaka yönetimi karar verir; ortak altyapı bu sınırları korur. SLA ve arka plan işleri kesintiye dayanıklı kayıtlarla yürür; ekipler kontrollü paylaşım üzerinden birbirini tanır; yönetici kaynak bağlı rapor ve sade gündemle karar alır.**
+
 
 ## Revizyon 4 — Kalıcı proje ölçümü
 

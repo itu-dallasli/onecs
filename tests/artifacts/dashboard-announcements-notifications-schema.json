@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-11-18T13:26:29.298199+00:00",
+  "command": "manage.py spectacular --file docs/api/openapi.yaml --validate --fail-on-warn",
+  "exit_code": 0,
+  "notification_response_schema": {
+    "$ref": "#/components/schemas/NotificationInbox"
+  },
+  "runtime_payload_confirmed": "tests/artifacts/dashboard-announcements-notifications-live.json",
+  "note": "Independent concurrent attachment serializer contract fixed by its owner; no attachment source edits by this task"
+}

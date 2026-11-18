@@ -1,4 +1,4 @@
-"""Central, deny-by-default Atlas relationship and organizational policies."""
+"""Central, deny-by-default onecs relationship and organizational policies."""
 
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.conf import settings
@@ -39,8 +39,8 @@ def is_god_mode(user):
     """Only middleware can attach this flag; simulation must use real policy."""
     return (
         active_actor(user)
-        and settings.ATLAS_ENV in ("test", "demo")
-        and settings.ATLAS_TEST_GOD_MODE
+        and settings.ONECS_ENV in ("test", "demo")
+        and settings.ONECS_TEST_GOD_MODE
         and getattr(user, "_god_mode", False)
         and not getattr(user, "_real_actor", None)
         and has_role(user, "SYSTEM_ADMIN")
@@ -361,6 +361,14 @@ def visible_participations(user):
             Q(target_org_id__in=manager_scope_ids(user)) | Q(requested_by=user)
         ).select_related("user__primary_org", "target_org"),
         "target_org_id",
+    )
+
+
+def can_publish_announcement(user, announcement):
+    return (
+        active_actor(user)
+        and api_org_allowed(user, announcement.owner_org_id)
+        and announcement.owner_org_id in manager_scope_ids(user, ("DIRECTOR", "UNIT_HEAD"))
     )
 
 

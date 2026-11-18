@@ -1,6 +1,6 @@
-# Atlas
+# onecs
 
-Atlas, Siber Güvenlik Direktörlüğü için ortak yönetim ve koordinasyon uygulamasıdır. Projeleri proje yöneticisi, unit işlerini organizasyon yöneticileri, vakaları yetkili vaka koordinasyonu yönetir. Aynı kayıtlardan direktör gündemi ve kaynaklı haftalık rapor üretilir.
+onecs, Siber Güvenlik Direktörlüğü için ortak yönetim ve koordinasyon uygulamasıdır. Projeleri proje yöneticisi, unit işlerini organizasyon yöneticileri, vakaları yetkili vaka koordinasyonu yönetir. Aynı kayıtlardan direktör gündemi ve kaynaklı haftalık rapor üretilir.
 
 Ürün kararları [Uygulama Planı](docs/UYGULAMA_PLANI.md), teknik tasarım [Mimari Tasarım](docs/MIMARI_TASARIM.md), doğrulama durumu [QA Raporu](docs/QA_REPORT.md) ve [Kabul Matrisi](docs/TEST_MATRIX.md) içindedir. Tasarım belgesindeki hedef kapsam, tek başına uygulanmış özellik kanıtı değildir.
 
@@ -16,9 +16,11 @@ Proje ayrıntısında ekip ağırlıkları, kanıtlı teslimatlar, kalite ve pay
 
 Ana README ve AI araç dizinleri dışındaki yardımcı Markdown belgeleri `docs/` altındadır.
 
+Proje talebi, iş/alt iş, vaka/ihbar, anons, paylaşım, etkinlik ve sertifika formlarında dosya/fotoğraf ve seçili kişilere e-posta bildirimi alanları vardır. En fazla 5 dosya, dosya başına 10 MB yüklenir. Proje bildirimleri başvuru gönderilince, anons/paylaşım bildirimleri yayımlanınca kuyruğa girer; mevcut zorunlu atama bildirimleri korunur. Ekler özel depoda ve güncel kayıt yetkisiyle indirilir. SMTP ve dosya taraması işletim ayarları [ek ve bildirim sözleşmesindedir](docs/services/RECORD_EXTRAS.md).
+
 ## Yerel kurulum
 
-Gerekenler: Python 3.13, Node.js 22.12+, PostgreSQL 17. Penpard 3000 portunda kalır; Atlas 3100, API 8000 ve ayrı geliştirme veritabanı 55432 kullanır.
+Gerekenler: Python 3.13, Node.js 22.12+, PostgreSQL 17. Penpard 3000 portunda kalır; onecs 3100, API 8000 ve ayrı geliştirme veritabanı 55432 kullanır.
 
 ```bash
 python3.13 -m venv .venv
@@ -28,12 +30,14 @@ npm ci
 cd ..
 ```
 
-`.env.example` dosyasını `.env` olarak kopyalayın. `ATLAS_SECRET_KEY`, `ATLAS_ENCRYPTION_KEY` ve yerel demo girişlerinin `ATLAS_DEMO_PASSWORD` değerini belirleyin. Anahtar üretmek için:
+`.env.example` dosyasını `.env` olarak kopyalayın. `ONECS_SECRET_KEY`, `ONECS_ENCRYPTION_KEY` ve yerel demo girişlerinin `ONECS_DEMO_PASSWORD` değerini belirleyin. Anahtar üretmek için:
 
 ```bash
 .venv/bin/python -c "import secrets; print(secrets.token_urlsafe(48))"
 .venv/bin/python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 ```
+
+Mevcut kurulum yükseltilirken ürüne özel ortam anahtarlarını `.env.example` ile eşleşen `ONECS_*` adlarına taşıyın; secret ve şifreleme anahtarlarının **değerlerini koruyun**. Dolu veritabanına bağlanan `DATABASE_URL` değerini açıkça koruyun; yeni kurulumun veritabanı ve rol varsayılanı `onecs` olur. Mevcut yerel veritabanı yedek alınarak taşınmıştır. Migration, kayıtlı genel API okuma kapsamını `onecs:read` olarak günceller. Tarayıcıda yeniden giriş yapın; dış istemciler `onecs` issuer ve `onecs-readonly-api` audience değerleriyle yeni JWT almalıdır.
 
 Homebrew PostgreSQL 17 araçları mevcutsa yerel başlatıcı `.runtime/postgres` altında yalnız loopback dinleyen ayrı bir geliştirme kümesi oluşturur. Mevcut kurum/başka uygulama veritabanını değiştirmez. Bu kümenin yerel trust erişimi geliştirme içindir; üretim PostgreSQL’i kullanıcı/parola, ağ sınırı ve yedek politikasıyla ayrıca kurulmalıdır.
 
@@ -43,7 +47,7 @@ Homebrew PostgreSQL 17 araçları mevcutsa yerel başlatıcı `.runtime/postgres
 
 Uygulama: **http://localhost:3100**. Başlatıcı migration, referans organizasyon/demo seed'i ve Django kontrolünü çalıştırır; ardından API, worker ve frontend süreçlerini birlikte yönetir. Ctrl+C uygulama süreçlerini durdurur; veritabanı ve işler diskte kalır. Sonraki başlatmada aynı kayıtlar kullanılır. Veritabanını gerektiğinde `pg_ctl -D .runtime/postgres stop` ile durdurabilirsiniz.
 
-Başlangıç rehberi, doğrulanan organizasyon şemasını **7 unit, 7 yönetici alt ekibi ve 37 kişi** ile temsil eder. Bu, bütün kurumsal kadro değildir. Gerçek kişi/ekip adları `OFFICIAL_REFERENCE`, kurgusal örnek çalışanlar `DEMO` olarak ayrılır; dolgu personel üretilmez. Hakan Tokay'ın iki unit görevi tek kişi ve iki yetki kaydıdır. Organizasyon kodları Atlas içi eşleme anahtarlarıdır; resmî LDAP kodu olduğu iddia edilmez. Ayrıntılar [rehber ve arama servisinde](docs/services/DIRECTORY_SEARCH_NOTIFICATIONS.md) bulunur.
+Başlangıç rehberi, doğrulanan organizasyon şemasını **7 unit, 7 yönetici alt ekibi ve 37 kişi** ile temsil eder. Bu, bütün kurumsal kadro değildir. Gerçek kişi/ekip adları `OFFICIAL_REFERENCE`, kurgusal örnek çalışanlar `DEMO` olarak ayrılır; dolgu personel üretilmez. Hakan Tokay'ın iki unit görevi tek kişi ve iki yetki kaydıdır. Organizasyon kodları onecs içi eşleme anahtarlarıdır; resmî LDAP kodu olduğu iddia edilmez. Ayrıntılar [rehber ve arama servisinde](docs/services/DIRECTORY_SEARCH_NOTIFICATIONS.md) bulunur.
 
 ## Demo hesapları
 
@@ -59,7 +63,7 @@ Başlangıç rehberi, doğrulanan organizasyon şemasını **7 unit, 7 yönetici
 | `iamhead` | Ayrı unit yöneticisi; kapsam testleri |
 | `iamemployee` | Açıkça demo IAM çalışanı; kaynak tahsisi ve kapsam testleri |
 
-Tablodaki alias'lar yalnız yerel demo girişi sunar; parola `.env` içindeki `ATLAS_DEMO_PASSWORD` değeridir. Gerçek şema kişisinin adını gösteren alias, o kişinin kurumsal kimliğini veya parolasını doğrulamaz. Giriş alias'ı tanımlanmayan referans kişilerin yerel parolası kullanılamaz. Bu hesapları ve parolayı gerçek ortama taşımayın. System Admin iş verisini otomatik yönetmez; farklı roller ayrı oturumlarla denenir. Kurumsal giriş, yapılandırılıp test edilmiş LDAP bağlantısı ve sabit dizin kimliğiyle açık aktarım gerektirir.
+Tablodaki alias'lar yalnız yerel demo girişi sunar; parola `.env` içindeki `ONECS_DEMO_PASSWORD` değeridir. Gerçek şema kişisinin adını gösteren alias, o kişinin kurumsal kimliğini veya parolasını doğrulamaz. Giriş alias'ı tanımlanmayan referans kişilerin yerel parolası kullanılamaz. Bu hesapları ve parolayı gerçek ortama taşımayın. System Admin iş verisini otomatik yönetmez; farklı roller ayrı oturumlarla denenir. Kurumsal giriş, yapılandırılıp test edilmiş LDAP bağlantısı ve sabit dizin kimliğiyle açık aktarım gerektirir.
 
 Seed bu parolayı yalnız hesabı ilk oluştururken kullanır; sonraki çalıştırmalarda mevcut parolaları ve iş kayıtlarını sıfırlamaz. Eski dolgu rehberini tespit ederse otomatik silmek yerine işlemi reddeder; yedek ve yalnız yerel verinin temizlenmesi ayrı işletim kararıdır.
 
@@ -88,14 +92,14 @@ frontend/src/            React sayfaları, tasarım sistemi ve API istemcisi
 scripts/                 Yerel başlatma ve işletim yardımcıları
 tests/                   Bağımsız HTTP kabul senaryoları
 docs/                    Plan, mimari, akışlar ve doğrulama kanıtı
-.agents/skills/           Atlas'a özel tekrar kullanılabilir geliştirme akışı
+.agents/skills/           onecs'a özel tekrar kullanılabilir geliştirme akışı
 ```
 
 Tarayıcı aynı origin üzerinden session cookie ve CSRF kullanır. Dış entegrasyon API’si JWT bearer ile salt okunur kapsam sunar. Uzun işlemler session yerine PostgreSQL job/outbox kayıtlarında tutulur. Worker’ın yeniden başlaması kaydı ortadan kaldırmaz; dış servisin yanıtı belirsizse bu durum ayrıca saklanır.
 
-Entegrasyonlar başlangıçta yapılandırılmamıştır. Ayarlar ekranında sırlar maskelenir; bağlantı testi gerçek sonuç döndürür. Hedef sunucular deployment izin listesinde olmalıdır. LDAP/SMTP/AI ayarının kaydedilmesi testin geçtiği anlamına gelmez. LDAP keşif, önizleme ve açık kişi/rol aktarımı; AI için bağımsız bağlantı profilleri, ortak model/bütçe ayarları ve profil bazlı testler bulunur. Kuyruğa alınan rapor bağlantı ve ayar sürümlerine sabitlenir; worker lease'i 240 saniyedir. AI kullanılamıyorsa kaynaklı kurallı rapor hazırlanır ve canlı AI çıktısı olmadığı açık belirtilir. Yerel bağlantı ayarları şifreli kaydedildi. 18 Kasım gerçek testinde LDAP StartTLS ve iki AI profilinde süresi dolmuş TLS sertifikası hatası alındı; doğrulama devre dışı bırakılmadı. Bu nedenle kurum girişi, dizin aktarımı ve model erişimi henüz doğrulanamadı. [Canlı test kanıtı](tests/artifacts/live-integrations.json).
+Entegrasyonlar başlangıçta yapılandırılmamıştır. Ayarlar ekranında sırlar maskelenir; bağlantı testi gerçek sonuç döndürür. Hedef sunucular deployment izin listesinde olmalıdır. LDAP/SMTP/AI ayarının kaydedilmesi testin geçtiği anlamına gelmez. LDAP ilk girişinde önceden kişi aktarmadan otomatik hesap ve grup temelli ekip/rol eşlemesi; isteğe bağlı keşif, önizleme ve açık kişi/rol aktarımı; AI için bağımsız bağlantı profilleri, ortak model/bütçe ayarları ve profil bazlı testler bulunur. Kuyruğa alınan rapor bağlantı ve ayar sürümlerine sabitlenir; worker lease'i 240 saniyedir. AI kullanılamıyorsa kaynaklı kurallı rapor hazırlanır ve canlı AI çıktısı olmadığı açık belirtilir. Yerel bağlantı ayarları şifreli kaydedildi. 18 Kasım gerçek testinde LDAP StartTLS ve iki AI profilinde süresi dolmuş TLS sertifikası hatası alındı; doğrulama devre dışı bırakılmadı. Bu nedenle kurum girişi, dizin aktarımı ve model erişimi henüz doğrulanamadı. [Canlı test kanıtı](tests/artifacts/live-integrations.json). Sonraki tanıda eski yerel ara CA ve AI güven zinciri eksikliği ayrıldı; mevcut güvenilir kökle doğrulanan yerel CA dosyası `ONECS_LDAP_CA_FILE` / `ONECS_AI_CA_FILE` üzerinden bağlandı. LDAP ve iki AI hedefinin TLS testi geçti; bind ve model erişimi yönetici tarafından yeniden sınanmalıdır. Hata mesajları güvenli Türkçe neden gösterir ve AI kartlarında kalıcı görünür. [Güncel TLS kanıtı](tests/artifacts/integration-tls-diagnosis.json), [servis sözleşmesi](docs/services/INTEGRATIONS.md).
 
-Penpard’ın görsel yaklaşımı referans alındı: açık gri zemin, beyaz kartlar, ince sınırlar, koyu gri ana aksiyonlar ve altın vurgu. Türkçe arayüz, ortalanmış işlem pencereleri, kapsamlı PostgreSQL araması ve okundu/okunmadı bildirim filtresi kullanılır. Atlas ayrı kaynak kodu, kimlik sistemi ve veritabanıyla çalışır.
+Penpard’ın görsel yaklaşımı referans alındı: açık gri zemin, beyaz kartlar, ince sınırlar, koyu gri ana aksiyonlar ve altın vurgu. Türkçe arayüz, ortalanmış işlem pencereleri, kapsamlı PostgreSQL araması ve okundu/okunmadı bildirim filtresi kullanılır. Giriş ve sol menüde gönderilen onecs logosu ve altında “Siber Güvenlik Yönetim Uygulaması” alt başlığı kullanılır. Sayfa verisi yüklenirken küçük, sabit onecs logosu ortalanır; yalnız lacivert/altın çevre halkası döner ve hareket azaltma tercihine uyulur. Son marka ve teknik adlandırma geçişinde **404 PostgreSQL backend testi**, **73 frontend testi** ve üretim derlemesi geçti; [backend çıktısı](tests/artifacts/onecs-rebrand-backend-tests.txt), [frontend kontrolü](tests/artifacts/onecs-rebrand-frontend.json) ve [yerel canlı doğrulama](tests/artifacts/onecs-rebrand-live.json) güncel kanıttır. onecs ayrı kaynak kodu, kimlik sistemi ve veritabanıyla çalışır.
 
 Yerel yedekten ayrı veritabanına dönüş deneyi `scripts/verify_restore.py` ile çalıştırılır; [sonuç artifact'i](tests/artifacts/restore-check.json) tutarlı snapshot ve tablo sayımlarını içerir. Kurum yedek hedefi ve dış secret deposu ayrıca doğrulanır.
 
@@ -104,6 +108,10 @@ Yerel yedekten ayrı veritabanına dönüş deneyi `scripts/verify_restore.py` i
 - [Organizasyon](docs/flows/ORGANIZATION.md), [Yetkilendirme](docs/flows/AUTHORIZATION.md), [Projeler](docs/flows/PROJECTS.md), [İşler](docs/flows/WORK.md), [Vakalar](docs/flows/CASES.md)
 - [Rapor ve AI](docs/flows/REPORTS_AI.md), [Ekip paylaşımı](docs/flows/COMMUNITY.md), [Etkinlik/anket](docs/flows/EVENTS.md), [Sertifikalar](docs/flows/CREDENTIALS.md)
 - [Entegrasyon servisleri](docs/services/INTEGRATIONS.md), [Rehber, arama ve bildirimler](docs/services/DIRECTORY_SEARCH_NOTIFICATIONS.md), [API sözleşmesi](docs/API.md), [OpenAPI YAML](docs/api/openapi.yaml)
-- [Geliştirme ve agent katkıları](docs/DEVELOPMENT.md), [Güvenlik](docs/SECURITY.md), [Atlas geliştirme skill'i](.agents/skills/atlas-domain-change/SKILL.md)
+- [Geliştirme ve agent katkıları](docs/DEVELOPMENT.md), [Güvenlik](docs/SECURITY.md), [onecs geliştirme skill'i](.agents/skills/onecs-domain-change/SKILL.md)
 
 Gerçek kurum entegrasyonu, yük ölçümü ve kurumsal işletim kabulü tamamlanmadan üretim kabulü verilmez. Bilinen geliştirme bağımlılığı uyarısı [Uygulama Durumu](docs/IMPLEMENTATION_STATUS.md) içinde kayıtlıdır.
+
+Dashboard’da öncelikli gündem ve anonslar kendi içerik yüksekliklerinde görünür; “Bu hafta ne değişti?” kutusu kaldırılmıştır ve rapora üstteki “Haftalık rapor” bağlantısından erişilir. Dashboard yayındaki ve yayın kararı bekleyen anonsları ayrı gösterir; bildirim zili tüm yetkili okunmamış kayıtların toplamını, kalıcı okundu/okunmadı durumunu ve ilgili kayda doğrudan bağlantıyı kullanır. [Anons akışı](docs/flows/COMMUNITY.md#anons-ve-dashboard), [bildirim sözleşmesi](docs/services/DIRECTORY_SEARCH_NOTIFICATIONS.md#bildirim-okundu-durumu), [doğrulama kapsamı](docs/QA_REPORT.md#dashboard-anonsları-ve-bildirim-düzeltmesi--18112026).
+
+Raporlar modalında **Genel Rapor** ilk sıradadır; ekip pivot tablosundan seçilen ekibin öne çıkanları, engelleri, kritik konuları ve faaliyetleri kaynak snapshotlarından görüntülenir. [Rapor görünümü ve sınırlar](docs/services/REPORTING.md).

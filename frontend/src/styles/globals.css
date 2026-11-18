@@ -726,6 +726,7 @@ html[data-theme="dark"] input[type="date"] {
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr);
+  align-items: start;
   gap: 23px;
   margin-bottom: 23px;
 }
@@ -3044,12 +3045,12 @@ html[data-theme="dark"] .detail-facts {
   line-height: 1.9;
   color: var(--muted);
 }
-/* Atlas corporate design system */
+/* onecs corporate design system */
 :root {
-  --atlas-navy: #112c49;
-  --atlas-blue: #15598a;
-  --atlas-cyan: #19a8dd;
-  --atlas-gold: #b58a30;
+  --onecs-navy: #112c49;
+  --onecs-blue: #15598a;
+  --onecs-cyan: #19a8dd;
+  --onecs-gold: #b58a30;
   --surface-shadow: 0 3px 14px #16395905, 0 1px 2px #16395903;
   --sidebar-width: 260px;
 }
@@ -3945,7 +3946,7 @@ input[type="range"] {
   font-size: 0.65rem;
   line-height: 1.85;
 }
-.drawer-layer.atlas-modal-layer {
+.drawer-layer.onecs-modal-layer {
   position: fixed;
   inset: 0;
   display: flex;
@@ -3963,7 +3964,7 @@ input[type="range"] {
   border: 0;
   cursor: default;
 }
-.drawer.atlas-modal {
+.drawer.onecs-modal {
   position: relative;
   width: min(720px, calc(100vw - 60px));
   height: auto;
@@ -3979,13 +3980,13 @@ input[type="range"] {
   box-shadow:
     0 32px 90px #0d294a3b,
     0 8px 30px #0d294a14;
-  animation: atlas-modal-enter 0.2s cubic-bezier(0.2, 0.7, 0.3, 1);
+  animation: onecs-modal-enter 0.2s cubic-bezier(0.2, 0.7, 0.3, 1);
   outline: none;
 }
-.drawer.atlas-modal.drawer-wide {
+.drawer.onecs-modal.drawer-wide {
   width: min(900px, calc(100vw - 60px));
 }
-.atlas-modal .drawer-header {
+.onecs-modal .drawer-header {
   flex-shrink: 0;
   padding: 25px 30px 23px;
   align-items: flex-start;
@@ -3993,13 +3994,13 @@ input[type="range"] {
   background: linear-gradient(120deg, #fff, #f7fafd);
   border-bottom: 1px solid #dfebf4;
 }
-.atlas-modal .drawer-header .eyebrow {
+.onecs-modal .drawer-header .eyebrow {
   font-size: 0.55rem;
   color: #7897ad;
   letter-spacing: 1.5px;
   margin-bottom: 9px;
 }
-.atlas-modal .drawer-header h2 {
+.onecs-modal .drawer-header h2 {
   font-size: 1.23rem;
   font-weight: 680;
   letter-spacing: -0.5px;
@@ -4007,10 +4008,10 @@ input[type="range"] {
   color: #224c6a;
   overflow-wrap: anywhere;
 }
-.atlas-modal .drawer-header > div {
+.onecs-modal .drawer-header > div {
   min-width: 0;
 }
-.atlas-modal .modal-close {
+.onecs-modal .modal-close {
   width: 35px;
   height: 35px;
   background: #eef4f8;
@@ -4019,18 +4020,18 @@ input[type="range"] {
   border-radius: 8px;
   margin-top: 1px;
 }
-.atlas-modal .modal-close:hover {
+.onecs-modal .modal-close:hover {
   background: #e1edf5;
   color: #244e6d;
 }
-.atlas-modal .drawer-body {
+.onecs-modal .drawer-body {
   padding: 27px 30px 31px;
   overflow-y: auto;
   overscroll-behavior: contain;
   min-height: 0;
   scrollbar-gutter: stable;
 }
-@keyframes atlas-modal-enter {
+@keyframes onecs-modal-enter {
   from {
     opacity: 0;
     transform: translateY(14px) scale(0.985);
@@ -4040,7 +4041,7 @@ input[type="range"] {
     transform: translateY(0) scale(1);
   }
 }
-.atlas-brand {
+.onecs-brand {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -4049,7 +4050,7 @@ input[type="range"] {
   color: #173655;
   vertical-align: middle;
 }
-.atlas-brand-symbol {
+.onecs-brand-symbol {
   height: 66px;
   width: 57px;
   object-fit: contain;
@@ -4057,13 +4058,13 @@ input[type="range"] {
   flex-shrink: 0;
   filter: drop-shadow(0 3px 5px #123a6014);
 }
-.atlas-brand-copy {
+.onecs-brand-copy {
   display: flex;
   flex-direction: column;
   gap: 7px;
   min-width: 0;
 }
-.atlas-brand-copy strong {
+.onecs-brand-copy strong {
   font-size: 1.48rem;
   font-weight: 750;
   letter-spacing: 3.1px;
@@ -4071,18 +4072,18 @@ input[type="range"] {
   font-family: Inter, "Aptos", "Segoe UI", sans-serif;
   color: #183a59;
 }
-.atlas-brand-copy > span {
+.onecs-brand-copy > span {
   font-size: 0.52rem;
   font-weight: 600;
   line-height: 1.5;
   color: #7c8fa2;
   letter-spacing: 0.15px;
 }
-.atlas-brand-compact .atlas-brand-symbol {
+.onecs-brand-compact .onecs-brand-symbol {
   width: 37px;
   height: 43px;
 }
-.atlas-brand-compact .atlas-brand-copy strong {
+.onecs-brand-compact .onecs-brand-copy strong {
   font-size: 1.17rem;
   letter-spacing: 2px;
 }
@@ -4106,13 +4107,13 @@ input[type="range"] {
     0 0 0 71px #ffffff09,
     0 0 0 140px #ffffff02;
 }
-.login-intro .atlas-brand-copy strong {
+.login-intro .onecs-brand-copy strong {
   color: #f2f7fb;
 }
-.login-intro .atlas-brand-copy > span {
+.login-intro .onecs-brand-copy > span {
   color: #97b3cb;
 }
-.login-intro .atlas-brand-symbol {
+.login-intro .onecs-brand-symbol {
   height: 76px;
   width: 66px;
   filter: drop-shadow(0 8px 20px #0003);
@@ -4303,10 +4304,10 @@ html[data-theme="dark"] .workspace-footer {
 html[data-theme="dark"] .app-topbar {
   border-bottom-color: #29475f;
 }
-html[data-theme="dark"] .atlas-brand-copy strong {
+html[data-theme="dark"] .onecs-brand-copy strong {
   color: #d8e8f4;
 }
-html[data-theme="dark"] .atlas-brand-copy > span {
+html[data-theme="dark"] .onecs-brand-copy > span {
   color: #8eabc1;
 }
 html[data-theme="dark"] .card,
@@ -4322,14 +4323,14 @@ html[data-theme="dark"] .kpi-label,
 html[data-theme="dark"] .agenda-main > strong {
   color: #aec7da;
 }
-html[data-theme="dark"] .atlas-modal .drawer-header {
+html[data-theme="dark"] .onecs-modal .drawer-header {
   background: #183248;
   border-color: #2c4a63;
 }
-html[data-theme="dark"] .atlas-modal .drawer-header h2 {
+html[data-theme="dark"] .onecs-modal .drawer-header h2 {
   color: #c7e2f4;
 }
-html[data-theme="dark"] .atlas-modal .modal-close {
+html[data-theme="dark"] .onecs-modal .modal-close {
   background: #1b3c54;
   color: #8fb5d0;
   border-color: #31526b;
@@ -4372,15 +4373,15 @@ html[data-theme="dark"] .weekly-card h2 {
   .sidebar-brand {
     padding-inline: 20px;
   }
-  .atlas-brand-symbol {
+  .onecs-brand-symbol {
     width: 49px;
     height: 59px;
   }
-  .atlas-brand-copy strong {
+  .onecs-brand-copy strong {
     font-size: 1.34rem;
     letter-spacing: 2.3px;
   }
-  .atlas-brand-copy > span {
+  .onecs-brand-copy > span {
     font-size: 0.49rem;
   }
   .workspace-content {
@@ -4430,18 +4431,18 @@ html[data-theme="dark"] .weekly-card h2 {
   .sidebar-brand {
     padding: 20px 18px;
   }
-  .atlas-brand {
+  .onecs-brand {
     gap: 9px;
   }
-  .atlas-brand-symbol {
+  .onecs-brand-symbol {
     width: 45px;
     height: 55px;
   }
-  .atlas-brand-copy strong {
+  .onecs-brand-copy strong {
     font-size: 1.25rem;
     letter-spacing: 2px;
   }
-  .atlas-brand-copy > span {
+  .onecs-brand-copy > span {
     font-size: 0.48rem;
   }
   .nav-item {
@@ -4539,14 +4540,14 @@ html[data-theme="dark"] .weekly-card h2 {
   .sidebar-brand {
     padding: 20px 24px;
   }
-  .sidebar-brand .atlas-brand-symbol {
+  .sidebar-brand .onecs-brand-symbol {
     width: 52px;
     height: 64px;
   }
-  .sidebar-brand .atlas-brand-copy strong {
+  .sidebar-brand .onecs-brand-copy strong {
     font-size: 1.45rem;
   }
-  .sidebar-brand .atlas-brand-copy > span {
+  .sidebar-brand .onecs-brand-copy > span {
     font-size: 0.5rem;
   }
   .nav-item {
@@ -4813,33 +4814,33 @@ html[data-theme="dark"] .weekly-card h2 {
     line-height: 1.85;
     align-items: flex-start;
   }
-  .drawer-layer.atlas-modal-layer {
+  .drawer-layer.onecs-modal-layer {
     padding: 14px;
     align-items: center;
   }
-  .drawer.atlas-modal,
-  .drawer.atlas-modal.drawer-wide {
+  .drawer.onecs-modal,
+  .drawer.onecs-modal.drawer-wide {
     width: calc(100vw - 28px);
     max-height: calc(100dvh - 28px);
     border-radius: 12px;
   }
-  .atlas-modal .drawer-header {
+  .onecs-modal .drawer-header {
     padding: 21px 21px 19px;
     gap: 14px;
   }
-  .atlas-modal .drawer-header h2 {
+  .onecs-modal .drawer-header h2 {
     font-size: 1.05rem;
     line-height: 1.5;
   }
-  .atlas-modal .drawer-header .eyebrow {
+  .onecs-modal .drawer-header .eyebrow {
     font-size: 0.5rem;
     letter-spacing: 1.1px;
   }
-  .atlas-modal .modal-close {
+  .onecs-modal .modal-close {
     height: 32px;
     width: 32px;
   }
-  .atlas-modal .drawer-body {
+  .onecs-modal .drawer-body {
     padding: 22px 21px 25px;
   }
   .field > span {
@@ -4919,15 +4920,15 @@ html[data-theme="dark"] .weekly-card h2 {
   .mobile-brand {
     margin-bottom: 43px;
   }
-  .mobile-brand .atlas-brand-symbol {
+  .mobile-brand .onecs-brand-symbol {
     width: 51px;
     height: 62px;
   }
-  .mobile-brand .atlas-brand-copy strong {
+  .mobile-brand .onecs-brand-copy strong {
     font-size: 1.6rem;
     letter-spacing: 2.5px;
   }
-  .mobile-brand .atlas-brand-copy > span {
+  .mobile-brand .onecs-brand-copy > span {
     font-size: 0.48rem;
     line-height: 1.5;
   }
@@ -5020,16 +5021,16 @@ html[data-theme="dark"] .weekly-card h2 {
   #root[inert] {
     display: none !important;
   }
-  #atlas-modal-root {
+  #onecs-modal-root {
     position: static;
   }
-  .drawer-layer.atlas-modal-layer {
+  .drawer-layer.onecs-modal-layer {
     position: static;
     padding: 0;
     display: block;
   }
-  .drawer.atlas-modal,
-  .drawer.atlas-modal.drawer-wide {
+  .drawer.onecs-modal,
+  .drawer.onecs-modal.drawer-wide {
     position: static;
     display: block;
     width: 100%;
@@ -5041,14 +5042,14 @@ html[data-theme="dark"] .weekly-card h2 {
     overflow: visible;
     animation: none;
   }
-  .atlas-modal .drawer-header,
-  .atlas-modal .drawer-body {
+  .onecs-modal .drawer-header,
+  .onecs-modal .drawer-body {
     background: white;
     padding: 15px 0;
     overflow: visible;
     border: 0;
   }
-  .atlas-modal .drawer-header h2 {
+  .onecs-modal .drawer-header h2 {
     color: #111;
   }
   .drawer-scrim,
@@ -5149,7 +5150,7 @@ html[data-theme="dark"] .badge-brand {
   color: #a8d3f0;
 }
 /* Dashboard links use an accessible full-card tint on hover and keyboard focus. */
-.atlas-dashboard .kpi-card {
+.onecs-dashboard .kpi-card {
   --kpi-accent: #326080;
   --kpi-tint: #eef5fb;
   position: relative;
@@ -5160,23 +5161,23 @@ html[data-theme="dark"] .badge-brand {
     box-shadow 0.22s ease,
     border-color 0.22s ease;
 }
-.atlas-dashboard .kpi-danger {
+.onecs-dashboard .kpi-danger {
   --kpi-accent: #b65360;
   --kpi-tint: #fff0f2;
 }
-.atlas-dashboard .kpi-warning {
+.onecs-dashboard .kpi-warning {
   --kpi-accent: #b38a32;
   --kpi-tint: #fff7e8;
 }
-.atlas-dashboard .kpi-brand {
+.onecs-dashboard .kpi-brand {
   --kpi-accent: #187d9e;
   --kpi-tint: #ecf7fc;
 }
-.atlas-dashboard .kpi-success {
+.onecs-dashboard .kpi-success {
   --kpi-accent: #3b806c;
   --kpi-tint: #edf8f2;
 }
-.atlas-dashboard .kpi-card::before {
+.onecs-dashboard .kpi-card::before {
   left: 0;
   right: 0;
   top: 0;
@@ -5186,7 +5187,7 @@ html[data-theme="dark"] .badge-brand {
   z-index: 2;
   border-radius: 0;
 }
-.atlas-dashboard .kpi-card::after {
+.onecs-dashboard .kpi-card::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -5197,80 +5198,80 @@ html[data-theme="dark"] .badge-brand {
   z-index: 0;
   pointer-events: none;
 }
-.atlas-dashboard .kpi-card > * {
+.onecs-dashboard .kpi-card > * {
   position: relative;
   z-index: 1;
 }
-.atlas-dashboard .kpi-card:hover,
-.atlas-dashboard .kpi-card:focus-visible {
+.onecs-dashboard .kpi-card:hover,
+.onecs-dashboard .kpi-card:focus-visible {
   transform: translateY(-3px);
   border-color: var(--kpi-accent);
   box-shadow: 0 11px 28px #173f6212;
 }
-.atlas-dashboard .kpi-card:hover::after,
-.atlas-dashboard .kpi-card:focus-visible::after {
+.onecs-dashboard .kpi-card:hover::after,
+.onecs-dashboard .kpi-card:focus-visible::after {
   transform: scaleY(1);
 }
-.atlas-dashboard .kpi-card:focus-visible {
+.onecs-dashboard .kpi-card:focus-visible {
   outline: 2px solid var(--kpi-accent);
   outline-offset: 3px;
 }
-.atlas-dashboard .kpi-card .kpi-icon {
+.onecs-dashboard .kpi-card .kpi-icon {
   color: var(--kpi-accent);
   transition:
     background 0.2s ease,
     transform 0.2s ease;
   background: var(--subtle);
 }
-.atlas-dashboard .kpi-card:hover .kpi-icon,
-.atlas-dashboard .kpi-card:focus-visible .kpi-icon {
+.onecs-dashboard .kpi-card:hover .kpi-icon,
+.onecs-dashboard .kpi-card:focus-visible .kpi-icon {
   background: var(--surface);
   transform: scale(1.05);
 }
-.atlas-dashboard .kpi-bottom > svg {
+.onecs-dashboard .kpi-bottom > svg {
   transition: transform 0.22s ease;
   color: var(--kpi-accent);
 }
-.atlas-dashboard .kpi-card:hover .kpi-bottom > svg,
-.atlas-dashboard .kpi-card:focus-visible .kpi-bottom > svg {
+.onecs-dashboard .kpi-card:hover .kpi-bottom > svg,
+.onecs-dashboard .kpi-card:focus-visible .kpi-bottom > svg {
   transform: translate(2px, -2px);
 }
-.atlas-dashboard .kpi-label,
-.atlas-dashboard .kpi-bottom {
+.onecs-dashboard .kpi-label,
+.onecs-dashboard .kpi-bottom {
   color: var(--muted);
 }
-.atlas-dashboard .kpi-card > strong {
+.onecs-dashboard .kpi-card > strong {
   color: var(--ink);
 }
-html[data-theme="dark"] .atlas-dashboard .kpi-danger {
+html[data-theme="dark"] .onecs-dashboard .kpi-danger {
   --kpi-accent: #dc949c;
   --kpi-tint: #35252e;
 }
-html[data-theme="dark"] .atlas-dashboard .kpi-warning {
+html[data-theme="dark"] .onecs-dashboard .kpi-warning {
   --kpi-accent: #cfb16d;
   --kpi-tint: #332f23;
 }
-html[data-theme="dark"] .atlas-dashboard .kpi-brand {
+html[data-theme="dark"] .onecs-dashboard .kpi-brand {
   --kpi-accent: #78bed7;
   --kpi-tint: #1d3443;
 }
-html[data-theme="dark"] .atlas-dashboard .kpi-success {
+html[data-theme="dark"] .onecs-dashboard .kpi-success {
   --kpi-accent: #8bbda6;
   --kpi-tint: #23382f;
 }
 @media (prefers-reduced-motion: reduce) {
-  .atlas-dashboard .kpi-card,
-  .atlas-dashboard .kpi-card::after,
-  .atlas-dashboard .kpi-icon,
-  .atlas-dashboard .kpi-bottom > svg {
+  .onecs-dashboard .kpi-card,
+  .onecs-dashboard .kpi-card::after,
+  .onecs-dashboard .kpi-icon,
+  .onecs-dashboard .kpi-bottom > svg {
     transition: none !important;
   }
-  .atlas-dashboard .kpi-card:hover,
-  .atlas-dashboard .kpi-card:focus-visible,
-  .atlas-dashboard .kpi-card:hover .kpi-icon,
-  .atlas-dashboard .kpi-card:focus-visible .kpi-icon,
-  .atlas-dashboard .kpi-card:hover .kpi-bottom > svg,
-  .atlas-dashboard .kpi-card:focus-visible .kpi-bottom > svg {
+  .onecs-dashboard .kpi-card:hover,
+  .onecs-dashboard .kpi-card:focus-visible,
+  .onecs-dashboard .kpi-card:hover .kpi-icon,
+  .onecs-dashboard .kpi-card:focus-visible .kpi-icon,
+  .onecs-dashboard .kpi-card:hover .kpi-bottom > svg,
+  .onecs-dashboard .kpi-card:focus-visible .kpi-bottom > svg {
     transform: none;
   }
 }

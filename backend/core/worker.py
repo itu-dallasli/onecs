@@ -15,6 +15,7 @@ from .models import (
 )
 from .policy import report_source, can_manage_org
 from .services import generate_report, scan_slas, enqueue_notification
+from .record_notifications import email_delivery_access
 
 
 def fail_related_reports(job):
@@ -157,6 +158,13 @@ def process_outbox():
     if not person.is_active:
         finish("CANCELLED", last_error="Alıcı etkin değil.")
         return True
+    allowed, defer_until = email_delivery_access(person, event)
+    if not allowed:
+        finish("CANCELLED", last_error="Alıcının kaynağa erişimi kaldırıldı.")
+        return True
+    if defer_until is not None:
+        finish("PENDING", next_attempt_at=defer_until, last_error="")
+        return True
     if event.resource_type in ("work", "project", "case"):
         obj = report_source(person, event.resource_type, event.resource_id)
         if obj is None:
@@ -177,9 +185,9 @@ def process_outbox():
 
         deliver_email(
             person.email,
-            "Atlas: " + event.title,
-            "Atlas üzerinde yetkili olduğunuz bir kayıt güncellendi. Ayrıntılar için uygulamadaki Bildirimler alanını açın.",
-            message_id=f"<atlas-{event.pk}@atlas.local>",
+            "onecs: " + event.title,
+            "onecs üzerinde yetkili olduğunuz bir kayıt güncellendi. Ayrıntılar için uygulamadaki Bildirimler alanını açın.",
+            message_id=f"<onecs-{event.pk}@onecs.local>",
         )
         finish(
             "SENT", sent_at=timezone.now(), attempts=event.attempts + 1, last_error=""

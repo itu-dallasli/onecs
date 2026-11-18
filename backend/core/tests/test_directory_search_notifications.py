@@ -8,11 +8,11 @@ from rest_framework.test import APIClient
 
 from core.models import ApiClient as ApiClientRecord
 from core.models import Notification, Project, ProjectRevision, RoleGrant, WorkItem
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 from core.views import issue_token
 
 
-class TurkishDirectorySearchTests(AtlasTestCase):
+class TurkishDirectorySearchTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.director.display_name = "Emin İslam Tatlı"
@@ -91,7 +91,7 @@ class TurkishDirectorySearchTests(AtlasTestCase):
             owner_org=self.other_unit,
         )
         client_record = ApiClientRecord.objects.create(
-            name="OS directory reader", user=self.director, org_node=self.unit, scopes=["atlas:read"]
+            name="OS directory reader", user=self.director, org_node=self.unit, scopes=["onecs:read"]
         )
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION="Bearer " + issue_token(client_record))
@@ -107,7 +107,7 @@ class TurkishDirectorySearchTests(AtlasTestCase):
         self.assertEqual(client.get(f"/api/v1/work/{hidden.pk}/").status_code, 404)
 
 
-class DirectoryProfileTests(AtlasTestCase):
+class DirectoryProfileTests(OnecsTestCase):
     def test_profile_identifies_reference_or_demo_account_and_actual_scoped_roles(self):
         self.unit_head.profile_kind = "OFFICIAL_REFERENCE"
         self.unit_head.save(update_fields=["profile_kind"])
@@ -142,7 +142,7 @@ class DirectoryProfileTests(AtlasTestCase):
         self.assertFalse(data["is_demo"])
 
 
-class NotificationReadStateTests(AtlasTestCase):
+class NotificationReadStateTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.visible_work = WorkItem.objects.create(title="Assigned review", assigned_to=self.employee, created_by=self.unit_head, owner_org=self.team)

@@ -3,7 +3,7 @@
   "at": "2026-11-18T13:19:13.421043+00:00",
   "status": "passed",
   "scope": "new isolated local PostgreSQL clone only",
-  "clone_database": "atlas_cleanup_proof_20261118_131910",
+  "clone_database": "onecs_cleanup_proof_20261118_131910",
   "duration_seconds": 2.444,
   "deleted_counts": {
     "administration.aiconnectionprofile": 2,
@@ -62,8 +62,13 @@
   "secrets_logged": false,
   "clone_cleanup_at": "2026-11-18T13:21:25.327456+00:00",
   "owned_clone_databases_dropped": [
-    "atlas_cleanup_proof_20261118_131838",
-    "atlas_cleanup_proof_20261118_131910"
+    "onecs_cleanup_proof_20261118_131838",
+    "onecs_cleanup_proof_20261118_131910"
   ],
-  "temporary_dump_files_removed": 4
+  "temporary_dump_files_removed": 4,
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "1bba56c20113d4bae818a8ce86b89f5346fe02409e6a7c51d7a72450a49fbb14"
+  }
 }

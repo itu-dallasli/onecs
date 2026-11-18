@@ -20,7 +20,7 @@ from core.models import (
     WorkItem,
 )
 from core.policy import can_approve_project, can_manage_project
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
 PROJECT_URL = "/api/v1/projects/"
@@ -29,7 +29,7 @@ NOTICE_URL = "/api/v1/case-notices/"
 PARTICIPATION_URL = "/api/v1/participation-requests/"
 
 
-class ProjectAPITests(AtlasTestCase):
+class ProjectAPITests(OnecsTestCase):
     def draft(self, author=None):
         author = author or self.employee
         response = self.as_user(author).post(
@@ -555,7 +555,7 @@ class ProjectAPITests(AtlasTestCase):
         )
 
 
-class CaseAPITests(AtlasTestCase):
+class CaseAPITests(OnecsTestCase):
     def case(self, **extra):
         data = {
             "title": "Critical incident coordination",

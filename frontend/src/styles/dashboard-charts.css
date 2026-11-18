@@ -286,10 +286,10 @@
 .dashboard-chart-empty.compact {
   min-height: 165px;
 }
-.atlas-dashboard .live-label.is-stale > span {
+.onecs-dashboard .live-label.is-stale > span {
   background: #b59445;
 }
-.atlas-dashboard .live-label.is-stale {
+.onecs-dashboard .live-label.is-stale {
   color: #947238;
 }
 @media (max-width: 1200px) {

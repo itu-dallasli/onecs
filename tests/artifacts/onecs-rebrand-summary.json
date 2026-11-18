@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-11-18T13:36:34.536444+00:00",
+  "scope": "Active project source, documents, agent instructions, evidence and asset paths. Git internals, dependencies and ignored private runtime files excluded.",
+  "legacy_case_insensitive_content_matches": 0,
+  "legacy_path_matches": 0,
+  "local_markdown_links_checked": 32,
+  "broken_local_links": 0,
+  "retired_brand_assets": "Originals preserved in a local archive outside the repository. Historical evidence labels are explicitly annotated when normalized.",
+  "validation": {
+    "backend_tests": 404,
+    "additional_migration_tests": 2,
+    "frontend_tests": 73,
+    "frontend_files": 13,
+    "production_build": "passed",
+    "django_check": "passed",
+    "pending_model_migrations": false,
+    "openapi_validation": "passed",
+    "live_http": "passed"
+  }
+}

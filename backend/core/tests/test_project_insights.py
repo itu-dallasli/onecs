@@ -27,11 +27,11 @@ from core.project_insights import (
     project_metrics,
     report_sources,
 )
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 from core.worker import claim_job, process_job
 
 
-class ProjectInsightTests(AtlasTestCase):
+class ProjectInsightTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.project = Project.objects.create(
@@ -635,7 +635,7 @@ class ProjectInsightTests(AtlasTestCase):
         original = "## AI değerlendirmesi\n\nEksik kalite kanıtlarını tamamlayın."
         indexed = (
             original
-            + "\n\n## Atlas kaynak dizini\n\n- Proje kaydı: "
+            + "\n\n## onecs kaynak dizini\n\n- Proje kaydı: "
             + str(self.project.pk)
         )
         with patch(

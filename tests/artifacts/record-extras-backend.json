@@ -1,0 +1,14 @@
+{
+  "suite": "backend working tree",
+  "tests": 381,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "seconds": 26.613,
+  "external_smtp": "not_called",
+  "external_scanner": "mock_only",
+  "database": "PostgreSQL local test database",
+  "command": ".venv/bin/python -m pytest backend --junitxml=.runtime/record-extras-backend.xml -q",
+  "subtests": 173,
+  "junit_cases": 554
+}

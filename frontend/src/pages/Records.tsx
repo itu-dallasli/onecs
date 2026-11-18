@@ -25,6 +25,11 @@ import { api, date, list, personName, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import type { RecordItem } from "../lib/types";
 import WorkAssignmentForm from "../components/WorkAssignmentForm";
+import RecordExtras, {
+  emptyRecordExtras,
+  RecordAttachments,
+} from "../components/RecordExtras";
+import { createRecordWithExtras } from "../lib/recordExtras";
 import ProjectInsights from "../components/ProjectInsights";
 import {
   Badge,
@@ -142,8 +147,10 @@ function CreateRecordFields({
   const [caseKind, setCaseKind] = useState("SECURITY_INCIDENT");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [extras, setExtras] = useState(emptyRecordExtras);
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setError("");
     try {
@@ -163,7 +170,7 @@ function CreateRecordFields({
         body.coordinator_id = assignee;
         body.kind = caseKind;
       }
-      await api(`/${kind}`, { method: "POST", body });
+      await createRecordWithExtras(`/${kind}`, body, extras);
       onCreated();
       onClose();
     } catch (e) {
@@ -173,7 +180,13 @@ function CreateRecordFields({
     }
   };
   return (
-    <Drawer title={config[kind].new} subtitle="YENİ KAYIT" onClose={onClose}>
+    <Drawer
+      title={config[kind].new}
+      subtitle="YENİ KAYIT"
+      onClose={() => {
+        if (!busy) onClose();
+      }}
+    >
       <form className="stack-form" onSubmit={submit}>
         <div className="info-strip">
           {kind === "projects"
@@ -291,9 +304,33 @@ function CreateRecordFields({
             />
           </Field>
         )}
+        <RecordExtras
+          value={extras}
+          onChange={setExtras}
+          disabled={busy}
+          defaultRecipients={
+            kind === "projects"
+              ? list(pms.data)
+                  .map((item: any) => item.user || item)
+                  .filter((person: any) => person.id === pm)
+              : list(people.data).filter(
+                  (person: any) => person.id === assignee,
+                )
+          }
+          emailHint={
+            kind === "projects"
+              ? "Seçilen kişilere proje başvurusu onaya gönderildiğinde bildirim gönderilir. Taslak kaydı e-posta göndermez."
+              : "Vaka açıldığında seçilen, kayıt erişimi olan kişilere kısa bir e-posta bildirimi gönderilir."
+          }
+        />
         {error && <ErrorState message={error} />}
         <div className="form-actions">
-          <Button variant="secondary" type="button" onClick={onClose}>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={onClose}
+            disabled={busy}
+          >
             Vazgeç
           </Button>
           <Button disabled={busy} type="submit">
@@ -340,6 +377,7 @@ function Detail({
   const [assign, setAssign] = useState("");
   const [childTitle, setChildTitle] = useState("");
   const [showChild, setShowChild] = useState(false);
+  const [childExtras, setChildExtras] = useState(emptyRecordExtras);
   const [showAssign, setShowAssign] = useState(false);
   const [showResource, setShowResource] = useState(false);
   const [verifyUser, setVerifyUser] = useState("");
@@ -366,16 +404,18 @@ function Detail({
     setError("");
     setSuccess("");
     try {
-      await api(
-        action === "children" ? "/work" : `/${kind}/${row.id}/${action}`,
-        {
-          method: "POST",
-          body:
-            action === "children"
-              ? { ...body, parent_id: row.id, personal: false }
-              : { version: row.version, ...body },
-        },
-      );
+      const path =
+        action === "children" ? "/work" : `/${kind}/${row.id}/${action}`;
+      const payload =
+        action === "children"
+          ? { ...body, parent_id: row.id, personal: false }
+          : { version: row.version, ...body };
+      if (["children", "tasks", "actions"].includes(action)) {
+        await createRecordWithExtras(path, payload, childExtras);
+        setChildExtras(emptyRecordExtras());
+      } else {
+        await api(path, { method: "POST", body: payload });
+      }
       resource.refresh();
       childResource.refresh();
       onUpdate();
@@ -435,6 +475,13 @@ function Detail({
       <p className="detail-description">
         {row.description || row.summary || "Açıklama eklenmemiş."}
       </p>
+      <RecordAttachments
+        resourceType={
+          kind === "projects" ? "project" : kind === "cases" ? "case" : "work"
+        }
+        resourceId={row.id}
+        enabled={row.visibility !== "SUMMARY"}
+      />
       <div className="detail-facts">
         <div>
           <span>{kind === "projects" ? "Proje yöneticisi" : "Sorumlu"}</span>
@@ -505,7 +552,9 @@ function Detail({
           <div className="progress-track">
             <span style={{ width: `${row.progress || 0}%` }} />
           </div>
-          <small className="muted">Teslimatların hesaplanan ilerlemesinden ayrı takip edilir.</small>
+          <small className="muted">
+            Teslimatların hesaplanan ilerlemesinden ayrı takip edilir.
+          </small>
         </div>
       )}
       {kind === "projects" && (
@@ -770,6 +819,15 @@ function Detail({
             value={assign}
             onChange={setAssign}
           />
+          <RecordExtras
+            value={childExtras}
+            onChange={setChildExtras}
+            defaultRecipients={list(people.data).filter(
+              (person: any) => person.id === assign,
+            )}
+            disabled={!!busy}
+            emailHint="Atanan kişiye gerekli atama bildirimi gönderilir. Bu alan, kayıt erişimi olan seçili kişilere ek bildirim göndermenizi sağlar."
+          />
           <Button
             disabled={!assign || !childTitle || !!busy}
             onClick={() =>
@@ -957,8 +1015,34 @@ export default function Records({ kind }: { kind: Kind }) {
   const [create, setCreate] = useState(false);
   const [selected, setSelected] = useState<RecordItem | null>(null);
   const [mutationError, setMutationError] = useState("");
-  const [showRequests, setShowRequests] = useState(false);
-  const [showNotices, setShowNotices] = useState(false);
+  const [showRequests, setShowRequests] = useState(
+    params.get("requests") === "1",
+  );
+  useEffect(() => {
+    setShowRequests(params.get("requests") === "1");
+  }, [params]);
+  const closeRequests = () => {
+    setShowRequests(false);
+    setParams((current) => {
+      const next = new URLSearchParams(current);
+      next.delete("requests");
+      next.delete("request_id");
+      return next;
+    });
+  };
+  const [showNotices, setShowNotices] = useState(params.get("notices") === "1");
+  useEffect(() => {
+    setShowNotices(params.get("notices") === "1");
+  }, [params]);
+  const closeNotices = () => {
+    setShowNotices(false);
+    setParams((current) => {
+      const next = new URLSearchParams(current);
+      next.delete("notices");
+      next.delete("notice_id");
+      return next;
+    });
+  };
   const notices = useResource<any>(kind === "cases" ? "/case-notices" : null);
   const pendingNotices = list(notices.data).filter(
     (x: any) => x.status === "PENDING",
@@ -1334,7 +1418,8 @@ export default function Records({ kind }: { kind: Kind }) {
       </div>
       {showNotices && (
         <CaseNoticeReview
-          onClose={() => setShowNotices(false)}
+          focusedId={params.get("notice_id")}
+          onClose={closeNotices}
           onUpdate={() => {
             notices.refresh();
             r.refresh();
@@ -1343,7 +1428,8 @@ export default function Records({ kind }: { kind: Kind }) {
       )}
       {showRequests && (
         <ParticipationRequests
-          onClose={() => setShowRequests(false)}
+          focusedId={params.get("request_id")}
+          onClose={closeRequests}
           onUpdate={requests.refresh}
         />
       )}
@@ -1382,18 +1468,28 @@ function CaseNotice({
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [extras, setExtras] = useState(emptyRecordExtras);
   return (
-    <Drawer title="Vaka bildirimi" subtitle="YÖNETİCİYE İLET" onClose={onClose}>
+    <Drawer
+      title="Vaka bildirimi"
+      subtitle="YÖNETİCİYE İLET"
+      onClose={() => {
+        if (!busy) onClose();
+      }}
+    >
       <form
         className="stack-form"
         onSubmit={async (e) => {
           e.preventDefault();
+          if (busy) return;
           setBusy(true);
+          setError("");
           try {
-            await api("/case-notices", {
-              method: "POST",
-              body: { title, description },
-            });
+            await createRecordWithExtras(
+              "/case-notices",
+              { title, description },
+              extras,
+            );
             onCreated();
             onClose();
           } catch (e) {
@@ -1422,6 +1518,12 @@ function CaseNotice({
             onChange={(e) => setDescription(e.target.value)}
           />
         </Field>
+        <RecordExtras
+          value={extras}
+          onChange={setExtras}
+          disabled={busy}
+          emailHint="Bildirime erişim yetkisi olan kişilere isteğe bağlı kısa bir e-posta gönderilir. Bu işlem resmî vaka veya görev ataması oluşturmaz."
+        />
         {error && <ErrorState message={error} />}
         <Button disabled={busy}>
           Bildirimi gönder
@@ -1433,14 +1535,25 @@ function CaseNotice({
 }
 
 function ParticipationRequests({
+  focusedId,
   onClose,
   onUpdate,
 }: {
+  focusedId?: string | null;
   onClose: () => void;
   onUpdate: () => void;
 }) {
   const { user } = useAuth();
-  const r = useResource<any>("/participation-requests");
+  const r = useResource<any>(
+    focusedId
+      ? `/participation-requests/${encodeURIComponent(focusedId)}`
+      : "/participation-requests",
+  );
+  const records = focusedId
+    ? r.data?.id === focusedId
+      ? [r.data]
+      : []
+    : list(r.data);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState("");
   const [reason, setReason] = useState("");
@@ -1472,6 +1585,7 @@ function ParticipationRequests({
         vermez.
       </div>
       {error && <ErrorState message={error} />}
+      {r.error && <ErrorState message={r.error} onRetry={r.refresh} />}
       <Field label="Karar notu">
         <input
           value={reason}
@@ -1481,8 +1595,8 @@ function ParticipationRequests({
       </Field>
       {r.loading ? (
         <Loading />
-      ) : list(r.data).length ? (
-        list(r.data).map((x: any) => (
+      ) : records.length ? (
+        records.map((x: any) => (
           <div className="allocation-request" key={x.id}>
             <div className="detail-status-row">
               <Status value={x.status} />
@@ -1832,14 +1946,25 @@ function ProjectGovernance({
 }
 
 function CaseNoticeReview({
+  focusedId,
   onClose,
   onUpdate,
 }: {
+  focusedId?: string | null;
   onClose: () => void;
   onUpdate: () => void;
 }) {
   const { user } = useAuth();
-  const r = useResource<any>("/case-notices");
+  const r = useResource<any>(
+    focusedId
+      ? `/case-notices/${encodeURIComponent(focusedId)}`
+      : "/case-notices",
+  );
+  const records = focusedId
+    ? r.data?.id === focusedId
+      ? [r.data]
+      : []
+    : list(r.data);
   const [priority, setPriority] = useState("HIGH");
   const [reason, setReason] = useState("");
   const [error, setError] = useState("");
@@ -1872,6 +1997,7 @@ function CaseNoticeReview({
         müdahale bu onayı beklemez.
       </div>
       {error && <ErrorState message={error} />}
+      {r.error && <ErrorState message={r.error} onRetry={r.refresh} />}
       <Field label="Resmî vaka kritiklik seviyesi">
         <select value={priority} onChange={(e) => setPriority(e.target.value)}>
           <option value="CRITICAL">Kritik · 24 saat</option>
@@ -1889,11 +2015,12 @@ function CaseNoticeReview({
       {r.loading ? (
         <Loading />
       ) : (
-        list(r.data).map((x: any) => (
+        records.map((x: any) => (
           <div className="allocation-request" key={x.id}>
             <Status value={x.status} />
             <h3>{x.title}</h3>
             <p>{x.description}</p>
+            <RecordAttachments resourceType="case_notice" resourceId={x.id} />
             <small>{date(x.created_at, true)}</small>
             {x.status === "PENDING" && user.permissions?.create_case && (
               <div className="detail-action-bar">

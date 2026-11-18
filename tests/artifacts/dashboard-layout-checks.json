@@ -1,0 +1,160 @@
+{
+  "url": "http://127.0.0.1:3100/dashboard",
+  "checkedAt": "2026-11-18T13:30:55.526Z",
+  "account": "local director demo, standard login",
+  "checks": [
+    {
+      "agenda": {
+        "bottom": 1370.734375,
+        "height": 932.3203125,
+        "width": 696.5078125,
+        "x": 298,
+        "y": 438.4140625
+      },
+      "alignItems": "start",
+      "announcements": {
+        "bottom": 1515.7890625,
+        "height": 1077.375,
+        "width": 376.4921875,
+        "x": 1018.5078125,
+        "y": 438.4140625
+      },
+      "footer": {
+        "bottom": 1369.734375,
+        "height": 49,
+        "width": 694.5078125,
+        "x": 299,
+        "y": 1320.734375
+      },
+      "grid": {
+        "bottom": 1515.7890625,
+        "height": 1077.375,
+        "width": 1097,
+        "x": 298,
+        "y": 438.4140625
+      },
+      "gridColumns": "696.508px 376.492px",
+      "horizontalOverflow": false,
+      "summaryRemoved": true,
+      "viewport": 1440,
+      "weeklyReportLinkPresent": true,
+      "wrapperRemoved": true
+    },
+    {
+      "agenda": {
+        "bottom": 1527.1015625,
+        "height": 932.3203125,
+        "width": 691.1328125,
+        "x": 279.8671875,
+        "y": 594.78125
+      },
+      "alignItems": "start",
+      "announcements": {
+        "bottom": 2582.4765625,
+        "height": 1035.375,
+        "width": 691.1328125,
+        "x": 279.8671875,
+        "y": 1547.1015625
+      },
+      "footer": {
+        "bottom": 1526.1015625,
+        "height": 49,
+        "width": 689.1328125,
+        "x": 280.8671875,
+        "y": 1477.1015625
+      },
+      "grid": {
+        "bottom": 2582.4765625,
+        "height": 1987.6953125,
+        "width": 691.1328125,
+        "x": 279.8671875,
+        "y": 594.78125
+      },
+      "gridColumns": "691.133px",
+      "horizontalOverflow": false,
+      "summaryRemoved": true,
+      "viewport": 1000,
+      "weeklyReportLinkPresent": true,
+      "wrapperRemoved": true
+    },
+    {
+      "agenda": {
+        "bottom": 1471.6953125,
+        "height": 902.921875,
+        "width": 349,
+        "x": 17,
+        "y": 568.7734375
+      },
+      "alignItems": "start",
+      "announcements": {
+        "bottom": 2553.7109375,
+        "height": 1063.015625,
+        "width": 349,
+        "x": 17,
+        "y": 1490.6953125
+      },
+      "footer": {
+        "bottom": 1470.6953125,
+        "height": 47,
+        "width": 347,
+        "x": 18,
+        "y": 1423.6953125
+      },
+      "grid": {
+        "bottom": 2553.7109375,
+        "height": 1984.9375,
+        "width": 349,
+        "x": 17,
+        "y": 568.7734375
+      },
+      "gridColumns": "349px",
+      "horizontalOverflow": false,
+      "summaryRemoved": true,
+      "viewport": 390,
+      "weeklyReportLinkPresent": true,
+      "wrapperRemoved": true
+    }
+  ],
+  "finalReload": {
+    "checkedAt": "2026-11-18T13:33:37.668Z",
+    "runtime": "scripts/dev.py --skip-migrations; UI200/API401",
+    "layout": {
+      "agenda": {
+        "bottom": 522.328125,
+        "height": 932.3203125,
+        "width": 603.8125,
+        "x": 267,
+        "y": -409.9921875
+      },
+      "alignItems": "start",
+      "announcements": {
+        "bottom": 667.3828125,
+        "height": 1077.375,
+        "width": 355.1875,
+        "x": 890.8125,
+        "y": -409.9921875
+      },
+      "footer": {
+        "bottom": 521.328125,
+        "height": 49,
+        "width": 601.8125,
+        "x": 268,
+        "y": 472.328125
+      },
+      "grid": {
+        "bottom": 667.3828125,
+        "height": 1077.375,
+        "width": 979,
+        "x": 267,
+        "y": -409.9921875
+      },
+      "gridColumns": "603.812px 355.188px",
+      "horizontalOverflow": false,
+      "summaryRemoved": true,
+      "viewport": 1280,
+      "weeklyReportLinkPresent": true,
+      "wrapperRemoved": true
+    },
+    "consoleErrors": []
+  }
+}

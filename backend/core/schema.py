@@ -7,14 +7,15 @@ from drf_spectacular.utils import (
     extend_schema,
     extend_schema_view,
     extend_schema_field,
+    extend_schema_serializer,
     inline_serializer,
 )
 from rest_framework import serializers as fields
 
 
-class AtlasBearerScheme(OpenApiAuthenticationExtension):
+class OnecsBearerScheme(OpenApiAuthenticationExtension):
     target_class = "core.authentication.ScopedJWTAuthentication"
-    name = "AtlasBearer"
+    name = "OnecsBearer"
 
     def get_security_definition(self, auto_schema):
         return {
@@ -28,6 +29,16 @@ class AtlasBearerScheme(OpenApiAuthenticationExtension):
 def body(name, properties, version=False):
     attrs = {"version": fields.IntegerField(min_value=1)} if version else {}
     attrs.update(properties)
+    if name in {
+        "ProjectCreate", "ProjectTaskCreate", "UnitWorkCreate", "ChildWorkCreate",
+        "CaseCreate", "CaseActionCreate", "CaseNoticeCreate", "AnnouncementCreate",
+        "CommunityCreate", "EventCreate", "CredentialCreate",
+    }:
+        attrs.update({
+            "attachment_ids": fields.ListField(child=fields.UUIDField(), max_length=5, required=False),
+            "send_email": fields.BooleanField(required=False, default=False),
+            "notification_recipient_ids": fields.ListField(child=fields.UUIDField(), max_length=20, required=False),
+        })
     return inline_serializer(name=name, fields=attrs)
 
 
@@ -191,6 +202,12 @@ def configure(views):
             "approve": body("ReportApproval", {"content_hash": text()}, True),
         },
         "EventViewSet": {
+            "create": body("EventCreate", {
+                "title": text(max_length=240), "description": text(required=False),
+                "location": text(required=False), "owner_org_id": uuid(required=False),
+                "starts_at": date(required=False), "ends_at": date(required=False),
+                "invitee_ids": fields.ListField(child=uuid(), required=False),
+            }),
             "rsvp": body(
                 "EventRSVPAction", {"answer": choice(["YES", "NO", "MAYBE"])}, True
             ),
@@ -201,12 +218,37 @@ def configure(views):
             ),
         },
         "CommunityViewSet": {
+            "create": body("CommunityCreate", {
+                "title": text(max_length=240), "body": text(),
+                "kind": choice(["SUCCESS", "HELP", "OFFER", "LESSON", "KNOWLEDGE"], required=False),
+                "all_cs": fields.BooleanField(required=False),
+                "audience_org_ids": fields.ListField(child=uuid(), required=False),
+                "source_type": text(required=False), "source_id": uuid(required=False),
+            }),
             "submit": version,
             "publish": version,
             "withdraw": version,
             "interest": version,
         },
-        "AnnouncementViewSet": {"publish": version, "withdraw": version},
+        "AnnouncementViewSet": {
+            "create": body("AnnouncementCreate", {
+                "title": text(max_length=240), "body": text(),
+                "all_cs": fields.BooleanField(required=False),
+                "audience_org_ids": fields.ListField(child=uuid(), required=False),
+                "starts_at": date(required=False), "ends_at": date(required=False),
+                "pinned": fields.BooleanField(required=False),
+            }),
+            "publish": version, "withdraw": version,
+        },
+        "CaseNoticeViewSet": {"create": body("CaseNoticeCreate", {
+            "title": text(max_length=240), "description": text(),
+        })},
+        "CredentialViewSet": {"create": body("CredentialCreate", {
+            "name": text(max_length=200), "issuer": text(max_length=180),
+            "user_id": uuid(required=False), "issued_on": fields.DateField(required=False),
+            "expires_on": fields.DateField(required=False), "no_expiry": fields.BooleanField(required=False),
+            "important": fields.BooleanField(required=False), "reference": text(required=False),
+        })},
         "NotificationViewSet": {
             "read": body(
                 "NotificationReadState", {"read": fields.BooleanField(required=False)}
@@ -275,6 +317,76 @@ def configure(views):
 
     # Field types are explicit; schema generation does not need live user data.
     from . import serializers as outputs
+
+    pivot_source = inline_serializer(name="ReportPivotSource", fields={
+        "type": choice(["work", "project", "case"]),
+        "id": uuid(),
+        "version": fields.IntegerField(required=False),
+        "title": text(required=False),
+        "status": text(required=False),
+        "priority": text(required=False),
+        "description": text(required=False),
+        "due_at": date(allow_null=True, required=False),
+        "visibility": choice(["DETAIL", "SUMMARY"], required=False),
+        "owner_org": fields.JSONField(required=False),
+        "selection_reason": text(required=False),
+        "team_id": uuid(allow_null=True),
+        "section": choice(["highlights", "lowlights", "escalations", "information", "next_steps"]),
+    })
+    pivot_counts = inline_serializer(name="ReportPivotCounts", fields={
+        name: fields.IntegerField(min_value=0)
+        for name in ("open", "completed", "critical", "overdue")
+    })
+    pivot_section = inline_serializer(name="ReportPivotSection", fields={
+        "key": text(), "title": text(), "count": fields.IntegerField(min_value=0),
+        "sources": pivot_source.__class__(many=True),
+    })
+
+    def pivot_summary_fields():
+        return {
+            "source_count": fields.IntegerField(min_value=0),
+            "counts": pivot_counts.__class__(),
+            "sections": pivot_section.__class__(many=True),
+        }
+
+    provenance = ["snapshot", "current_authorized", "mixed", "unassigned", "empty"]
+    pivot_general = inline_serializer(name="ReportPivotGeneral", fields=pivot_summary_fields())
+    pivot_team = inline_serializer(name="ReportPivotTeam", fields={
+        "id": uuid(allow_null=True), "name": text(), "code": text(),
+        "metadata_provenance": choice(provenance),
+        **pivot_summary_fields(), "sources": pivot_source.__class__(many=True),
+    })
+    views.ReportViewSet = extend_schema_view(pivot=extend_schema(
+        description="Raporun donmuş kaynaklarından ekip pivotu. Sayaçlar dönem sonu dahil hesaplanır; mevcut kaynak erişimi yeniden doğrulanır. AI çağrısı veya kayıt güncellemesi yapmaz.",
+        responses=extend_schema_serializer(many=False)(inline_serializer(name="ReportPivot", fields={
+            "report_id": uuid(), "report_version": fields.IntegerField(),
+            "content_hash": text(), "period_start": fields.DateField(),
+            "period_end": fields.DateField(), "as_of": fields.DateField(),
+            "source_count": fields.IntegerField(min_value=0),
+            "metadata_provenance": choice(provenance),
+            "section_order": fields.ListField(child=text()),
+            "general": pivot_general, "teams": pivot_team.__class__(many=True),
+        })),
+    ))(views.ReportViewSet)
+
+    views.NotificationViewSet = extend_schema_view(
+        list=extend_schema(
+            parameters=[
+                OpenApiParameter("status", str, enum=["all", "unread", "read"]),
+                OpenApiParameter("limit", int, description="1–100, varsayılan 50"),
+                OpenApiParameter("offset", int, description="Sıfır tabanlı sayfa başlangıcı"),
+                OpenApiParameter("search", str, description="Bildirim başlığında arama"),
+            ],
+            responses=extend_schema_serializer(many=False)(inline_serializer(name="NotificationInbox", fields={
+                "results": outputs.NotificationSerializer(many=True),
+                "count": fields.IntegerField(),
+                "unread_count": fields.IntegerField(help_text="Filtre/sayfa dışında kalanlar dahil tüm yetkili okunmamış kayıtlar"),
+                "limit": fields.IntegerField(),
+                "offset": fields.IntegerField(),
+                "next_offset": fields.IntegerField(allow_null=True),
+            })),
+        )
+    )(views.NotificationViewSet)
 
     method_types = {
         "PersonSerializer": {

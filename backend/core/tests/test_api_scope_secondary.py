@@ -25,11 +25,11 @@ from core.models import (
     WorkItem,
 )
 from core.policy import can_read_work, report_source
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 from core.views import issue_token
 
 
-class SecondaryBearerScopeTests(AtlasTestCase):
+class SecondaryBearerScopeTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.inside_work = WorkItem.objects.create(
@@ -89,7 +89,7 @@ class SecondaryBearerScopeTests(AtlasTestCase):
             name="OS-scoped director API",
             user=self.director,
             org_node=self.unit,
-            scopes=["atlas:read"],
+            scopes=["onecs:read"],
         )
         self.bearer = APIClient()
         self.bearer.credentials(
@@ -355,7 +355,7 @@ class SecondaryBearerScopeTests(AtlasTestCase):
         )
 
 
-class SingleSourceLookupTests(AtlasTestCase):
+class SingleSourceLookupTests(OnecsTestCase):
     def test_lookup_checks_only_one_requested_record_even_with_large_unrelated_collection(
         self,
     ):

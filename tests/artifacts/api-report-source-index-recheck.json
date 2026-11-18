@@ -14,7 +14,7 @@
   ],
   "results": [
     {
-      "test": "__main__.AtlasApiAcceptance.test_50_report_star_sources_and_generation",
+      "test": "__main__.OnecsApiAcceptance.test_50_report_star_sources_and_generation",
       "status": "passed"
     }
   ],
@@ -23,5 +23,10 @@
     "report_50_generation_mode": "AI",
     "report_50_visible_source_references": 9,
     "report_50_snapshot_sources": 9
+  },
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "54a2490d5dec61e9faa36cf45340afdf4c38b3ff5ea015297f1064106d0e3ddc"
   }
 }

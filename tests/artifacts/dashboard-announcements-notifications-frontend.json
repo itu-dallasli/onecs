@@ -1,0 +1,928 @@
+{
+  "numTotalTestSuites": 22,
+  "numPassedTestSuites": 22,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 61,
+  "numPassedTests": 61,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1795008194264,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "dashboard announcement visibility"
+          ],
+          "fullName": "dashboard announcement visibility shows every supplied published and pending item with a direct detail link",
+          "status": "passed",
+          "title": "shows every supplied published and pending item with a direct detail link",
+          "duration": 22.955457999999965,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard announcement visibility"
+          ],
+          "fullName": "dashboard announcement visibility makes limited previews explicit and links each group to the matching status filter",
+          "status": "passed",
+          "title": "makes limited previews explicit and links each group to the matching status filter",
+          "duration": 3.6924999999999955,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard announcement visibility"
+          ],
+          "fullName": "dashboard announcement visibility keeps both sections present when no visible announcements exist",
+          "status": "passed",
+          "title": "keeps both sections present when no visible announcements exist",
+          "duration": 1.5694589999999948,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194801,
+      "endTime": 1795008194829.5696,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/components/DashboardAnnouncements.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics keeps missing and malformed counts distinct from measured zero",
+          "status": "passed",
+          "title": "keeps missing and malformed counts distinct from measured zero",
+          "duration": 1.1713749999999834,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics keeps work and case counts separate and never invents a missing case count",
+          "status": "passed",
+          "title": "keeps work and case counts separate and never invents a missing case count",
+          "duration": 1.0812079999999753,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics uses only the supplied visible agenda and includes unspecified priorities in its denominator",
+          "status": "passed",
+          "title": "uses only the supplied visible agenda and includes unspecified priorities in its denominator",
+          "duration": 0.17508399999999824,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics does not manufacture a distribution for an empty agenda",
+          "status": "passed",
+          "title": "does not manufacture a distribution for an empty agenda",
+          "duration": 0.29050000000000864,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194787,
+      "endTime": 1795008194789.2905,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/components/DashboardCharts.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "notification list presentation"
+          ],
+          "fullName": "notification list presentation shows the server unread total, paged history and separate read actions",
+          "status": "passed",
+          "title": "shows the server unread total, paged history and separate read actions",
+          "duration": 20.099333,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification list presentation"
+          ],
+          "fullName": "notification list presentation provides an unread action for a read row and disables mutation buttons while saving",
+          "status": "passed",
+          "title": "provides an unread action for a read row and disables mutation buttons while saving",
+          "duration": 1.8832500000000323,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification list presentation"
+          ],
+          "fullName": "notification list presentation shows a loading state instead of a misleading empty inbox",
+          "status": "passed",
+          "title": "shows a loading state instead of a misleading empty inbox",
+          "duration": 1.441500000000019,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification list presentation"
+          ],
+          "fullName": "notification list presentation makes inbox failures retryable without claiming there are no notifications",
+          "status": "passed",
+          "title": "makes inbox failures retryable without claiming there are no notifications",
+          "duration": 1.3654170000000363,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194767,
+      "endTime": 1795008194792.3655,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/components/Notifications.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export preserves missing scores separately from measured zero",
+          "status": "passed",
+          "title": "preserves missing scores separately from measured zero",
+          "duration": 1.0589590000000157,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export does not turn blank human reviews into invented zero scores",
+          "status": "passed",
+          "title": "does not turn blank human reviews into invented zero scores",
+          "duration": 1.1706670000000372,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export builds a trend only from real dated delivery snapshots",
+          "status": "passed",
+          "title": "builds a trend only from real dated delivery snapshots",
+          "duration": 0.6322499999999991,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export escapes report and title content in printable HTML",
+          "status": "passed",
+          "title": "escapes report and title content in printable HTML",
+          "duration": 0.3320420000000013,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194678,
+      "endTime": 1795008194681.6323,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/components/ProjectInsights.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts canonicalizes Django URLs before query parameters",
+          "status": "passed",
+          "title": "canonicalizes Django URLs before query parameters",
+          "duration": 17.946584,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not duplicate a canonical trailing slash",
+          "status": "passed",
+          "title": "does not duplicate a canonical trailing slash",
+          "duration": 0.42079200000000583,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses session cookies, CSRF and a unique request id on mutation",
+          "status": "passed",
+          "title": "uses session cookies, CSRF and a unique request id on mutation",
+          "duration": 1.4860000000000184,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses rotated csrf token returned by the server",
+          "status": "passed",
+          "title": "uses rotated csrf token returned by the server",
+          "duration": 0.7473329999999976,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts preserves multipart boundaries and an explicit idempotency identity",
+          "status": "passed",
+          "title": "preserves multipart boundaries and an explicit idempotency identity",
+          "duration": 0.6444169999999758,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts preserves human-readable integration test failures",
+          "status": "passed",
+          "title": "preserves human-readable integration test failures",
+          "duration": 1.8883749999999964,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts turns field validation errors into actionable feedback",
+          "status": "passed",
+          "title": "turns field validation errors into actionable feedback",
+          "duration": 0.4334169999999915,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not display a raw server traceback as user feedback",
+          "status": "passed",
+          "title": "does not display a raw server traceback as user feedback",
+          "duration": 2.041041000000007,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts recovers list shape safely when optional results are absent",
+          "status": "passed",
+          "title": "recovers list shape safely when optional results are absent",
+          "duration": 0.6306249999999807,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts translates offline failures into a recoverable API error",
+          "status": "passed",
+          "title": "translates offline failures into a recoverable API error",
+          "duration": 0.48483300000000895,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194677,
+      "endTime": 1795008194704.4849,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/lib/api.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior uses the global unread total instead of counting the first page",
+          "status": "passed",
+          "title": "uses the global unread total instead of counting the first page",
+          "duration": 1.9678750000000207,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior fetches each read filter from the server and keeps the global badge",
+          "status": "passed",
+          "title": "fetches each read filter from the server and keeps the global badge",
+          "duration": 0.586416000000014,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior loads more without duplicate rows and refreshes the authorized loaded pages",
+          "status": "passed",
+          "title": "loads more without duplicate rows and refreshes the authorized loaded pages",
+          "duration": 1.1337079999999844,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior revalidates a second loaded page without retaining its stale contents",
+          "status": "passed",
+          "title": "revalidates a second loaded page without retaining its stale contents",
+          "duration": 0.5421670000000063,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior persists opening as read and restores server state on the next refresh",
+          "status": "passed",
+          "title": "persists opening as read and restores server state on the next refresh",
+          "duration": 0.38775000000001114,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior does not repeat a row when a new notification shifts offsets during refresh",
+          "status": "passed",
+          "title": "does not repeat a row when a new notification shifts offsets during refresh",
+          "duration": 0.2615419999999915,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior persists marking one row unread without marking any other row",
+          "status": "passed",
+          "title": "persists marking one row unread without marking any other row",
+          "duration": 0.19204200000001492,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior ignores a slow polling response that arrives after a read was saved",
+          "status": "passed",
+          "title": "ignores a slow polling response that arrives after a read was saved",
+          "duration": 0.21670800000001122,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior does not open a revoked source and removes its old title after a rejected read",
+          "status": "passed",
+          "title": "does not open a revoked source and removes its old title after a rejected read",
+          "duration": 0.8092910000000018,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior clears cached titles and counters when inbox access is denied",
+          "status": "passed",
+          "title": "clears cached titles and counters when inbox access is denied",
+          "duration": 0.20812500000002387,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior removes a rejected source even if the follow-up inbox refresh is offline",
+          "status": "passed",
+          "title": "removes a rejected source even if the follow-up inbox refresh is offline",
+          "duration": 0.17808299999998667,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior marks all only through its explicit action, independently of the current filter",
+          "status": "passed",
+          "title": "marks all only through its explicit action, independently of the current filter",
+          "duration": 0.18354199999998855,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior does not carry a pending previous user's inbox into a disposed session",
+          "status": "passed",
+          "title": "does not carry a pending previous user's inbox into a disposed session",
+          "duration": 0.08820800000000872,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification inbox behavior"
+          ],
+          "fullName": "notification inbox behavior uses only explicit local canonical targets and tolerates legacy read indicators",
+          "status": "passed",
+          "title": "uses only explicit local canonical targets and tolerates legacy read indicators",
+          "duration": 0.7610410000000059,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194650,
+      "endTime": 1795008194657.761,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/lib/notifications.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Record attachments and selected email recipients"
+          ],
+          "fullName": "Record attachments and selected email recipients rejects oversized, active-content and excessive selections before upload",
+          "status": "passed",
+          "title": "rejects oversized, active-content and excessive selections before upload",
+          "duration": 5.235292000000015,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Record attachments and selected email recipients"
+          ],
+          "fullName": "Record attachments and selected email recipients stages a real multipart file and claims it together with explicit recipient preferences",
+          "status": "passed",
+          "title": "stages a real multipart file and claims it together with explicit recipient preferences",
+          "duration": 26.342416000000014,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Record attachments and selected email recipients"
+          ],
+          "fullName": "Record attachments and selected email recipients cleans staged files after a rejected create and preserves the original failure",
+          "status": "passed",
+          "title": "cleans staged files after a rejected create and preserves the original failure",
+          "duration": 2.6774999999999807,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Record attachments and selected email recipients"
+          ],
+          "fullName": "Record attachments and selected email recipients retries a lost response with the same request identity and payload",
+          "status": "passed",
+          "title": "retries a lost response with the same request identity and payload",
+          "duration": 0.5508329999999546,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Record attachments and selected email recipients"
+          ],
+          "fullName": "Record attachments and selected email recipients does not post when email is enabled without a selected recipient",
+          "status": "passed",
+          "title": "does not post when email is enabled without a selected recipient",
+          "duration": 0.34337499999998045,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194588,
+      "endTime": 1795008194623.3433,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/lib/recordExtras.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "announcement dashboard destinations"
+          ],
+          "fullName": "announcement dashboard destinations opens the published filter linked from dashboard",
+          "status": "passed",
+          "title": "opens the published filter linked from dashboard",
+          "duration": 9.299375000000026,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "announcement dashboard destinations"
+          ],
+          "fullName": "announcement dashboard destinations opens pending proposals and honors server denial despite a locally matching manager role",
+          "status": "passed",
+          "title": "opens pending proposals and honors server denial despite a locally matching manager role",
+          "duration": 2.6306249999999807,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "announcement dashboard destinations"
+          ],
+          "fullName": "announcement dashboard destinations offers publication when the server grants the action",
+          "status": "passed",
+          "title": "offers publication when the server grants the action",
+          "duration": 2.6861249999999757,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "announcement dashboard destinations"
+          ],
+          "fullName": "announcement dashboard destinations uses the complete list when a status link is malformed",
+          "status": "passed",
+          "title": "uses the complete list when a status link is malformed",
+          "duration": 3.0225420000000156,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194822,
+      "endTime": 1795008194840.0225,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/Announcements.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings shows exact directory identities, organization and role scope",
+          "status": "passed",
+          "title": "shows exact directory identities, organization and role scope",
+          "duration": 9.50324999999998,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings lets a technical administrator manage employee mappings while protecting business roles",
+          "status": "passed",
+          "title": "lets a technical administrator manage employee mappings while protecting business roles",
+          "duration": 2.303333000000009,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings allows business mapping edits with the server-confirmed director authority",
+          "status": "passed",
+          "title": "allows business mapping edits with the server-confirmed director authority",
+          "duration": 2.127125000000035,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings does not grant mapping write access from a business role alone",
+          "status": "passed",
+          "title": "does not grant mapping write access from a business role alone",
+          "duration": 2.5642500000000155,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings keeps the server authorization error visible",
+          "status": "passed",
+          "title": "keeps the server authorization error visible",
+          "duration": 2.6036250000000223,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194705,
+      "endTime": 1795008194723.6035,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/LDAPLoginMappings.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "notification participation deep links"
+          ],
+          "fullName": "notification participation deep links opens only the focused request on the projects page without parent details",
+          "status": "passed",
+          "title": "opens only the focused request on the projects page without parent details",
+          "duration": 14.721708000000035,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification participation deep links"
+          ],
+          "fullName": "notification participation deep links opens only the focused request on the cases page without parent details",
+          "status": "passed",
+          "title": "opens only the focused request on the cases page without parent details",
+          "duration": 4.250790999999992,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification participation deep links"
+          ],
+          "fullName": "notification participation deep links shows a localized, retryable error when the focused request is inaccessible",
+          "status": "passed",
+          "title": "shows a localized, retryable error when the focused request is inaccessible",
+          "duration": 3.2660419999999704,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification participation deep links"
+          ],
+          "fullName": "notification participation deep links does not display a mismatched response as the requested notification target",
+          "status": "passed",
+          "title": "does not display a mismatched response as the requested notification target",
+          "duration": 4.327041000000008,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification participation deep links"
+          ],
+          "fullName": "notification participation deep links opens a case-notice notification directly without unrelated notices",
+          "status": "passed",
+          "title": "opens a case-notice notification directly without unrelated notices",
+          "duration": 17.595833999999968,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "notification participation deep links"
+          ],
+          "fullName": "notification participation deep links shows a retryable error for an inaccessible case-notice notification",
+          "status": "passed",
+          "title": "shows a retryable error for an inaccessible case-notice notification",
+          "duration": 4.333542000000023,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194704,
+      "endTime": 1795008194753.3335,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/Records.notifications.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics keeps each stored failure visible after the settings page is reopened",
+          "status": "passed",
+          "title": "keeps each stored failure visible after the settings page is reopened",
+          "duration": 30.15270800000002,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics distinguishes an unconfigured profile from a failed external request",
+          "status": "passed",
+          "title": "distinguishes an unconfigured profile from a failed external request",
+          "duration": 3.287040999999988,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795008194686,
+      "endTime": 1795008194719.287,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/Settings.test.tsx"
+    }
+  ],
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "8afa892e5f0ebd0a1588e39a796e074b7b1fa96650206b72030834a94005a082"
+  }
+}

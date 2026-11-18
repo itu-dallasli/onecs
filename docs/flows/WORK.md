@@ -1,4 +1,4 @@
-# Atlas · Unit işleri, alt işler ve taahhütler
+# onecs · Unit işleri, alt işler ve taahhütler
 
 Unit işleri organizasyon kapsamıyla; proje görevleri PM, vaka aksiyonları vaka yetkisiyle yönetilir. Birleşik görev listesi bu hakları birleştirmez.
 

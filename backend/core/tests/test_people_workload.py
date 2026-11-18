@@ -4,10 +4,10 @@ from datetime import timedelta
 from django.utils import timezone
 
 from core.models import Case, ProgressEntry, Project, ProjectMembership, ProjectRevision, WorkItem
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class PersonWorkloadTests(AtlasTestCase):
+class PersonWorkloadTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.work = WorkItem.objects.create(title="Visible unit task", description="Unit details", assigned_to=self.employee, created_by=self.unit_head, owner_org=self.team, priority="CRITICAL", due_at=timezone.now() - timedelta(days=1))

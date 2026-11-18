@@ -557,7 +557,7 @@ class ProjectInsightViewSet(DomainViewSet):
             markdown,
             content_type="text/markdown; charset=utf-8",
             headers={
-                "Content-Disposition": 'attachment; filename="Atlas-project-report.md"'
+                "Content-Disposition": 'attachment; filename="onecs-project-report.md"'
             },
         )
 

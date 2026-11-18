@@ -1,0 +1,321 @@
+.record-extras {
+  border: 1px solid var(--line, #dce4eb);
+  border-radius: 14px;
+  background: var(--surface, #fff);
+  overflow: hidden;
+}
+.record-extras-section {
+  padding: 18px;
+}
+.record-extras-section + .record-extras-section {
+  border-top: 1px solid var(--line, #dce4eb);
+}
+.record-extras-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink, #17364d);
+  margin-bottom: 13px;
+}
+.record-extras-heading > div {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+.record-extras-heading strong,
+.record-extras-email-switch strong {
+  font-size: 13px;
+  font-weight: 650;
+}
+.record-extras-heading small,
+.record-extras-email-switch small {
+  color: var(--muted, #718292);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.record-extras-heading > span {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--subtle, #f1f5f8);
+}
+.record-extra-dropzone {
+  position: relative;
+  border: 1px dashed #a9bdcc;
+  border-radius: 10px;
+  min-height: 90px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--ink, #17364d);
+  cursor: pointer;
+  background: var(--subtle, #f7fafc);
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.record-extra-dropzone:hover,
+.record-extra-dropzone.is-dragging {
+  border-color: #1e729c;
+  background: var(--hover, #eef6fa);
+}
+.record-extra-dropzone:focus-within {
+  outline: 2px solid #267ca4;
+  outline-offset: 3px;
+}
+.record-extra-dropzone > span {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.record-extra-dropzone strong {
+  font-size: 12px;
+}
+.record-extra-dropzone small {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted, #718292);
+}
+.record-extra-dropzone input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.record-extra-dropzone.is-disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+.record-extra-files {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 8px;
+}
+.record-extra-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--line, #e0e7ed);
+  border-radius: 10px;
+  min-width: 0;
+}
+.record-extra-file-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: var(--subtle, #f0f5f8);
+  border-radius: 7px;
+  overflow: hidden;
+  flex-shrink: 0;
+  color: var(--muted, #678297);
+}
+.record-extra-file-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.record-extra-file-name {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
+}
+.record-extra-file-name strong {
+  font-size: 11px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.record-extra-file-name small {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--muted, #718292);
+}
+.record-extra-remove,
+.record-extra-recipient-tags button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 5px;
+  color: var(--muted, #718292);
+  display: grid;
+  place-items: center;
+}
+.record-extra-remove:hover {
+  color: #b23c40;
+}
+.record-extra-remove:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.record-extras-note {
+  color: var(--muted, #718292);
+  font-size: 10px;
+  line-height: 1.7;
+  margin: 10px 0 0;
+}
+.record-extras-error {
+  color: #b43e43;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 10px 0 0;
+}
+.record-extras-progress {
+  color: #1c668c;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 12px 0 0;
+}
+.record-extras-email-switch {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+.record-extras-email-switch input {
+  width: 15px;
+  min-width: 15px;
+  height: 15px;
+  min-height: 15px;
+  margin: 2px 0 0;
+  accent-color: #0f5880;
+}
+.record-extras-email-switch > svg {
+  margin-top: 1px;
+  flex-shrink: 0;
+  color: var(--muted, #678297);
+}
+.record-extras-email-switch > span {
+  display: grid;
+  gap: 5px;
+}
+.record-extras-recipients {
+  margin-top: 15px;
+}
+.record-extras-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line, #dce4eb);
+  border-radius: 8px;
+  padding: 0 10px;
+  color: var(--muted, #718292);
+}
+.record-extras-search input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  min-width: 0;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 0;
+  font-size: 11px;
+}
+.record-extras-search input:focus {
+  outline: none;
+  box-shadow: none;
+}
+.record-extra-recipient-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+.record-extra-recipient-tags > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--subtle, #eef4f7);
+  color: var(--ink, #204960);
+  border-radius: 6px;
+  padding: 2px 5px 2px 8px;
+  font-size: 10px;
+}
+.record-extra-recipient-options {
+  max-height: 185px;
+  overflow-y: auto;
+  display: grid;
+  gap: 2px;
+  margin-top: 9px;
+}
+.record-extra-recipient-options > label {
+  display: flex;
+  align-items: center;
+  padding: 8px 6px;
+  border-radius: 6px;
+  gap: 9px;
+  cursor: pointer;
+}
+.record-extra-recipient-options > label:hover {
+  background: var(--subtle, #f2f6f8);
+}
+.record-extra-recipient-options input {
+  width: 14px;
+  min-width: 14px;
+  height: 14px;
+  min-height: 14px;
+  margin: 0;
+  accent-color: #0f5880;
+}
+.record-extra-recipient-options > label > span {
+  flex: 1;
+  display: grid;
+  gap: 3px;
+}
+.record-extra-recipient-options strong {
+  font-weight: 600;
+  font-size: 11px;
+}
+.record-extra-recipient-options small {
+  color: var(--muted, #718292);
+  font-size: 10px;
+}
+.record-extra-recipient-options > label > svg {
+  color: #1e729c;
+}
+.record-attachments h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.record-extra-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink, #175e82);
+  text-decoration: none;
+  padding: 7px;
+  flex-shrink: 0;
+}
+.record-extra-download:hover {
+  text-decoration: underline;
+}
+.record-extra-pending {
+  font-size: 10px;
+  color: var(--muted, #718292);
+  flex-shrink: 0;
+}
+@media (max-width: 500px) {
+  .record-extras-section {
+    padding: 14px;
+  }
+  .record-extras-heading small {
+    font-size: 10px;
+  }
+  .record-extra-dropzone {
+    padding: 12px;
+    gap: 9px;
+  }
+  .record-extra-download span {
+    display: none;
+  }
+}

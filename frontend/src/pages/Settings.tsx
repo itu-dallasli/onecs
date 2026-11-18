@@ -33,7 +33,8 @@ import {
 } from "lucide-react";
 import { api, list, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
-import { Drawer } from "../components/ui";
+import { Drawer, Loading } from "../components/ui";
+import LDAPLoginMappings from "./LDAPLoginMappings";
 import "../styles/settings.css";
 
 type Row = Record<string, any>;
@@ -132,7 +133,7 @@ function Notice({
 }) {
   return (
     <div
-      className={`atlas-settings-notice ${tone}`}
+      className={`onecs-settings-notice ${tone}`}
       role={tone === "error" ? "alert" : "status"}
     >
       {tone === "success" ? (
@@ -146,14 +147,6 @@ function Notice({
     </div>
   );
 }
-function Loading() {
-  return (
-    <div className="atlas-settings-loading">
-      <Loader2 className="spin" size={20} />
-      <span>Yükleniyor…</span>
-    </div>
-  );
-}
 function Empty({
   title,
   description,
@@ -162,7 +155,7 @@ function Empty({
   description?: string;
 }) {
   return (
-    <div className="atlas-settings-empty">
+    <div className="onecs-settings-empty">
       <ShieldCheck size={28} />
       <strong>{title}</strong>
       {description && <p>{description}</p>}
@@ -181,8 +174,8 @@ function Heading({
   actions?: ReactNode;
 }) {
   return (
-    <div className="atlas-settings-heading">
-      <span className="atlas-settings-title-icon">
+    <div className="onecs-settings-heading">
+      <span className="onecs-settings-title-icon">
         <Icon size={23} />
       </span>
       <div>
@@ -190,7 +183,7 @@ function Heading({
         <p>{description}</p>
       </div>
       {actions && (
-        <div className="atlas-settings-heading-actions">{actions}</div>
+        <div className="onecs-settings-heading-actions">{actions}</div>
       )}
     </div>
   );
@@ -216,7 +209,7 @@ function Modal({
         if (!busy) onClose();
       }}
     >
-      <div className="atlas-settings-modal-content" aria-busy={busy}>
+      <div className="onecs-settings-modal-content" aria-busy={busy}>
         {children}
       </div>
     </Drawer>
@@ -350,14 +343,14 @@ function ConfigPanel({
   if (loading && !data) return <Loading />;
   if (error && !data) return <Notice tone="error">{error}</Notice>;
   return (
-    <section className="atlas-settings-card atlas-settings-config">
-      <div className="atlas-settings-config-title">
+    <section className="onecs-settings-card onecs-settings-config">
+      <div className="onecs-settings-config-title">
         <div>
           <h3>{title}</h3>
           <p>{description}</p>
         </div>
         <span
-          className={`atlas-settings-pill ${currentTestFailure ? "warning" : data?.ready ? "positive" : "muted"}`}
+          className={`onecs-settings-pill ${currentTestFailure ? "warning" : data?.ready ? "positive" : "muted"}`}
         >
           {section === "general" || (section === "ai" && !canTest)
             ? `Sürüm ${data?.version || 1}`
@@ -381,21 +374,21 @@ function ConfigPanel({
         </Notice>
       )}
       <form onSubmit={save}>
-        <div className="atlas-settings-form-grid">
+        <div className="onecs-settings-form-grid">
           {fields.map((field, index) => (
             <Fragment key={field.key}>
               {field.group && field.group !== fields[index - 1]?.group && (
-                <div className="atlas-settings-form-group-header">
+                <div className="onecs-settings-form-group-header">
                   <h4>{field.group}</h4>
                 </div>
               )}
               <label
-                className={`atlas-settings-field ${field.type === "checkbox" ? "toggle-field" : ""}`}
+                className={`onecs-settings-field ${field.type === "checkbox" ? "toggle-field" : ""}`}
                 key={field.key}
               >
                 <span>{field.label}</span>
                 {field.type === "checkbox" ? (
-                  <div className="atlas-settings-toggle-line">
+                  <div className="onecs-settings-toggle-line">
                     <input
                       type="checkbox"
                       checked={Boolean(
@@ -471,7 +464,7 @@ function ConfigPanel({
                 {field.secret && data?.secret_fields?.includes(field.key) && (
                   <button
                     type="button"
-                    className="atlas-settings-secret-clear"
+                    className="onecs-settings-secret-clear"
                     onClick={() => {
                       setSecrets((previous) => ({
                         ...previous,
@@ -500,7 +493,7 @@ function ConfigPanel({
           ))}
         </div>
         {section === "smtp" && (
-          <label className="atlas-settings-field atlas-settings-test-recipient">
+          <label className="onecs-settings-field onecs-settings-test-recipient">
             <span>Bağlantı testi alıcısı</span>
             <input
               type="email"
@@ -514,7 +507,7 @@ function ConfigPanel({
             </small>
           </label>
         )}
-        <div className="atlas-settings-form-footer">
+        <div className="onecs-settings-form-footer">
           <span>
             {data?.version
               ? `Yapılandırma sürümü ${data.version}`
@@ -526,7 +519,7 @@ function ConfigPanel({
           {canTest && (
             <button
               type="button"
-              className="atlas-settings-button"
+              className="onecs-settings-button"
               disabled={
                 busy ||
                 dirty ||
@@ -546,7 +539,7 @@ function ConfigPanel({
           )}
           <button
             type="submit"
-            className="atlas-settings-button primary"
+            className="onecs-settings-button primary"
             disabled={busy || !data}
           >
             {busy ? (
@@ -671,12 +664,12 @@ function UserEditor({
         {form.identity_source === "ldap" && (
           <Notice>
             Hesap, yapılandırılmış dizinde kalıcı kimliğiyle doğrulanır. LDAP
-            parolası Atlas'ta saklanmaz; rol ataması ayrıca uygulanır.
+            parolası onecs’te saklanmaz; rol ataması ayrıca uygulanır.
           </Notice>
         )}
-        <div className="atlas-settings-form-grid">
+        <div className="onecs-settings-form-grid">
           {!user && (
-            <label className="atlas-settings-field">
+            <label className="onecs-settings-field">
               <span>Kimlik kaynağı</span>
               <select
                 value={form.identity_source}
@@ -688,7 +681,7 @@ function UserEditor({
               </select>
             </label>
           )}
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Kullanıcı adı</span>
             <input
               value={form.username}
@@ -699,7 +692,7 @@ function UserEditor({
               autoComplete="off"
             />
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Ad soyad</span>
             <input
               value={form.display_name}
@@ -709,7 +702,7 @@ function UserEditor({
               maxLength={180}
             />
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>E-posta</span>
             <input
               type="email"
@@ -719,7 +712,7 @@ function UserEditor({
             />
           </label>
           {form.identity_source !== "ldap" && (
-            <label className="atlas-settings-field">
+            <label className="onecs-settings-field">
               <span>{user ? "Yeni parola (isteğe bağlı)" : "İlk parola"}</span>
               <input
                 type="password"
@@ -737,7 +730,7 @@ function UserEditor({
               </small>
             </label>
           )}
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Ana organizasyon birimi</span>
             <select
               value={form.primary_org}
@@ -753,9 +746,9 @@ function UserEditor({
               ))}
             </select>
           </label>
-          <label className="atlas-settings-field toggle-field">
+          <label className="onecs-settings-field toggle-field">
             <span>Erişim durumu</span>
-            <div className="atlas-settings-toggle-line">
+            <div className="onecs-settings-toggle-line">
               <input
                 type="checkbox"
                 checked={form.is_active}
@@ -766,11 +759,11 @@ function UserEditor({
             </div>
           </label>
         </div>
-        <div className="atlas-settings-grants-heading">
+        <div className="onecs-settings-grants-heading">
           <strong>Rol ve kapsam atamaları</strong>
           <button
             type="button"
-            className="atlas-settings-button small"
+            className="onecs-settings-button small"
             disabled={busy}
             onClick={() => {
               setGrantDirty(true);
@@ -790,15 +783,15 @@ function UserEditor({
           </button>
         </div>
         {!businessGrantAllowed && (
-          <p className="atlas-settings-footnote">
+          <p className="onecs-settings-footnote">
             İş yönetimi rolleri, ayrıca yetkili bir iş yöneticisi tarafından
             atanır. Teknik yönetici mevcut iş rolünü yükseltemez.
           </p>
         )}
-        <div className="atlas-settings-grants">
+        <div className="onecs-settings-grants">
           {grants.map((grant, index) => (
-            <div className="atlas-settings-grant" key={grant.id || index}>
-              <label className="atlas-settings-field">
+            <div className="onecs-settings-grant" key={grant.id || index}>
+              <label className="onecs-settings-field">
                 <span>Rol</span>
                 <select
                   value={grant.role}
@@ -826,7 +819,7 @@ function UserEditor({
                     ))}
                 </select>
               </label>
-              <label className="atlas-settings-field">
+              <label className="onecs-settings-field">
                 <span>Kapsam</span>
                 <select
                   value={grant.org_node || ""}
@@ -843,9 +836,9 @@ function UserEditor({
                   ))}
                 </select>
               </label>
-              <label className="atlas-settings-field toggle-field">
+              <label className="onecs-settings-field toggle-field">
                 <span>Alt birimler</span>
-                <div className="atlas-settings-toggle-line">
+                <div className="onecs-settings-toggle-line">
                   <input
                     type="checkbox"
                     checked={!!grant.includes_descendants}
@@ -862,7 +855,7 @@ function UserEditor({
                 </div>
               </label>
               <button
-                className="atlas-settings-icon-button"
+                className="onecs-settings-icon-button"
                 type="button"
                 disabled={busy || !roleEditable(grant.role)}
                 aria-label={`${index + 1}. rolü kaldır`}
@@ -878,10 +871,10 @@ function UserEditor({
             </div>
           ))}
         </div>
-        <footer className="atlas-settings-modal-footer">
+        <footer className="onecs-settings-modal-footer">
           <button
             type="button"
-            className="atlas-settings-button"
+            className="onecs-settings-button"
             onClick={onClose}
             disabled={busy}
           >
@@ -889,7 +882,7 @@ function UserEditor({
           </button>
           <button
             type="submit"
-            className="atlas-settings-button primary"
+            className="onecs-settings-button primary"
             disabled={busy}
           >
             {busy ? (
@@ -930,9 +923,9 @@ function UsersPanel() {
         Kontrollü erişim. İş rolleri, organizasyon kapsamı ve proje / vaka
         üyeliği birlikte değerlendirilir.
       </Notice>
-      <section className="atlas-settings-card">
+      <section className="onecs-settings-card">
         <div
-          className="atlas-settings-subtabs"
+          className="onecs-settings-subtabs"
           role="tablist"
           aria-label="Kullanıcı kaynağı"
         >
@@ -952,8 +945,8 @@ function UsersPanel() {
             </button>
           ))}
         </div>
-        <div className="atlas-settings-toolbar">
-          <div className="atlas-settings-search">
+        <div className="onecs-settings-toolbar">
+          <div className="onecs-settings-search">
             <Search size={17} />
             <input
               aria-label="Kullanıcı ara"
@@ -967,7 +960,7 @@ function UsersPanel() {
               </button>
             )}
           </div>
-          <label className="atlas-settings-archive-toggle">
+          <label className="onecs-settings-archive-toggle">
             <input
               type="checkbox"
               checked={archived}
@@ -976,7 +969,7 @@ function UsersPanel() {
             Devre dışı hesaplar dahil
           </label>
           <button
-            className="atlas-settings-button primary"
+            className="onecs-settings-button primary"
             onClick={() => setEditor(null)}
           >
             <Plus size={16} />
@@ -986,8 +979,8 @@ function UsersPanel() {
           </button>
         </div>
         {error && <Notice tone="error">{error}</Notice>}
-        <div className="atlas-settings-table-wrap">
-          <table className="atlas-settings-table">
+        <div className="onecs-settings-table-wrap">
+          <table className="onecs-settings-table">
             <thead>
               <tr>
                 <th>Kullanıcı</th>
@@ -1013,7 +1006,7 @@ function UsersPanel() {
                     </small>
                   </td>
                   <td>
-                    <span className="atlas-settings-role">
+                    <span className="onecs-settings-role">
                       <ShieldCheck size={13} />
                       {roleLabels[user.role] ||
                         user.role ||
@@ -1036,14 +1029,14 @@ function UsersPanel() {
                   </td>
                   <td>
                     <span
-                      className={`atlas-settings-pill ${user.is_active !== false ? "positive" : "muted"}`}
+                      className={`onecs-settings-pill ${user.is_active !== false ? "positive" : "muted"}`}
                     >
                       {user.is_active !== false ? "Aktif" : "Devre dışı"}
                     </span>
                   </td>
                   <td className="right">
                     <button
-                      className="atlas-settings-icon-button"
+                      className="onecs-settings-icon-button"
                       disabled={
                         user.id === actor.id ||
                         (!roleData?.business_grant_allowed &&
@@ -1086,10 +1079,10 @@ function UsersPanel() {
             description="Sistem kullanıcısı ekleyebilir veya LDAP bağlantınızı yapılandırabilirsiniz."
           />
         ) : null}
-        <footer className="atlas-settings-pagination">
+        <footer className="onecs-settings-pagination">
           <span>{data?.count ?? users.length} kullanıcı</span>
           <button
-            className="atlas-settings-button small"
+            className="onecs-settings-button small"
             onClick={refresh}
             disabled={loading}
           >
@@ -1098,7 +1091,7 @@ function UsersPanel() {
           </button>
         </footer>
       </section>
-      <p className="atlas-settings-footnote">
+      <p className="onecs-settings-footnote">
         Kullanıcı hesabının kapatılması, geçmiş katkı ve denetim kayıtlarını
         silmez.
       </p>
@@ -1137,11 +1130,11 @@ function OrganizationPanel() {
         yöneticisi, başka bir proje yöneticisinin projelerinde yalnızca
         organizasyon rolüyle yönetim yetkisi kazanmaz.
       </Notice>
-      <div className="atlas-settings-two-columns">
-        <section className="atlas-settings-card">
-          <div className="atlas-settings-config-title">
+      <div className="onecs-settings-two-columns">
+        <section className="onecs-settings-card">
+          <div className="onecs-settings-config-title">
             <h3>Organizasyon birimleri</h3>
-            <span className="atlas-settings-pill muted">
+            <span className="onecs-settings-pill muted">
               {nodes.length} birim
             </span>
           </div>
@@ -1149,10 +1142,10 @@ function OrganizationPanel() {
           {loading ? (
             <Loading />
           ) : (
-            <div className="atlas-settings-org-list">
+            <div className="onecs-settings-org-list">
               {nodes.map((node) => (
                 <div key={node.id}>
-                  <span className="atlas-settings-title-icon small">
+                  <span className="onecs-settings-title-icon small">
                     <GitBranch size={16} />
                   </span>
                   <div>
@@ -1163,7 +1156,7 @@ function OrganizationPanel() {
                     </small>
                   </div>
                   {node.parent_name && (
-                    <span className="atlas-settings-muted">
+                    <span className="onecs-settings-muted">
                       {node.parent_name}
                     </span>
                   )}
@@ -1172,12 +1165,12 @@ function OrganizationPanel() {
             </div>
           )}
         </section>
-        <section className="atlas-settings-card">
-          <div className="atlas-settings-config-title">
+        <section className="onecs-settings-card">
+          <div className="onecs-settings-config-title">
             <h3>Rol kataloğu</h3>
             <ShieldCheck size={18} />
           </div>
-          <div className="atlas-settings-role-list">
+          <div className="onecs-settings-role-list">
             {(roles.length
               ? roles
               : Object.entries(roleLabels)
@@ -1224,8 +1217,8 @@ const generalFields: FormField[] = [
     key: "application_name",
     label: "Uygulama adı",
     type: "select",
-    defaultValue: "Atlas",
-    options: [{ value: "Atlas", label: "Atlas" }],
+    defaultValue: "onecs",
+    options: [{ value: "onecs", label: "onecs" }],
   },
   {
     key: "timezone",
@@ -1352,12 +1345,6 @@ const ldapFields: FormField[] = [
     group: "Kimlik doğrulama",
   },
   {
-    key: "user_dn_template",
-    label: "Kullanıcı giriş şablonu",
-    hint: "Örn. DOMAIN\\{username}. Parola Atlas’ta saklanmaz.",
-    group: "Kimlik doğrulama",
-  },
-  {
     key: "base_dn",
     label: "Ana arama kökü (Base DN)",
     hint: "Dizin keşfiyle sunucudaki arama köklerini görebilirsiniz.",
@@ -1384,8 +1371,24 @@ const ldapFields: FormField[] = [
   {
     key: "group_filter",
     label: "Grup arama filtresi",
-    hint: "Grup bilgisi görünürlük içindir; otomatik iş rolü verilmez.",
+    hint: "İlk giriş yetkileri, kullanıcının doğrudan grup üyelikleri ve aşağıdaki eşlemelerden belirlenir.",
     group: "Dizin ve arama",
+  },
+  {
+    key: "auto_provision_enabled",
+    label: "LDAP ile ilk girişte hesabı otomatik oluştur",
+    type: "checkbox",
+    defaultValue: true,
+    hint: "Kullanıcının parolası doğrulandıktan ve yetkili bir grup eşleşmesinden sonra hesap oluşturulur.",
+    group: "İlk giriş ve grup yetkileri",
+  },
+  {
+    key: "match_organization_groups",
+    label: "Organizasyon koduyla aynı adlı LDAP grubundan ekip üyeliği",
+    type: "checkbox",
+    defaultValue: true,
+    hint: "Grubun CN değeri organizasyon koduyla tam eşleşirse yalnız o organizasyonda Çalışan rolü verilir. Ad önekleri ve alt gruplar eşleştirilmez.",
+    group: "İlk giriş ve grup yetkileri",
   },
   {
     key: "username_attribute",
@@ -1543,8 +1546,8 @@ function AIProfileEditor({
     >
       <form onSubmit={save}>
         {failure && <Notice tone="error">{failure}</Notice>}
-        <div className="atlas-settings-form-grid">
-          <label className="atlas-settings-field">
+        <div className="onecs-settings-form-grid">
+          <label className="onecs-settings-field">
             <span>Bağlantı adı</span>
             <input
               required
@@ -1554,13 +1557,13 @@ function AIProfileEditor({
               disabled={busy}
             />
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Sağlayıcı</span>
             <select disabled>
               <option>OpenAI uyumlu API</option>
             </select>
           </label>
-          <label className="atlas-settings-field atlas-settings-field-full">
+          <label className="onecs-settings-field onecs-settings-field-full">
             <span>API adresi</span>
             <input
               type="url"
@@ -1575,7 +1578,7 @@ function AIProfileEditor({
               noktasını girin.
             </small>
           </label>
-          <label className="atlas-settings-field atlas-settings-field-full">
+          <label className="onecs-settings-field onecs-settings-field-full">
             <span>API anahtarı</span>
             <input
               type="password"
@@ -1595,7 +1598,7 @@ function AIProfileEditor({
             {profile?.secret_fields?.includes("api_key") && (
               <button
                 type="button"
-                className="atlas-settings-secret-clear"
+                className="onecs-settings-secret-clear"
                 disabled={busy}
                 onClick={() => setRemoveKey((value) => !value)}
               >
@@ -1605,9 +1608,9 @@ function AIProfileEditor({
               </button>
             )}
           </label>
-          <label className="atlas-settings-field toggle-field">
+          <label className="onecs-settings-field toggle-field">
             <span>Bağlantı durumu</span>
-            <div className="atlas-settings-toggle-line">
+            <div className="onecs-settings-toggle-line">
               <input
                 type="checkbox"
                 checked={enabled}
@@ -1618,16 +1621,16 @@ function AIProfileEditor({
             </div>
           </label>
         </div>
-        <footer className="atlas-settings-modal-footer">
+        <footer className="onecs-settings-modal-footer">
           <button
             type="button"
-            className="atlas-settings-button"
+            className="onecs-settings-button"
             onClick={onClose}
             disabled={busy}
           >
             Vazgeç
           </button>
-          <button className="atlas-settings-button primary" disabled={busy}>
+          <button className="onecs-settings-button primary" disabled={busy}>
             {busy ? "Kaydediliyor…" : "Profili kaydet"}
           </button>
         </footer>
@@ -1635,7 +1638,7 @@ function AIProfileEditor({
     </Modal>
   );
 }
-function AIConnections({
+export function AIConnections({
   profiles,
   loading,
   error,
@@ -1673,10 +1676,10 @@ function AIConnections({
             : response.message || "Gerçek model bağlantısı doğrulandı.",
         );
       if (kind === "default") onDefaultSelected?.();
-      refresh();
     } catch (error) {
       setFailure(errorText(error));
     } finally {
+      refresh();
       setBusy("");
     }
   };
@@ -1686,7 +1689,7 @@ function AIConnections({
   ];
   return (
     <>
-      <div className="atlas-settings-section-intro">
+      <div className="onecs-settings-section-intro">
         <div>
           <h3>Bağlantı profilleri</h3>
           <p>
@@ -1694,7 +1697,7 @@ function AIConnections({
             varsayılanı seçin.
           </p>
         </div>
-        <span className="atlas-settings-pill muted">
+        <span className="onecs-settings-pill muted">
           API anahtarları ayrı saklanır
         </span>
       </div>
@@ -1706,14 +1709,14 @@ function AIConnections({
       {loading && !profiles.length ? (
         <Loading />
       ) : (
-        <div className="atlas-settings-ai-connections">
+        <div className="onecs-settings-ai-connections">
           {slots.map((profile, index) => (
             <section
-              className={`atlas-settings-card atlas-settings-ai-profile ${profile?.is_default ? "is-default" : ""}`}
+              className={`onecs-settings-card onecs-settings-ai-profile ${profile?.is_default ? "is-default" : ""}`}
               key={profile?.id || `slot-${index}`}
             >
-              <div className="atlas-settings-ai-profile-top">
-                <span className="atlas-settings-title-icon">
+              <div className="onecs-settings-ai-profile-top">
+                <span className="onecs-settings-title-icon">
                   <Network size={21} />
                 </span>
                 <div>
@@ -1727,7 +1730,7 @@ function AIConnections({
                   </p>
                 </div>
                 {profile?.is_default && (
-                  <span className="atlas-settings-pill default">
+                  <span className="onecs-settings-pill default">
                     <Check size={12} />
                     Varsayılan
                   </span>
@@ -1735,13 +1738,13 @@ function AIConnections({
               </div>
               {profile ? (
                 <>
-                  <div className="atlas-settings-ai-endpoint">
+                  <div className="onecs-settings-ai-endpoint">
                     <span>API adresi</span>
                     <code>{profile.config.base_url || "Adres girilmedi"}</code>
                   </div>
-                  <div className="atlas-settings-ai-profile-meta">
+                  <div className="onecs-settings-ai-profile-meta">
                     <span
-                      className={`atlas-settings-pill ${failedCurrentTest(profile) ? "warning" : profile.ready ? "positive" : "muted"}`}
+                      className={`onecs-settings-pill ${failedCurrentTest(profile) ? "warning" : profile.ready ? "positive" : "muted"}`}
                     >
                       {profile.ready
                         ? "Bağlantı doğrulandı"
@@ -1758,16 +1761,35 @@ function AIConnections({
                     </span>
                   </div>
                   {profile.latest_test && (
-                    <p className="atlas-settings-ai-last-test">
+                    <p className="onecs-settings-ai-last-test">
                       Son test: {dateTime(profile.latest_test.checked_at)} ·{" "}
                       {profile.latest_test.status === "success"
                         ? "Başarılı"
-                        : "Başarısız / yapılandırılmadı"}
+                        : profile.latest_test.status === "unconfigured"
+                          ? "Yapılandırılmadı"
+                          : ["failure", "failed", "error"].includes(
+                                profile.latest_test.status,
+                              )
+                            ? "Başarısız"
+                            : "Sonuç bilinmiyor"}
                     </p>
                   )}
-                  <div className="atlas-settings-ai-profile-actions">
+                  {profile.latest_test &&
+                    profile.latest_test.status !== "success" && (
+                      <Notice
+                        tone={
+                          profile.latest_test.status === "unconfigured"
+                            ? "info"
+                            : "error"
+                        }
+                      >
+                        {profile.latest_test.message ||
+                          "Bağlantı doğrulanamadı. Profili yeniden test edin."}
+                      </Notice>
+                    )}
+                  <div className="onecs-settings-ai-profile-actions">
                     <button
-                      className="atlas-settings-button"
+                      className="onecs-settings-button"
                       onClick={() => setEditor({ profile, slot: index + 1 })}
                       disabled={!!busy}
                     >
@@ -1775,7 +1797,7 @@ function AIConnections({
                       Düzenle
                     </button>
                     <button
-                      className="atlas-settings-button"
+                      className="onecs-settings-button"
                       onClick={() => action(profile, "test")}
                       disabled={!!busy || !profile.config.enabled}
                     >
@@ -1787,7 +1809,7 @@ function AIConnections({
                       Test et
                     </button>
                     <button
-                      className="atlas-settings-button primary"
+                      className="onecs-settings-button primary"
                       onClick={() => action(profile, "default")}
                       disabled={!!busy || profile.is_default || !profile.ready}
                       title={
@@ -1801,13 +1823,13 @@ function AIConnections({
                   </div>
                 </>
               ) : (
-                <div className="atlas-settings-ai-empty">
+                <div className="onecs-settings-ai-empty">
                   <p>
                     Bağımsız bir API adresi ve anahtarla ikinci bağlantınızı
                     hazırlayın.
                   </p>
                   <button
-                    className="atlas-settings-button"
+                    className="onecs-settings-button"
                     onClick={() =>
                       setEditor({ profile: null, slot: index + 1 })
                     }
@@ -1871,8 +1893,8 @@ function AIPanel() {
         onSaved={profilesResource.refresh}
         refreshToken={sharedRefresh}
       />
-      <section className="atlas-settings-card">
-        <div className="atlas-settings-config-title">
+      <section className="onecs-settings-card">
+        <div className="onecs-settings-config-title">
           <div>
             <h3>Kullanım ve tahmini maliyet</h3>
             <p>
@@ -1880,8 +1902,8 @@ function AIPanel() {
             </p>
           </div>
         </div>
-        <div className="atlas-settings-filters">
-          <label className="atlas-settings-field">
+        <div className="onecs-settings-filters">
+          <label className="onecs-settings-field">
             <span>Bağlantı</span>
             <select
               value={profileId}
@@ -1895,7 +1917,7 @@ function AIPanel() {
               ))}
             </select>
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Başlangıç</span>
             <input
               type="date"
@@ -1903,7 +1925,7 @@ function AIPanel() {
               onChange={(e) => setFrom(e.target.value)}
             />
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Bitiş</span>
             <input
               type="date"
@@ -1911,7 +1933,7 @@ function AIPanel() {
               onChange={(e) => setTo(e.target.value)}
             />
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>Model</span>
             <input
               value={model}
@@ -1921,7 +1943,7 @@ function AIPanel() {
           </label>
         </div>
         {error && <Notice tone="error">{error}</Notice>}
-        <div className="atlas-settings-metrics">
+        <div className="onecs-settings-metrics">
           <div>
             <span>Giriş tokenı</span>
             <strong>
@@ -1954,8 +1976,8 @@ function AIPanel() {
         {loading ? (
           <Loading />
         ) : (
-          <div className="atlas-settings-table-wrap">
-            <table className="atlas-settings-table">
+          <div className="onecs-settings-table-wrap">
+            <table className="onecs-settings-table">
               <thead>
                 <tr>
                   <th>Tarih</th>
@@ -1995,7 +2017,7 @@ function AIPanel() {
                     </td>
                     <td>
                       <span
-                        className={`atlas-settings-pill ${row.status === "success" ? "positive" : "muted"}`}
+                        className={`onecs-settings-pill ${row.status === "success" ? "positive" : "muted"}`}
                       >
                         {(
                           {
@@ -2172,17 +2194,17 @@ function LDAPDirectoryPanel() {
     }
   };
   return (
-    <section className="atlas-settings-card atlas-settings-directory">
-      <div className="atlas-settings-config-title">
+    <section className="onecs-settings-card onecs-settings-directory">
+      <div className="onecs-settings-config-title">
         <div>
           <h3>Dizinden kullanıcı ve grup bul</h3>
           <p>
             Canlı dizin sonucunu inceleyin; organizasyon ve rolü açıkça seçerek
-            kullanıcıyı Atlas’a alın.
+            kullanıcıyı onecs’e alın.
           </p>
         </div>
         <button
-          className="atlas-settings-button"
+          className="onecs-settings-button"
           onClick={discover}
           disabled={busy || !config?.enabled}
         >
@@ -2190,7 +2212,7 @@ function LDAPDirectoryPanel() {
           Dizini keşfet
         </button>
       </div>
-      <div className="atlas-settings-directory-body">
+      <div className="onecs-settings-directory-body">
         {(failure || message || configuration.error) && (
           <Notice tone={failure || configuration.error ? "error" : "success"}>
             {failure || configuration.error || message}
@@ -2203,7 +2225,7 @@ function LDAPDirectoryPanel() {
           </Notice>
         )}
         <div
-          className="atlas-settings-subtabs"
+          className="onecs-settings-subtabs"
           role="tablist"
           aria-label="Dizin arama türü"
         >
@@ -2224,8 +2246,8 @@ function LDAPDirectoryPanel() {
             Gruplar
           </button>
         </div>
-        <div className="atlas-settings-directory-search">
-          <label className="atlas-settings-field">
+        <div className="onecs-settings-directory-search">
+          <label className="onecs-settings-field">
             <span>Arama kökü</span>
             <select
               value={baseDN}
@@ -2244,11 +2266,11 @@ function LDAPDirectoryPanel() {
               )}
             </select>
           </label>
-          <label className="atlas-settings-field">
+          <label className="onecs-settings-field">
             <span>
               {kind === "users" ? "Ad, kullanıcı adı veya e-posta" : "Grup adı"}
             </span>
-            <div className="atlas-settings-search">
+            <div className="onecs-settings-search">
               <Search size={16} />
               <input
                 value={query}
@@ -2261,7 +2283,7 @@ function LDAPDirectoryPanel() {
             </div>
           </label>
         </div>
-        <label className="atlas-settings-field">
+        <label className="onecs-settings-field">
           <span>
             {kind === "users"
               ? "Dizinden kullanıcı seçin"
@@ -2292,9 +2314,9 @@ function LDAPDirectoryPanel() {
           </select>
         </label>
         {entry && (
-          <div className="atlas-settings-directory-preview">
-            <div className="atlas-settings-directory-profile">
-              <div className="atlas-settings-directory-avatar">
+          <div className="onecs-settings-directory-preview">
+            <div className="onecs-settings-directory-profile">
+              <div className="onecs-settings-directory-avatar">
                 <Users size={25} />
               </div>
               <div>
@@ -2302,7 +2324,7 @@ function LDAPDirectoryPanel() {
                 <p>{entry.username || "Grup kaydı"}</p>
               </div>
               <span
-                className={`atlas-settings-pill ${entry.directory_enabled === false ? "warning" : "muted"}`}
+                className={`onecs-settings-pill ${entry.directory_enabled === false ? "warning" : "muted"}`}
               >
                 {entry.directory_enabled === false
                   ? "Dizinde devre dışı"
@@ -2344,13 +2366,13 @@ function LDAPDirectoryPanel() {
               </dl>
             </div>
             {kind === "users" ? (
-              <div className="atlas-settings-directory-review">
-                <h4>Atlas yetkisini gözden geçir</h4>
+              <div className="onecs-settings-directory-review">
+                <h4>onecs yetkisini gözden geçir</h4>
                 <p>
                   Departman, unvan veya grup üyeliği otomatik yönetici yetkisi
                   vermez. Seçim denetim kaydına yazılır.
                 </p>
-                <label className="atlas-settings-field">
+                <label className="onecs-settings-field">
                   <span>Organizasyon birimi</span>
                   <select
                     required
@@ -2366,8 +2388,8 @@ function LDAPDirectoryPanel() {
                     ))}
                   </select>
                 </label>
-                <label className="atlas-settings-field">
-                  <span>Atlas rolü</span>
+                <label className="onecs-settings-field">
+                  <span>onecs rolü</span>
                   <select
                     value={role}
                     onChange={(event) => setRole(event.target.value)}
@@ -2389,7 +2411,7 @@ function LDAPDirectoryPanel() {
                   </small>
                 )}
                 <button
-                  className="atlas-settings-button primary"
+                  className="onecs-settings-button primary"
                   disabled={
                     busy || !org || !role || entry.directory_enabled === false
                   }
@@ -2404,12 +2426,12 @@ function LDAPDirectoryPanel() {
                 </button>
               </div>
             ) : (
-              <div className="atlas-settings-directory-review">
+              <div className="onecs-settings-directory-review">
                 <h4>Grup görünümü</h4>
                 <p>
-                  Grup araması bilgi amaçlıdır. Toplu kullanıcı içeri alma veya
-                  otomatik rol atama yapılmaz. Yetki vereceğiniz kişiyi
-                  kullanıcı aramasından seçin.
+                  Grubun tam DN değerini ilk giriş grup eşlemelerinde
+                  kullanabilirsiniz. Bu arama tek başına hesap veya rol
+                  oluşturmaz.
                 </p>
               </div>
             )}
@@ -2442,7 +2464,7 @@ function IntegrationsPanel() {
         title="Entegrasyonlar"
         description="Kimlik ve iletişim bağlantılarını aynı çalışma alanından yönetin."
       />
-      <div className="atlas-settings-integration-switch">
+      <div className="onecs-settings-integration-switch">
         {[
           {
             id: "ldap" as const,
@@ -2466,13 +2488,17 @@ function IntegrationsPanel() {
       {selected === "ldap" ? (
         <>
           <ConfigPanel
-            key="ldap"
+            key={`ldap-${ldapRevision}`}
             section="ldap"
             title="Kurumsal kimlik bağlantısı"
             description="Sistem kullanıcıları LDAP bağlantısından bağımsız çalışmaya devam eder."
             fields={ldapFields}
             onSaved={() => setLdapRevision((value) => value + 1)}
             onTested={() => setLdapRevision((value) => value + 1)}
+          />
+          <LDAPLoginMappings
+            key={`ldap-mappings-${ldapRevision}`}
+            onSaved={() => setLdapRevision((value) => value + 1)}
           />
           <LDAPDirectoryPanel key={ldapRevision} />
         </>
@@ -2553,8 +2579,8 @@ function SLAPanel() {
         Politika değişikliği mevcut işlerin hedef tarihini değiştirmez. Yeniden
         atama ve yeniden açma süreyi sıfırlamaz; tarihsel ihlal korunur.
       </Notice>
-      <section className="atlas-settings-card">
-        <div className="atlas-settings-config-title">
+      <section className="onecs-settings-card">
+        <div className="onecs-settings-config-title">
           <div>
             <h3>Yayınlanmış hedefler</h3>
             <p>
@@ -2568,8 +2594,8 @@ function SLAPanel() {
           <Loading />
         ) : (
           <>
-            <div className="atlas-settings-table-wrap">
-              <table className="atlas-settings-table">
+            <div className="onecs-settings-table-wrap">
+              <table className="onecs-settings-table">
                 <thead>
                   <tr>
                     <th>Politika</th>
@@ -2592,7 +2618,7 @@ function SLAPanel() {
                       <td>{contextLabels[row.context] || row.context}</td>
                       <td>
                         <span
-                          className={`atlas-settings-pill ${row.priority === "CRITICAL" ? "warning" : "muted"}`}
+                          className={`onecs-settings-pill ${row.priority === "CRITICAL" ? "warning" : "muted"}`}
                         >
                           {priorityLabels[row.priority] || row.priority}
                         </span>
@@ -2606,7 +2632,7 @@ function SLAPanel() {
                       <td>{row.version}</td>
                       <td className="right">
                         <button
-                          className="atlas-settings-icon-button"
+                          className="onecs-settings-icon-button"
                           onClick={() => {
                             setFailure("");
                             setEditing({ ...row, reason: "" });
@@ -2629,7 +2655,7 @@ function SLAPanel() {
             )}
           </>
         )}
-        <div className="atlas-settings-sla-note">
+        <div className="onecs-settings-sla-note">
           <Clock3 size={17} />
           <p>
             <strong>Takvim ayı hesabı:</strong> 31 Ocak + 1 ay, Şubat'ın son
@@ -2647,8 +2673,8 @@ function SLAPanel() {
         >
           <form onSubmit={save}>
             {failure && <Notice tone="error">{failure}</Notice>}
-            <div className="atlas-settings-form-grid">
-              <label className="atlas-settings-field">
+            <div className="onecs-settings-form-grid">
+              <label className="onecs-settings-field">
                 <span>Hedef miktarı</span>
                 <input
                   type="number"
@@ -2664,7 +2690,7 @@ function SLAPanel() {
                   }
                 />
               </label>
-              <label className="atlas-settings-field">
+              <label className="onecs-settings-field">
                 <span>Zaman birimi</span>
                 <select
                   value={editing.unit}
@@ -2677,7 +2703,7 @@ function SLAPanel() {
                   <option value="MONTHS">Takvim ayı</option>
                 </select>
               </label>
-              <label className="atlas-settings-field">
+              <label className="onecs-settings-field">
                 <span>Uyarı eşiği (%)</span>
                 <input
                   type="number"
@@ -2696,7 +2722,7 @@ function SLAPanel() {
                   İhlal bildirimi ayrıca hedef süresi dolduğunda üretilir.
                 </small>
               </label>
-              <label className="atlas-settings-field">
+              <label className="onecs-settings-field">
                 <span>Güncelleme gerekçesi</span>
                 <input
                   required
@@ -2708,16 +2734,16 @@ function SLAPanel() {
                 />
               </label>
             </div>
-            <footer className="atlas-settings-modal-footer">
+            <footer className="onecs-settings-modal-footer">
               <button
                 type="button"
-                className="atlas-settings-button"
+                className="onecs-settings-button"
                 onClick={() => setEditing(null)}
                 disabled={busy}
               >
                 Vazgeç
               </button>
-              <button className="atlas-settings-button primary" disabled={busy}>
+              <button className="onecs-settings-button primary" disabled={busy}>
                 Yeni sürümü kaydet
               </button>
             </footer>
@@ -2742,14 +2768,14 @@ function LogsPanel() {
         title="Günlükler ve denetim izi"
         description="Kullanıcı işlemlerinin ve güvenlik kararlarının denetim izini takip edin."
         actions={
-          <button className="atlas-settings-button" onClick={refresh}>
+          <button className="onecs-settings-button" onClick={refresh}>
             <RefreshCw size={15} />
             Yenile
           </button>
         }
       />
-      <div className="atlas-settings-toolbar atlas-settings-card">
-        <div className="atlas-settings-search">
+      <div className="onecs-settings-toolbar onecs-settings-card">
+        <div className="onecs-settings-search">
           <Search size={17} />
           <input
             value={query}
@@ -2767,14 +2793,14 @@ function LogsPanel() {
           <option value="info">Info · denetim olayları</option>
         </select>
       </div>
-      <section className="atlas-settings-card">
+      <section className="onecs-settings-card">
         {error && <Notice tone="error">{error}</Notice>}
         {loading ? (
           <Loading />
         ) : (
           <>
-            <div className="atlas-settings-table-wrap">
-              <table className="atlas-settings-table">
+            <div className="onecs-settings-table-wrap">
+              <table className="onecs-settings-table">
                 <thead>
                   <tr>
                     <th>Tarih</th>
@@ -2818,7 +2844,7 @@ function LogsPanel() {
                       </td>
                       <td>
                         <span
-                          className={`atlas-settings-pill ${["error", "warning"].includes(row.level) ? "warning" : "muted"}`}
+                          className={`onecs-settings-pill ${["error", "warning"].includes(row.level) ? "warning" : "muted"}`}
                         >
                           {row.level || "info"}
                         </span>
@@ -2833,7 +2859,7 @@ function LogsPanel() {
             )}
           </>
         )}
-        <p className="atlas-settings-footnote padded">
+        <p className="onecs-settings-footnote padded">
           Bu görünüm denetim metaverisini gösterir. Teknik debug / warning /
           error log akışı ayrıca yapılandırılır. Parola, token ve hassas ham AI
           içeriği gösterilmez.
@@ -2903,14 +2929,14 @@ function JobsPanel() {
         title="Kalıcı iş kuyruğu"
         description="Rapor üretimi, bildirim ve SLA işlemleri kesinti sonrasında kayıtlı aşamadan devam eder."
         actions={
-          <button className="atlas-settings-button" onClick={refresh}>
+          <button className="onecs-settings-button" onClick={refresh}>
             <RefreshCw size={15} />
             Yenile
           </button>
         }
       />
-      <div className="atlas-settings-toolbar atlas-settings-card">
-        <label className="atlas-settings-field">
+      <div className="onecs-settings-toolbar onecs-settings-card">
+        <label className="onecs-settings-field">
           <span>İş türü</span>
           <select
             value={kind}
@@ -2921,7 +2947,7 @@ function JobsPanel() {
             <option value="outbox">Bildirim kuyruğu</option>
           </select>
         </label>
-        <label className="atlas-settings-field">
+        <label className="onecs-settings-field">
           <span>Durum</span>
           <select
             value={status}
@@ -2936,14 +2962,14 @@ function JobsPanel() {
           </select>
         </label>
       </div>
-      <section className="atlas-settings-card">
+      <section className="onecs-settings-card">
         {error && <Notice tone="error">{error}</Notice>}
         {loading ? (
           <Loading />
         ) : (
           <>
-            <div className="atlas-settings-table-wrap">
-              <table className="atlas-settings-table">
+            <div className="onecs-settings-table-wrap">
+              <table className="onecs-settings-table">
                 <thead>
                   <tr>
                     <th>İş</th>
@@ -2967,14 +2993,14 @@ function JobsPanel() {
                           · {row.id}
                         </small>
                         {row.last_error && (
-                          <small className="atlas-settings-error-text">
+                          <small className="onecs-settings-error-text">
                             {row.last_error}
                           </small>
                         )}
                       </td>
                       <td>
                         <span
-                          className={`atlas-settings-pill ${["COMPLETED", "SENT"].includes(row.status) ? "positive" : ["FAILED", "UNKNOWN", "BLOCKED"].includes(row.status) ? "warning" : "muted"}`}
+                          className={`onecs-settings-pill ${["COMPLETED", "SENT"].includes(row.status) ? "positive" : ["FAILED", "UNKNOWN", "BLOCKED"].includes(row.status) ? "warning" : "muted"}`}
                         >
                           {jobStatusLabels[row.status] || row.status}
                         </span>
@@ -2989,7 +3015,7 @@ function JobsPanel() {
                       <td className="right">
                         {canRetry(row) ? (
                           <button
-                            className="atlas-settings-button small"
+                            className="onecs-settings-button small"
                             onClick={() => {
                               setRetryTarget(row);
                               setAcknowledge(false);
@@ -3034,7 +3060,7 @@ function JobsPanel() {
                 ikinci kez ulaşmasına yol açabilir.
               </Notice>
             )}
-            <label className="atlas-settings-field">
+            <label className="onecs-settings-field">
               <span>Yeniden deneme gerekçesi</span>
               <input
                 required
@@ -3045,7 +3071,7 @@ function JobsPanel() {
               />
             </label>
             {retryTarget.status === "UNKNOWN" && (
-              <label className="atlas-settings-acknowledgment">
+              <label className="onecs-settings-acknowledgment">
                 <input
                   type="checkbox"
                   required
@@ -3056,17 +3082,17 @@ function JobsPanel() {
                 denemeye alıyorum.
               </label>
             )}
-            <footer className="atlas-settings-modal-footer">
+            <footer className="onecs-settings-modal-footer">
               <button
                 type="button"
-                className="atlas-settings-button"
+                className="onecs-settings-button"
                 onClick={() => setRetryTarget(null)}
                 disabled={busy}
               >
                 Vazgeç
               </button>
               <button
-                className="atlas-settings-button primary"
+                className="onecs-settings-button primary"
                 disabled={
                   busy || (retryTarget.status === "UNKNOWN" && !acknowledge)
                 }
@@ -3150,10 +3176,10 @@ function APIPanel() {
       <Heading
         icon={Code2}
         title="API erişimi"
-        description="Atlas özetlerine kapsamlı ve denetlenebilir salt okunur erişim sağlayın."
+        description="onecs özetlerine kapsamlı ve denetlenebilir salt okunur erişim sağlayın."
         actions={
           <button
-            className="atlas-settings-button primary"
+            className="onecs-settings-button primary"
             onClick={() => {
               setFailure("");
               setCreating(true);
@@ -3170,8 +3196,8 @@ function APIPanel() {
         okuyabilir.
       </Notice>
       {failure && !creating && <Notice tone="error">{failure}</Notice>}
-      <section className="atlas-settings-card">
-        <div className="atlas-settings-config-title">
+      <section className="onecs-settings-card">
+        <div className="onecs-settings-config-title">
           <div>
             <h3>Entegrasyon istemcileri</h3>
             <p>
@@ -3179,7 +3205,7 @@ function APIPanel() {
               tokenlarını da sonlandırır.
             </p>
           </div>
-          <button className="atlas-settings-button small" onClick={refresh}>
+          <button className="onecs-settings-button small" onClick={refresh}>
             <RefreshCw size={13} />
             Yenile
           </button>
@@ -3189,8 +3215,8 @@ function APIPanel() {
           <Loading />
         ) : (
           <>
-            <div className="atlas-settings-table-wrap">
-              <table className="atlas-settings-table">
+            <div className="onecs-settings-table-wrap">
+              <table className="onecs-settings-table">
                 <thead>
                   <tr>
                     <th>İstemci</th>
@@ -3210,11 +3236,11 @@ function APIPanel() {
                         </small>
                       </td>
                       <td>
-                        <div className="atlas-settings-scope-tags">
+                        <div className="onecs-settings-scope-tags">
                           {(client.scopes || []).map((scope: string) => (
                             <span
                               key={scope}
-                              className="atlas-settings-pill muted"
+                              className="onecs-settings-pill muted"
                             >
                               {apiScopes.find((item) => item.value === scope)
                                 ?.label || scope}
@@ -3224,16 +3250,16 @@ function APIPanel() {
                       </td>
                       <td>
                         <span
-                          className={`atlas-settings-pill ${client.active ? "positive" : "muted"}`}
+                          className={`onecs-settings-pill ${client.active ? "positive" : "muted"}`}
                         >
                           {client.active ? "Aktif" : "İptal edildi"}
                         </span>
                       </td>
                       <td className="right">
                         {client.active && (
-                          <div className="atlas-settings-row-actions">
+                          <div className="onecs-settings-row-actions">
                             <button
-                              className="atlas-settings-button small"
+                              className="onecs-settings-button small"
                               onClick={() => clientAction(client, "token")}
                               disabled={busy === client.id}
                             >
@@ -3241,7 +3267,7 @@ function APIPanel() {
                               Token üret
                             </button>
                             <button
-                              className="atlas-settings-button small danger"
+                              className="onecs-settings-button small danger"
                               onClick={() => clientAction(client, "revoke")}
                               disabled={busy === client.id}
                             >
@@ -3264,17 +3290,17 @@ function APIPanel() {
           </>
         )}
       </section>
-      <section className="atlas-settings-card">
-        <div className="atlas-settings-config-title">
+      <section className="onecs-settings-card">
+        <div className="onecs-settings-config-title">
           <div>
             <h3>Geliştirici belgeleri</h3>
             <p>OpenAPI şeması, uç noktalar ve örnek yanıtlar.</p>
           </div>
           <Code2 size={21} />
         </div>
-        <div className="atlas-settings-api-links">
+        <div className="onecs-settings-api-links">
           <a href="/api/v1/docs/" target="_blank" rel="noreferrer">
-            <span className="atlas-settings-title-icon">
+            <span className="onecs-settings-title-icon">
               <BookOpen size={22} />
             </span>
             <div>
@@ -3284,7 +3310,7 @@ function APIPanel() {
             <ExternalLink size={16} />
           </a>
           <a href="/api/v1/schema/" target="_blank" rel="noreferrer">
-            <span className="atlas-settings-title-icon">
+            <span className="onecs-settings-title-icon">
               <Code2 size={22} />
             </span>
             <div>
@@ -3304,8 +3330,8 @@ function APIPanel() {
         >
           <form onSubmit={create}>
             {failure && <Notice tone="error">{failure}</Notice>}
-            <div className="atlas-settings-form-grid">
-              <label className="atlas-settings-field">
+            <div className="onecs-settings-form-grid">
+              <label className="onecs-settings-field">
                 <span>İstemci adı</span>
                 <input
                   required
@@ -3315,7 +3341,7 @@ function APIPanel() {
                   placeholder="Örn. Yönetim raporu entegrasyonu"
                 />
               </label>
-              <label className="atlas-settings-field">
+              <label className="onecs-settings-field">
                 <span>Organizasyon sınırı</span>
                 <select value={org} onChange={(e) => setOrg(e.target.value)}>
                   <option value="">Kendi yetkili kapsamım</option>
@@ -3327,7 +3353,7 @@ function APIPanel() {
                 </select>
               </label>
             </div>
-            <fieldset className="atlas-settings-scopes-fieldset">
+            <fieldset className="onecs-settings-scopes-fieldset">
               <legend>Salt okunur izinler</legend>
               {apiScopes.map((scope) => (
                 <label key={scope.value}>
@@ -3346,17 +3372,17 @@ function APIPanel() {
                 </label>
               ))}
             </fieldset>
-            <footer className="atlas-settings-modal-footer">
+            <footer className="onecs-settings-modal-footer">
               <button
                 type="button"
-                className="atlas-settings-button"
+                className="onecs-settings-button"
                 onClick={() => setCreating(false)}
                 disabled={!!busy}
               >
                 Vazgeç
               </button>
               <button
-                className="atlas-settings-button primary"
+                className="onecs-settings-button primary"
                 disabled={!!busy || !scopes.length}
               >
                 İstemciyi oluştur
@@ -3371,12 +3397,12 @@ function APIPanel() {
           description={`${token.name || "İstemci"} · ${Math.floor((token.expires_in || 900) / 60)} dakika geçerli`}
           onClose={() => setToken(null)}
         >
-          <div className="atlas-settings-token-content">
+          <div className="onecs-settings-token-content">
             <Notice>
               Bu tokenı güvenli bir yerde saklayın. Pencere kapatıldıktan sonra
               değer tekrar gösterilmez; yeni token üretebilirsiniz.
             </Notice>
-            <label className="atlas-settings-field">
+            <label className="onecs-settings-field">
               <span>Bearer token</span>
               <textarea
                 readOnly
@@ -3386,15 +3412,15 @@ function APIPanel() {
                 spellCheck={false}
               />
             </label>
-            <footer className="atlas-settings-modal-footer">
+            <footer className="onecs-settings-modal-footer">
               <button
-                className="atlas-settings-button"
+                className="onecs-settings-button"
                 onClick={() => setToken(null)}
               >
                 Kapat
               </button>
               <button
-                className="atlas-settings-button primary"
+                className="onecs-settings-button primary"
                 onClick={async () => {
                   try {
                     await navigator.clipboard.writeText(token.token);
@@ -3453,8 +3479,8 @@ function TestModePanel() {
       {loading && !data ? (
         <Loading />
       ) : (
-        <section className="atlas-settings-card">
-          <div className="atlas-settings-config-title">
+        <section className="onecs-settings-card">
+          <div className="onecs-settings-config-title">
             <div>
               <h3>Sunucu tarafından uygulanan test sınırı</h3>
               <p>
@@ -3463,12 +3489,12 @@ function TestModePanel() {
               </p>
             </div>
             <span
-              className={`atlas-settings-pill ${data?.available ? "positive" : "muted"}`}
+              className={`onecs-settings-pill ${data?.available ? "positive" : "muted"}`}
             >
               {data?.available ? "Sentetik test etkin" : "Bu ortamda kapalı"}
             </span>
           </div>
-          <div className="atlas-settings-test-content">
+          <div className="onecs-settings-test-content">
             {!data?.available ? (
               <Notice>
                 God Mode ve kullanıcı denemesi yalnız test / demo ortamında
@@ -3481,9 +3507,9 @@ function TestModePanel() {
                 Sonuçlar, seçilen kişinin gerçek yetki sınırlarını kullanır.
               </Notice>
             )}
-            <div className="atlas-settings-two-columns">
-              <section className="atlas-settings-test-option">
-                <span className="atlas-settings-title-icon">
+            <div className="onecs-settings-two-columns">
+              <section className="onecs-settings-test-option">
+                <span className="onecs-settings-title-icon">
                   <Users size={22} />
                 </span>
                 <h3>Kullanıcı görünümünü dene</h3>
@@ -3491,7 +3517,7 @@ function TestModePanel() {
                   Çalışan veya yönetici hesabının erişebildiği ekranları ve
                   kayıtları kontrol edin.
                 </p>
-                <label className="atlas-settings-field">
+                <label className="onecs-settings-field">
                   <span>Denecek kullanıcı</span>
                   <select
                     value={selectedUser}
@@ -3507,15 +3533,15 @@ function TestModePanel() {
                   </select>
                 </label>
                 <button
-                  className="atlas-settings-button"
+                  className="onecs-settings-button"
                   onClick={() => change("simulate")}
                   disabled={!data?.available || busy || !selectedUser}
                 >
                   Görünümü başlat
                 </button>
               </section>
-              <section className="atlas-settings-test-option">
-                <span className="atlas-settings-title-icon">
+              <section className="onecs-settings-test-option">
+                <span className="onecs-settings-title-icon">
                   <ShieldCheck size={22} />
                 </span>
                 <h3>God Mode</h3>
@@ -3524,12 +3550,12 @@ function TestModePanel() {
                   verisini inceleyin. Her işlem gerçek yöneticiyle denetlenir.
                 </p>
                 <span
-                  className={`atlas-settings-pill ${data?.god_mode ? "warning" : "muted"}`}
+                  className={`onecs-settings-pill ${data?.god_mode ? "warning" : "muted"}`}
                 >
                   {data?.god_mode ? "God Mode etkin" : "God Mode kapalı"}
                 </span>
                 <button
-                  className="atlas-settings-button"
+                  className="onecs-settings-button"
                   onClick={() => change("god")}
                   disabled={!data?.available || busy || !!data?.god_mode}
                 >
@@ -3538,9 +3564,9 @@ function TestModePanel() {
               </section>
             </div>
             {(data?.god_mode || data?.effective_user_id) && (
-              <div className="atlas-settings-form-footer">
+              <div className="onecs-settings-form-footer">
                 <button
-                  className="atlas-settings-button primary"
+                  className="onecs-settings-button primary"
                   onClick={() => change("stop")}
                   disabled={busy}
                 >
@@ -3569,7 +3595,7 @@ export default function Settings() {
             />
             <ConfigPanel
               section="general"
-              title="Atlas çalışma alanı"
+              title="onecs çalışma alanı"
               description="Organizasyon adı, rapor dönemi ve temel politika seçenekleri."
               fields={generalFields}
               canTest={false}
@@ -3597,10 +3623,10 @@ export default function Settings() {
     }
   }, [active]);
   return (
-    <div className="atlas-settings">
-      <header className="atlas-settings-page-header">
+    <div className="onecs-settings">
+      <header className="onecs-settings-page-header">
         <div>
-          <div className="atlas-settings-eyebrow">ÇALIŞMA ALANI YÖNETİMİ</div>
+          <div className="onecs-settings-eyebrow">ÇALIŞMA ALANI YÖNETİMİ</div>
           <h1>Ayarlar</h1>
           <p>
             Kullanıcıları, modelleri ve bağlantıları tek çalışma alanından
@@ -3608,7 +3634,7 @@ export default function Settings() {
           </p>
         </div>
         <a
-          className="atlas-settings-button"
+          className="onecs-settings-button"
           href="/api/v1/docs/"
           target="_blank"
           rel="noreferrer"
@@ -3617,7 +3643,7 @@ export default function Settings() {
           API rehberi
         </a>
       </header>
-      <nav className="atlas-settings-tabs" aria-label="Ayarlar bölümleri">
+      <nav className="onecs-settings-tabs" aria-label="Ayarlar bölümleri">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -3630,7 +3656,7 @@ export default function Settings() {
           </button>
         ))}
       </nav>
-      <div className="atlas-settings-content" key={active}>
+      <div className="onecs-settings-content" key={active}>
         {content}
       </div>
     </div>

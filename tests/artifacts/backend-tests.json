@@ -1,13 +1,18 @@
 {
-  "application": "Atlas",
-  "at": "2026-11-18T12:35:43.545818+00:00",
-  "command": ".venv/bin/python -m pytest -q --junitxml=.runtime/backend-final.xml",
+  "application": "Onecs",
+  "at": "2026-11-18T12:57:01.370470+00:00",
+  "command": ".venv/bin/python -m pytest -q --junitxml=.runtime/backend-insights-final.xml",
   "environment": "PostgreSQL17 / Python3.13 / Django5.2; separate synthetic test database",
   "status": "passed",
-  "tests": 193,
+  "tests": 242,
   "warnings": 2,
-  "subtests": 41,
-  "duration_seconds": 13.88,
+  "subtests": 69,
+  "duration_seconds": 18.03,
   "warning_summary": "ldap3/pyasn1 deprecated tagMap/typeMap; no failed or skipped tests",
-  "log": ".runtime/pytest-final.log"
+  "log": ".runtime/pytest-insights-final.log",
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "1481facbd79a84a878069fc04c3cb200c8048938674b85ac34b7d1e8359f5e53"
+  }
 }

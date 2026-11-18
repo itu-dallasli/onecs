@@ -22,6 +22,11 @@ import {
 } from "lucide-react";
 import { api, date, list, personName, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
+import RecordExtras, {
+  emptyRecordExtras,
+  RecordAttachments,
+} from "../components/RecordExtras";
+import { createRecordWithExtras } from "../lib/recordExtras";
 import {
   Badge,
   Button,
@@ -537,6 +542,16 @@ export default function Community({ kind }: { kind: Kind }) {
           <p className="detail-description">
             {selected.body || selected.description || selected.summary}
           </p>
+          <RecordAttachments
+            resourceType={
+              kind === "community"
+                ? "community"
+                : kind === "events"
+                  ? "event"
+                  : "credential"
+            }
+            resourceId={selected.id}
+          />
           {kind === "community" && (
             <>
               <div className="detail-facts">
@@ -702,12 +717,20 @@ function Create({
   const [important, setImportant] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [extras, setExtras] = useState(emptyRecordExtras);
   return (
-    <Drawer title={cfg[kind].new} subtitle="YENİ KAYIT" onClose={onClose}>
+    <Drawer
+      title={cfg[kind].new}
+      subtitle="YENİ KAYIT"
+      onClose={() => {
+        if (!busy) onClose();
+      }}
+    >
       <form
         className="stack-form"
         onSubmit={async (e: FormEvent) => {
           e.preventDefault();
+          if (busy) return;
           setBusy(true);
           setError("");
           try {
@@ -740,7 +763,7 @@ function Create({
                 no_expiry: noExpiry,
                 important,
               };
-            await api(cfg[kind].endpoint, { method: "POST", body: payload });
+            await createRecordWithExtras(cfg[kind].endpoint, payload, extras);
             onCreated();
             onClose();
           } catch (e) {
@@ -935,9 +958,27 @@ function Create({
             )}
           </>
         )}
+        <RecordExtras
+          value={extras}
+          onChange={setExtras}
+          disabled={busy}
+          defaultRecipients={kind === "credentials" ? [user] : []}
+          emailHint={
+            kind === "community"
+              ? "Seçtiğiniz kişilere e-posta paylaşım yayınlandıktan sonra gönderilir. Kişiler paylaşımın hedef kitlesinde olmalıdır. Kaynak kaydın dosyaları bu paylaşıma otomatik eklenmez."
+              : kind === "events"
+                ? "Etkinliği görebilen davetlilere veya yetkili yöneticilere e-posta gönderebilirsiniz. Alıcı seçmek etkinliğin davetli listesini değiştirmez."
+                : "Sertifikayı görebilen kişilere e-posta gönderebilirsiniz. Alıcı seçmek kaydın erişim kapsamını değiştirmez."
+          }
+        />
         {error && <ErrorState message={error} />}
         <div className="form-actions">
-          <Button type="button" variant="secondary" onClick={onClose}>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onClose}
+            disabled={busy}
+          >
             Vazgeç
           </Button>
           <Button disabled={busy}>

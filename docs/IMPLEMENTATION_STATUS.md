@@ -1,4 +1,4 @@
-# Atlas çalışan sürümün kapsamı
+# onecs çalışan sürümün kapsamı
 
 18 Kasım 2026 · Yerel geliştirme sürümü. Onaylı Revizyon 4 hedefi [uygulama planında](UYGULAMA_PLANI.md), testin gerçek kapsamı [QA raporunda](QA_REPORT.md) tutulur. Bu belge ilk çalışan sürümü ve sonraki işi ayırır; üretim kabulü vermez.
 
@@ -20,13 +20,14 @@
 | Rapor | Erişimle süzülen ekip yıldızları + zorunlu adaylar, kaynak sürümlü snapshot, bağlantı/ortak model sürümüne sabitlenmiş AI işi veya açık kurallı fallback, Markdown ve tarayıcı PDF; onaylı raporu üst yönetim salt okunur görür |
 | Ayarlar | Kullanıcılar/roller, proje yetkileri, SLA, LDAP keşif/arama/açık aktarım, SMTP, bağımsız AI bağlantı profilleri ve ortak model/bütçe ayarı; bağlantı testleri, token/maliyet dönem/profil filtresi, audit ve kalıcı kuyruk |
 | Arama ve bildirimler | Yetkiyle süzülen PostgreSQL tam metin/önek araması, Türkçe harf/aksan sadeleştirme; alıcıya ve güncel kaynak erişimine bağlı okundu/okunmadı filtresi ve toplu okundu işlemi |
+| Kayıt ekleri ve alıcı seçimi | Oluşturma formlarında dosya/fotoğraf ve seçili alıcı e-postası; aynı transaction'da özel dosya claim ve bildirim niyeti; taslakta bekleyen tercihler, güncel yetkiyle indirme ve tarama/karantina |
 | Veri paylaşımı | Kapsamlı, iptal edilebilir salt okunur JWT API ve oturum korumalı Swagger/OpenAPI |
 | Test ortamı | Yalnız açık test/demo bayrağında God Mode; kullanıcı simülasyonunda bypass kapanır, gerçek/etkin aktör audit'te ayrılır |
 | Kesinti ve işletim | PostgreSQL job/outbox, 240 saniyelik rapor işi lease'i ve fencing, sürüm ve idempotency; yerel yedek/ayrı veritabanına geri yükleme deneyi |
 
-Arayüz Penpard'ın görsel yaklaşımını, Türkçe metinleri ve ortalanmış işlem pencerelerini kullanır; Atlas'ın kaynağı, portları, veritabanı ve kimliği ayrıdır. Yerel başlangıç komutu ve demo rolleri [README](../README.md) içindedir.
+Arayüz Penpard'ın görsel yaklaşımını, Türkçe metinleri ve ortalanmış işlem pencerelerini kullanır; onecs'ın kaynağı, portları, veritabanı ve kimliği ayrıdır. Yerel başlangıç komutu ve demo rolleri [README](../README.md) içindedir.
 
-Organizasyon, doğrulanan şemaya ait kişi/ekip adlarını `OFFICIAL_REFERENCE`, açıkça kurgusal örnekleri `DEMO` olarak gösterir. 37 kişi tam kurumsal kadro değildir; eksik kadro için dolgu isim üretilmez. Aynı kişinin iki unit yönetmesi tek hesapta iki görevdir. Bilinmeyen e-posta boş kalır; demo giriş alias'ı olmayan referans kişilerin parolası kullanılamaz. `ICT-CS-*` kodları Atlas içi eşleme anahtarlarıdır. Ayrıntılar [rehber servisindedir](services/DIRECTORY_SEARCH_NOTIFICATIONS.md).
+Organizasyon, doğrulanan şemaya ait kişi/ekip adlarını `OFFICIAL_REFERENCE`, açıkça kurgusal örnekleri `DEMO` olarak gösterir. 37 kişi tam kurumsal kadro değildir; eksik kadro için dolgu isim üretilmez. Aynı kişinin iki unit yönetmesi tek hesapta iki görevdir. Bilinmeyen e-posta boş kalır; demo giriş alias'ı olmayan referans kişilerin parolası kullanılamaz. `ICT-CS-*` kodları onecs içi eşleme anahtarlarıdır. Ayrıntılar [rehber servisindedir](services/DIRECTORY_SEARCH_NOTIFICATIONS.md).
 
 Teknik `admin` hesabı iş rolü veremez. İş rolü yönetimini deneyebilmek için seed'de teknik ve direktör yetkileri açıkça bir arada verilen `fulladmin` hesabı bulunur; kendi erişimini değiştirme ve kendi projesini onaylama engelleri burada da sürer. Kurumsal ilk hesap sağlama bu sentetik hesapların kopyalanmasıyla yapılmaz.
 
@@ -35,6 +36,7 @@ Teknik `admin` hesabı iş rolü veremez. İş rolü yönetimini deneyebilmek i�
 - Referans rehberini yetkili kurum verisiyle tamamlama ve gerçek kimlikleri sağlama; organizasyon düğümlerini oluşturma/taşıma ve toplu devir için yönetim akışı. Profil düzenleme ağaç taşıma değildir. LDAP aktarımı referans kişiyi aynı ad/e-posta üzerinden otomatik birleştirmez.
 - Kurum LDAP/AD sertifika zinciri, servis bind'i, arama kapsamı, sabit dizin kimliği ve gerçek kullanıcıyla giriş. RootDSE keşfi, kullanıcı/grup önizlemesi ve seçili kişileri açık rol/kapsamla aktarma uygulanmıştır; 18 Kasım canlı testinde StartTLS sertifikası süresi dolduğu için bağlantı doğrulanamadı; TLS doğrulaması korundu. Grup üyeliğinden otomatik iş rolü sağlama ve sürekli pasifleştirme senkronizasyonu uygulanmış değildir.
 - Onaylı SMTP test kutusunda gerçek teslim; bağlantı testi tek başına alıcıya teslim kanıtı değildir. Yapılandırılmamış bildirimler kalıcı kuyrukta bekler.
+- Özel kalıcı dosya volume'u, yedek/saklama ve gerçek antivirüs komutu. Tarama ayarı yokken yüklenenler karantinada kalır. Yeniden tarama/ilişkisiz yükleme temizliği komutları [Kayıt Ekleri](services/RECORD_EXTRAS.md) belgesindedir.
 - Onaylı model endpoint'i, erişim anahtarı, kurum veri sınıfı ve canlı usage/maliyet kanıtı. Bağımsız profiller, test, bütçe ve sürüm sabitleme uygulanmıştır; 18 Kasım canlı testinde iki profil de süresi dolmuş TLS sertifikası nedeniyle doğrulanamadı; TLS doğrulaması korundu. Mevcut demo AI bağlantısızken açıkça kurallı rapor üretir. Gerçek AI kullanıldı iddiası yoktur.
 - Kurum yedek/saklama hedefi, TLS/production sunucusu, izleme ve eşzamanlı kullanıcı yük ölçümü. Yerel restore deneyi kurumun RPO/RTO kabulü değildir.
 - Yöneticiyle 30 saniyede konu bulma ve rapor hazırlama süresini ölçme. Üç etkileşim bir ürün hedefidir; her formun tamamının üç tık sürdüğü iddia edilmez.

@@ -37,7 +37,7 @@ class ScopedJWTAuthentication(BaseAuthentication):
         ):
             raise PermissionDenied("Bu API kapsamına erişim yok.")
         scope = request.path.split("/api/v1/")[-1].split("/")[0] + ":read"
-        if scope not in client.scopes and "atlas:read" not in client.scopes:
+        if scope not in client.scopes and "onecs:read" not in client.scopes:
             raise PermissionDenied("Token kapsamı bu kaynağı içermiyor.")
         client.user._api_client = client
         return client.user, client

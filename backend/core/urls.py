@@ -1,10 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
+from .attachment_views import AttachmentViewSet
 from .schema import configure
 
 configure(views)
 router = DefaultRouter()
+router.register("attachments", AttachmentViewSet, basename="attachments")
 for prefix, view, base in [
     ("organization", views.OrgViewSet, "organization"),
     ("people", views.PeopleViewSet, "people"),

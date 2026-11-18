@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        if settings.ATLAS_ENV not in ("development", "demo", "test"):
+        if settings.ONECS_ENV not in ("development", "demo", "test"):
             raise CommandError("Demo seed üretimde çalıştırılamaz.")
         pm = User.objects.filter(username="pm").first()
         appointment = PMAppointment.objects.filter(user=pm, active=True).first()
@@ -168,7 +168,7 @@ class Command(BaseCommand):
             )
             questions = [
                 {
-                    "id": str(uuid5(NAMESPACE_URL, f"atlas-demo:{project.pk}:{key}")),
+                    "id": str(uuid5(NAMESPACE_URL, f"onecs-demo:{project.pk}:{key}")),
                     "label": label,
                 }
                 for key, label in [

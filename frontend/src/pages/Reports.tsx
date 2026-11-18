@@ -4,17 +4,16 @@ import {
   ArrowDownToLine,
   ArrowRight,
   Check,
-  CircleCheck,
   FileText,
   Link2,
   Plus,
-  RefreshCw,
   ShieldCheck,
   Sparkles,
   Star,
 } from "lucide-react";
 import { api, date, list, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
+import ReportPivot from "../components/ReportPivot";
 import {
   Badge,
   Button,
@@ -29,6 +28,11 @@ import {
   Status,
 } from "../components/ui";
 export default function Reports() {
+  const { user } = useAuth();
+  return <ReportsWorkspace key={user.id} />;
+}
+
+function ReportsWorkspace() {
   const { user } = useAuth();
   const r = useResource<any>("/reports");
   const [selected, setSelected] = useState<any>(null);
@@ -112,7 +116,7 @@ export default function Reports() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `atlas-rapor-${report.id.slice(0, 8)}.md`;
+    a.download = `onecs-rapor-${report.id.slice(0, 8)}.md`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -313,6 +317,7 @@ export default function Reports() {
           subtitle={`${date(report.period_start)} — ${date(report.period_end)}`}
           onClose={closeSelected}
           wide
+          className="report-pivot-modal"
         >
           <div className="detail-status-row">
             <Status value={report.status} />
@@ -359,7 +364,7 @@ export default function Reports() {
               onClick={download}
             >
               <ArrowDownToLine size={15} />
-              Markdown
+              Genel rapor · Markdown
             </Button>
             <Button
               variant="secondary"
@@ -368,7 +373,7 @@ export default function Reports() {
               }
               onClick={() => window.print()}
             >
-              PDF / Yazdır
+              Görünümü yazdır
             </Button>
             {canManage && report.status !== "APPROVED" && (
               <Button
@@ -384,65 +389,11 @@ export default function Reports() {
               </Button>
             )}
           </div>
-          {error && <ErrorState message={error} />}{" "}
-          {detail.loading && !detail.data ? (
-            <Loading />
-          ) : report.markdown || report.content || report.summary ? (
-            <article className="report-content">
-              {String(report.markdown || report.content || report.summary)
-                .split("\n")
-                .map((line: string, index: number) =>
-                  line.startsWith("# ") ? (
-                    <h2 key={index}>{line.slice(2)}</h2>
-                  ) : line.startsWith("## ") ? (
-                    <h3 key={index}>{line.slice(3)}</h3>
-                  ) : line.startsWith("- ") ? (
-                    <p className="report-bullet" key={index}>
-                      {line.slice(2)}
-                    </p>
-                  ) : (
-                    <p key={index}>{line || " "}</p>
-                  ),
-                )}
-            </article>
-          ) : (
-            <EmptyState
-              title="Rapor özeti henüz hazırlanmadı"
-              description="Kaynakları gözden geçirin ve AI özeti hazırlayın. Model yapılandırılmamışsa kaynak özeti kullanılabilir."
-              icon={<FileText size={30} />}
-            />
-          )}
-          <div className="detail-block">
-            <h3>Kaynak kayıtlar</h3>
-            {list(report.sources || report.items).map(
-              (s: any, index: number) => (
-                <div className="report-source" key={s.id || index}>
-                  <span>[{index + 1}]</span>
-                  <div>
-                    <strong>{s.title || s.source_title || s.id}</strong>
-                    <small>
-                      {(
-                        {
-                          project: "Proje",
-                          work: "İş ve taahhüt",
-                          case: "Vaka",
-                        } as Record<string, string>
-                      )[s.resource_type || s.source_type || s.type] ||
-                        "Kaynak kayıt"}{" "}
-                      · sürüm
-                      {s.version || s.source_version || 1}
-                    </small>
-                  </div>
-                  <Link2 size={15} />
-                </div>
-              ),
-            )}
-            {!list(report.sources || report.items).length && (
-              <p className="muted">
-                Kaynak listesi rapor hazırlandığında gösterilir.
-              </p>
-            )}
-          </div>
+          {error && <ErrorState message={error} />}
+          <ReportPivot
+            key={`${user.id}:${report.id}:${report.version}:${report.content_hash || ""}`}
+            report={report}
+          />
         </Drawer>
       )}
     </>

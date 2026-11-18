@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-18T13:30:04.640083+00:00",
+  "origin": "http://127.0.0.1:3100",
+  "data": "isolated synthetic UI fixture",
+  "checks": {
+    "create_with_uploaded_file": true,
+    "record_and_file_persist_after_reload": true,
+    "selected_email_preference_persisted": true,
+    "single_outbox_intent": true,
+    "outbound_mail_prevented_by_empty_test_recipient_email": true,
+    "photo_preview": true,
+    "selected_photo_removal": true,
+    "file_quarantine_visible": true,
+    "final_browser_console_errors": []
+  },
+  "mail_states": [
+    "BLOCKED"
+  ],
+  "screenshots": [
+    "tests/artifacts/ui-record-extras-form.jpg",
+    "tests/artifacts/ui-record-extras-detail.jpg"
+  ],
+  "cleanup": "completed only exact newly created synthetic fixture"
+}

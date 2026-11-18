@@ -35,10 +35,10 @@ from core.policy import (
     report_source,
 )
 from core.serializers import ProjectSerializer
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class OrganizationPolicyTests(AtlasTestCase):
+class OrganizationPolicyTests(OnecsTestCase):
     def test_hierarchy_includes_direct_unit_employee_and_nested_team(self):
         self.assertTrue(can_manage_org(self.unit_head, self.unit))
         self.assertTrue(can_manage_org(self.unit_head, self.team))
@@ -109,7 +109,7 @@ class OrganizationPolicyTests(AtlasTestCase):
         self.assertTrue(can_open_case(self.employee, self.team))
 
 
-class ProjectAuthorityTests(AtlasTestCase):
+class ProjectAuthorityTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.project = Project.objects.create(
@@ -217,7 +217,7 @@ class ProjectAuthorityTests(AtlasTestCase):
         self.assertFalse(can_read_project(self.unit_head, self.project))
 
 
-class ResourceVisibilityTests(AtlasTestCase):
+class ResourceVisibilityTests(OnecsTestCase):
     def test_other_unit_work_and_case_do_not_appear_in_employee_collections(self):
         own = WorkItem.objects.create(
             title="My task",
@@ -335,7 +335,7 @@ class ResourceVisibilityTests(AtlasTestCase):
             self.assertIsNone(report_source(self.employee, kind, obj.pk))
 
 
-class PublishedProjectPrivacyTests(AtlasTestCase):
+class PublishedProjectPrivacyTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.project = Project.objects.create(

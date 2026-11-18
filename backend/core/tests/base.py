@@ -1,4 +1,4 @@
-"""Synthetic organization shared by Atlas policy and workflow tests."""
+"""Synthetic organization shared by onecs policy and workflow tests."""
 
 from django.test import TestCase
 from rest_framework.test import APIClient
@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 from core.models import OrgNode, PMAppointment, RoleGrant, User
 
 
-class AtlasTestCase(TestCase):
+class OnecsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.directorate = OrgNode.objects.create(
@@ -38,7 +38,7 @@ class AtlasTestCase(TestCase):
             user = User.objects.create_user(
                 username=username,
                 password=None,
-                email=f"{username}@atlas.example.test",
+                email=f"{username}@onecs.example.test",
                 display_name=username.title(),
                 primary_org=org,
             )

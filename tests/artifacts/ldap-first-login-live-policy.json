@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-11-18T13:04:04.922497+00:00",
+  "target": "LDAP",
+  "read_only": true,
+  "personal_password_tested": false,
+  "account_created": false,
+  "service_bind_and_exact_user_lookup_verified": true,
+  "automatic_group_policy_resolves": true,
+  "resolved_roles": [
+    "EMPLOYEE"
+  ],
+  "exact_team_membership_resolves": true
+}

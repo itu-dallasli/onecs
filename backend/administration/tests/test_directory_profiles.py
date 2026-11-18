@@ -26,9 +26,9 @@ from core.models import AuditEvent, OrgNode, RoleGrant, User
 class DirectoryProfileFixtures(TestCase):
     def setUp(self):
         self.override = override_settings(
-            ATLAS_ENCRYPTION_KEY=Fernet.generate_key().decode(),
-            ATLAS_ALLOWED_INTEGRATION_HOSTS="directory.example.test,api.example.test,other.example.test",
-            ATLAS_ALLOW_PRIVATE_INTEGRATION_HOSTS="",
+            ONECS_ENCRYPTION_KEY=Fernet.generate_key().decode(),
+            ONECS_ALLOWED_INTEGRATION_HOSTS="directory.example.test,api.example.test,other.example.test",
+            ONECS_ALLOW_PRIVATE_INTEGRATION_HOSTS="",
         )
         self.override.enable()
         self.addCleanup(self.override.disable)
@@ -75,7 +75,7 @@ class DirectoryProfileFixtures(TestCase):
                 "enabled": True,
                 "url": "ldap://directory.example.test:389",
                 "start_tls": True,
-                "bind_dn": "cn=atlas-reader,dc=example,dc=test",
+                "bind_dn": "cn=onecs-reader,dc=example,dc=test",
                 "base_dn": "dc=example,dc=test",
                 "user_filter": "(uid={username})",
                 **overrides,
@@ -134,7 +134,7 @@ class LDAPTransportTests(DirectoryProfileFixtures):
         config = {
             "url": "ldap://directory.example.test:389",
             "start_tls": True,
-            "bind_dn": "cn=atlas-reader,dc=example,dc=test",
+            "bind_dn": "cn=onecs-reader,dc=example,dc=test",
             "timeout_seconds": 10,
         }
         events = []
@@ -173,7 +173,7 @@ class LDAPTransportTests(DirectoryProfileFixtures):
                     {
                         "url": "ldap://directory.example.test:389",
                         "start_tls": True,
-                        "bind_dn": "cn=atlas-reader,dc=example,dc=test",
+                        "bind_dn": "cn=onecs-reader,dc=example,dc=test",
                     },
                     {"bind_password": "synthetic-value"},
                 )
@@ -236,7 +236,7 @@ class LDAPTransportTests(DirectoryProfileFixtures):
                 {
                     "url": "ldaps://directory.example.test:636",
                     "start_tls": False,
-                    "bind_dn": "cn=atlas-reader,dc=example,dc=test",
+                    "bind_dn": "cn=onecs-reader,dc=example,dc=test",
                 },
                 {"bind_password": "synthetic-value"},
             )

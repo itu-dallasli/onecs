@@ -1,4 +1,4 @@
-# Atlas entegrasyon ve yönetim servisleri
+# onecs entegrasyon ve yönetim servisleri
 
 Bu belge `backend/administration` uygulamasının çalışan sözleşmesini açıklar. Ayar ekranının görünmesi bağlantının kurulduğu anlamına gelmez. Entegrasyonlar gerçek bağlantı testinin sonucunu, test edilen yapılandırma sürümünü ve zamanı ayrı saklar.
 
@@ -10,7 +10,7 @@ Teknik yönetici kullanıcı oluşturabilir, sıradan çalışanın organizasyon
 
 `TEAM_MANAGER`, `UNIT_HEAD`, `PROJECT_MANAGER` veya `DIRECTOR` rolü vermek için gerçek kullanıcının ayrıca güncel `DIRECTOR` rolü ve hedef organizasyonda yönetim kapsamı bulunmalıdır. Özel proje/vaka yetki devirleri bu genel kullanıcı formundan verilmez; ilgili domain akışı kullanılır. Proje yöneticisi rolü tek başına bir `PMAppointment` veya proje yönetim hakkı oluşturmaz.
 
-Kullanıcı API'si salt okunur `access_version` döndürür. Profil/rol PATCH isteğinde `expected_access_version` gönderildiğinde değer satır kilidi altında doğrulanır; eski editör 409 alır ve yeni kayıt ezilmez. Geçiş uyumluluğu için sürüm alanı API'de isteğe bağlıdır; Atlas arayüzü güncel değeri gönderir.
+Kullanıcı API'si salt okunur `access_version` döndürür. Profil/rol PATCH isteğinde `expected_access_version` gönderildiğinde değer satır kilidi altında doğrulanır; eski editör 409 alır ve yeni kayıt ezilmez. Geçiş uyumluluğu için sürüm alanı API'de isteğe bağlıdır; onecs arayüzü güncel değeri gönderir.
 
 ## Ayar API'si ve sürümleme
 
@@ -39,18 +39,26 @@ Sekmeler `general`, `ldap`, `smtp`, `ai`, `teams` olur. PATCH mevcut ayarlarla b
 
 Test sonucu `success`, `failure` veya `unconfigured` döner. HTTP yanıtı sırasıyla 200, 400 veya 409'dur. Bir testin başarısı diğer test türlerini kapsamaz; LDAP servis bağlantısı başarılı olması her kullanıcı/grup eşlemesinin doğrulandığı anlamına gelmez.
 
+`message` güvenli Türkçe metindir. LDAP testinde Python `ErrorDetail` gösterimi döndürülmez. TLS süre dolumu, henüz geçerli olmayan sertifika, güvenilmeyen zincir, sunucu adı uyuşmazlığı, DNS, zaman aşımı ve bind reddi ayrılır. AI testleri ayrıca HTTP 401/403/404/429/5xx sonuçlarını ayırır; sağlayıcı yanıt gövdesi, ham exception, anahtar ve hedef adresi mesajlara kopyalanmaz. AI kartları kalıcı `latest_test.message` değerini gösterir ve başarısız HTTP testinden sonra da güncel sonucu yükler. Yeni sürüm eski test kayıtlarını değiştirmez; ayrıntılı yeni sonuç için yeniden test gerekir.
+
+LDAP için `ONECS_LDAP_CA_FILE`, AI için `ONECS_AI_CA_FILE` deployment tarafından yönetilen PEM CA dosyasını seçer. AI alanı boşsa HTTPX'in varsayılan güven deposu kullanılır; ortam proxy'leri ve yönlendirmeler kapalı kalır. Özel AI CA dosyasında `CERT_REQUIRED` ve sunucu adı kontrolü korunur, ara CA'nın kök yerine güven çıpası kabul edilmesi kapatılır. Eksik/bozuk dosya dış isteği başlatmadan kontrollü hatayla durur. CA dosyasına rastgele sunucu sertifikası eklenmez; güvenilir köke kadar doğrulanan kurum zinciri gerekir.
+
+18 Kasım yerel tanısında sistem deposundaki eski ara CA'nın 15 Kasım 2026 00:16:18 Türkiye saatiyle sona erdiği görüldü. LDAP'ın sunduğu yenilenmiş ara CA mevcut güvenilir root'larla bağımsız doğrulandı; yalnız mevcut root'lar ve bu doğrulanmış ara CA'yı içeren, Git dışında tutulan `.runtime/integration-ca.pem` dosyası iki adaptöre bağlandı. LDAP StartTLS ve iki AI hedefinin TLS el sıkışması geçti; bu koşu bind/Base DN veya model erişimini doğrulamaz. Eski test kayıtları korunur. Kalıcı işletimde kurum CA dosyası yönetilmeli ve AI sunucusu tam zinciri sunmalıdır. [Makine kanıtı](../../tests/artifacts/integration-tls-diagnosis.json).
+
+Yerel geliştirme servislerinde CA değişikliğinden sonra API ve worker yeniden başlatılır. Mevcut veriyi seed etmeden ve başka çalışmanın bekleyen migration'larını uygulamadan yeniden başlatmak için `python scripts/dev.py --skip-migrations` kullanılabilir; ilk kurulumun migration adımının yerini almaz.
+
 ## Sırlar ve ağ güven sınırı
 
-`ATLAS_ENCRYPTION_KEY`, deployment sırasında oluşturulmuş Fernet anahtarıdır. Anahtar yokken sır kaydetme başarısız olur; uygulama sessizce bir anahtar üretmez. Anahtar veritabanında tutulmaz. Anahtarın değişmesi eski ayarların otomatik açılmasını sağlamaz; kontrollü yeniden şifreleme/yeniden yapılandırma gerekir. Veritabanı yedeğinin yanında uygun anahtar kurtarma süreci de planlanmalıdır.
+`ONECS_ENCRYPTION_KEY`, deployment sırasında oluşturulmuş Fernet anahtarıdır. Anahtar yokken sır kaydetme başarısız olur; uygulama sessizce bir anahtar üretmez. Anahtar veritabanında tutulmaz. Anahtarın değişmesi eski ayarların otomatik açılmasını sağlamaz; kontrollü yeniden şifreleme/yeniden yapılandırma gerekir. Veritabanı yedeğinin yanında uygun anahtar kurtarma süreci de planlanmalıdır.
 
 Sırlar `ConfigurationVersion.encrypted_secrets` içinde şifrelenir. API yalnız mevcut sır alanlarının adlarını döndürür. Boş metin mevcut sırrı korur; `null` sırrı kaldırır. Parola, API anahtarı veya tam yapılandırma sırları denetim payload'ına yazılmaz. Eski sürümler eski şifreli sırları da içerir; saklama politikası bunları kapsamalıdır.
 
 Yönetim UI'sı deployment güven sınırını genişletemez:
 
-- `ATLAS_ALLOWED_INTEGRATION_HOSTS`: bağlantıya izin verilen tam sunucu adları.
-- `ATLAS_ALLOW_PRIVATE_INTEGRATION_HOSTS`: aynı izinli adlardan özel ağ adreslerine çözümlenmesine ayrıca izin verilenler.
-- `ATLAS_LDAP_CA_FILE`: LDAP için deployment tarafından yönetilen özel CA dosyası.
-- `ATLAS_TEST_EMAIL_RECIPIENTS`: üretim dışı ortamda izinli test alıcıları.
+- `ONECS_ALLOWED_INTEGRATION_HOSTS`: bağlantıya izin verilen tam sunucu adları.
+- `ONECS_ALLOW_PRIVATE_INTEGRATION_HOSTS`: aynı izinli adlardan özel ağ adreslerine çözümlenmesine ayrıca izin verilenler.
+- `ONECS_LDAP_CA_FILE`: LDAP için deployment tarafından yönetilen özel CA dosyası.
+- `ONECS_TEST_EMAIL_RECIPIENTS`: üretim dışı ortamda izinli test alıcıları.
 
 Ağ hedefi ad ve DNS çözüm sonucu ile doğrulanır. HTTPS/LDAPS sertifika doğrulaması kapatılamaz. Düz HTTP AI hedefi yalnız ayrıca izinli yerel/özel hedefte kullanılabilir. AI HTTP istemcisi yönlendirme ve ortam proxy'si kullanmaz. Bu kontroller ağ seviyesinde egress politikası yerine geçmez; DNS ve izinli sunucular deployment güven sınırının parçasıdır.
 
@@ -58,17 +66,25 @@ Ağ hedefi ad ve DNS çözüm sonucu ile doğrulanır. HTTPS/LDAPS sertifika do�
 
 Ayarlar: `enabled`, `url`, `bind_dn`, `base_dn`, `start_tls`, `user_dn_template`, `user_search_base`, `group_search_base`, `user_filter`, `group_filter`, `timeout_seconds`; ayrıca `username_attribute`, `display_name_attribute`, `email_attribute`, `department_attribute`, `title_attribute`, `manager_attribute`, `membership_attribute`. Servis parolası `secrets.bind_password` alanındadır. `ldaps://` doğrudan TLS; `ldap://` ise **TLS sertifikası doğrulanan StartTLS** kullanır. 389 bağlantısında `start_tls=false` reddedilir; servis parolası TLS'den önce gönderilmez. Referral takibi kapalıdır. Dizin özniteliklerinde parola/sır alanları, wildcard veya keyfî şema sorgusu kabul edilmez.
 
-Varsayılan kullanıcı önizleme filtresi `(&(objectClass=user)(sAMAccountName=*{query}*))`, grup filtresi `(&(objectClass=group)(cn=*{query}*))` olur. Arama metni escape edilir. Login sorgusu önizleme wildcard'ından bağımsız, seçilmiş kullanıcı özniteliği üzerinde **tam eşleşmedir**. Kullanıcı bind'i için `user_dn_template` verilmişse `{username}` yerleştirilir; aksi halde dizindeki DN kullanılır. AD için kurumun gerçek şeması ve servis yetkileri doğrulanmalıdır.
+Varsayılan kullanıcı önizleme filtresi `(&(objectClass=user)(sAMAccountName=*{query}*))`, grup filtresi `(&(objectClass=group)(cn=*{query}*))` olur. Arama metni escape edilir. Login sorgusu önizleme wildcard'ından bağımsız, seçilmiş kullanıcı özniteliği üzerinde **tam eşleşmedir**. Kişisel bind daima tekil LDAP arama sonucunun gerçek DN adresiyle yapılır. Eski `user_dn_template` ayarı uyumluluk için saklanır; girişte kullanılmaz. AD için kurumun gerçek şeması ve servis yetkileri doğrulanmalıdır.
 
 Base DN boşken RootDSE `defaultNamingContext`/`namingContexts` okunur. Tek/default kapsam varsa kullanılabilir; birden fazla kapsamda varsayılan yoksa açık seçim gerekir. Seçilen arama tabanı yapılandırılmış/keşfedilmiş kapsamın altından gelmelidir. Kullanıcı ve grup arama tabanları ayrı tanımlanabilir.
 
-`authenticate_ldap(username, password)` boş parolayı reddeder. Servis bind'i ile tekil kullanıcı kaydı bulunur; kullanıcı DN'i ve girilen parola ile yeniden bind yapılır. TLS/bind/arama hatasında yerel parola yöntemine düşülmez. LDAP giriş yöntemi önceden sağlanmış, etkin `identity_source='ldap'` hesabı gerektirir. Yerel ve LDAP giriş seçimi ayrıdır.
+`authenticate_ldap(username, password)` boş parolayı reddeder. Servis bind'i ile tekil kullanıcı kaydı bulunur; kullanıcı DN'i ve girilen parola ile yeniden bind yapılır. TLS/bind/arama hatasında yerel parola yöntemine düşülmez. Varsayılan `auto_provision_enabled=true` ile önce onecs'a kişi aktarımı gerekmez: başarılı kişisel bind ve uygun grup eşlemesinden sonra `identity_source='ldap'` hesap, sabit `LDAPIdentity` ve yönetilen roller aynı transaction'da oluşturulur. Yerel ve LDAP giriş seçimi ayrıdır.
 
 LDAP kullanıcı oluşturma, dizine gerçek servis bağlantısı kurup `entryUUID` veya `objectGUID` değerini `LDAPIdentity` ile eşler. Kullanıcı adı/e-posta değişikliği başka bir dizin kimliğine otomatik bağlanmaz. Sabit dizin kimliği yoksa hesap sağlama reddedilir. Mevcut yerel hesap, resmî referans kişi veya aynı adlı çalışan otomatik birleştirilmez. Gerçek dizin aktarımı `identity_source='ldap'`, kullanılamaz yerel parola ve `profile_kind='LDAP'` ile hesap oluşturur.
 
 Arama önizlemesi en fazla 100 kaydı; ad, kullanıcı adı, e-posta, bölüm, unvan, yönetici DN'i, grup bilgisi ve **yalnız metadata olan** rol ipucunu gösterir. Önizleme hiç kullanıcı veya rol oluşturmaz. Paket arayan gerçek yöneticiye, yapılandırma sürümüne ve 15 dakikalık süreye bağlıdır. Aktarım her kişi için `subject`, `org_node`, `role` ister. Teknik yönetici sıradan `EMPLOYEE` sağlayabilir; iş yönetimi rolleri gerçek direktörün hedef organizasyon kapsamını gerektirir. Değişmiş ayar, süresi geçmiş paket, yerel kullanıcı adı çakışması, kapalı dizin hesabı, başka aktörün paketi veya eksik onay atomik olarak reddedilir. Mevcut eşlenmiş hesabın rol/kapsam değişikliği normal kullanıcı yönetimi akışına gider. Bölüm/unvan/grup bilgisi `ldap_metadata` olarak saklanır ve kendiliğinden yetkiye dönüşmez.
 
-Grup arama önizlemesi kullanılabilir; grubun bütün üyelerini otomatik sağlama veya grup–iş rolü senkronizasyonu bulunmaz. Grup filtresi bir otomatik yetki politikası değildir.
+Grup arama önizlemesi kullanılabilir; toplu üye aktarımı yapılmaz. Bunun yerine her kişinin doğrulanmış girişinde doğrudan `memberOf` üyelikleri kullanılır. `match_organization_groups=true` varsayılanında, yapılandırılmış/keşfedilmiş grup arama kökü altındaki **tam grup CN = etkin OrgNode.code** eşleşmesi yalnız `EMPLOYEE` rolünü o organizasyonda, `includes_descendants=false` ile verir. Önek, departman veya unvan rol üretmez; nested/primary-group çözümlemesi yapılmaz. Birden fazla eşleşmede en derin organizasyon ana ekip seçilir; diğer açık kapsamlar ayrıca korunur.
+
+`group_role_mappings` en fazla 64 `{group_dn, org_node, role, includes_descendants}` nesnesi taşır. Tam DN eşleşen açık kural, aynı grubun çalışan varsayılanından önce uygulanır. Roller `EMPLOYEE`, `TEAM_MANAGER`, `UNIT_HEAD`, `DIRECTOR`, `PROJECT_MANAGER` olabilir; sistem yöneticisi/God Mode eşlenmez. Ekip yöneticisi TEAM, birim yöneticisi UNIT kapsamı ister. Teknik yönetici çalışan eşlemesini düzenleyebilir; iş yönetimi kuralı ekleme/değiştirme/kaldırma ve bu kuralları etkileyen otomatik giriş anahtarları ayrıca gerçek direktörün hedef kapsam yetkisini gerektirir. God Mode ve başka kullanıcı görünümü bu yetkiyi sağlamaz. PM rolü tek başına PM görevi, proje onayı veya vaka üyeliği oluşturmaz.
+
+`LDAPManagedGrant` yalnız LDAP tarafından yönetilen `RoleGrant` kayıtlarını işaretler. Başarılı sonraki girişlerde yeni gruplar eklenir, kaybolan yönetilen yetkiler pasifleştirilir; elle verilmiş roller silinmez. Hiç eşleşme kalmazsa giriş reddedilir, eski yönetilen roller ve LDAP yönetimindeki ana organizasyon aynı transaction'da geri alınır; mevcut oturum eski organizasyon audience içeriğini okuyamaz. Mevcut sabit kimliğin kullanıcı adı başka hesapla çakışsa da doğrulanmış grup kaybı eski yönetilen yetkilerin iptalini durdurmaz; yeni hesap/rol oluşturulmaz. Yanlış parola hiçbir kullanıcı/rol kaydı veya rol iptali yazmaz. Kullanıcı/kimlik/rol değişikliği ve güvenli audit atomiktir; ayar sürümü LDAP çağrısı sırasında değişmişse sonuç kaydedilmez. Yapılandırma satır kilidi eşzamanlı ilk girişleri tekilleştirir.
+
+Sabit subject ile eşleşen LDAP hesabının adı yenilenebilir; aynı adlı yerel hesapla birleşme yapılmaz. Aynı e-posta da kimlik birleştirme anahtarı değildir. Devre dışı kullanıcı yeniden etkinleştirilmez; kişisel LDAP parolası kaydedilmez. Eksik/çoklu arama, eksik sabit kimlik, kapalı dizin hesabı, geçersiz/eksik ranged üyelik, 2000'den fazla grup ve eşleşmeyen grup girişi kontrollü reddeder. Public login bütün retlerde genel kimlik hatasını korur.
+
+`auto_provision_enabled=false` yalnız önceden sağlanmış etkin LDAP hesaplarına eski manuel giriş akışını sürdürür; yeni hesap/rol üretmez. LDAP grubu değişikliği bir sonraki başarılı kişisel bind'de değerlendirilir. Açık oturumların LDAP'a periyodik sorguyla iptali bu değişikliğin kapsamında uygulanmış değildir.
 
 LDAP bağlantı testi gerçek servis bind'ini, TLS doğrulamasını ve Base DN okumasını sınar. Bu test kullanıcı parolalarını toplamaz ve herhangi bir kişiye rol vermez.
 
@@ -122,4 +138,4 @@ Yönetim ayarı, bağlantı testi ve kullanıcı işlemleri core `AuditEvent` il
 
 `python backend/manage.py test administration.tests --noinput --verbosity 1` komutu bu katmanı PostgreSQL üzerinde sınar. Testler şifreleme/sır geri okumama, eski ayar ve kullanıcı sürümü, eksik bootstrap anahtarı, kapalı entegrasyon, LDAP/TLS ve izinli ağ sınırı, AI kullanım/maliyet/atıf, bütçe, kalıcı iş tekrarında ikinci ücret doğmaması, yetki reddi, kullanıcı sağlama, sır içermeyen audit, iş metadata'sının güvenliği, sekmesiz ayar güncellemesinin güvenli reddi ve belirsiz postada açık yeniden gönderim onayını kapsar. Güncel yürütme sonucu QA raporuyla birlikte değerlendirilir.
 
-Otomatik testlerde dış sağlayıcı adaptörü kontrollü taklitlerle sınanır. **18 Kasım 2026 tarihinde gerçek LDAP ve AI bağlantıları ayrıca denendi; her ikisi de `CERTIFICATE_VERIFY_FAILED: certificate has expired` nedeniyle doğrulanamadı.** Sertifika doğrulaması kapatılmadı ve bağlantılar hazır kabul edilmedi. Kurumsal sertifika zinciri düzeltilip aynı doğrulanan bağlantı testleri başarıyla tamamlanmalıdır. Gerçek SMTP teslimi ayrıca sınanmalıdır. Test sonuçlarında parola veya API anahtarı yayımlanmaz.
+Otomatik testlerde dış sağlayıcı adaptörü kontrollü taklitlerle sınanır. **18 Kasım 2026 tarihli önceki gerçek LDAP ve AI testleri TLS sertifika doğrulamasında başarısızdı.** Sonraki bağımsız tanıda eski yerel ara CA ve HTTPX güven deposundaki zincir eksikliği ayrıldı; mevcut köke doğrulanan CA dosyasıyla LDAP ve iki AI hedefinin TLS aşaması geçti. Son koşuda bind ve model isteği yapılmadığından bağlantılar henüz hazır kabul edilmez. Yönetici aynı gerçek bağlantı testlerini yeniden çalıştırmalıdır. Gerçek SMTP teslimi ayrıca sınanmalıdır. Test sonuçlarında parola veya API anahtarı yayımlanmaz.

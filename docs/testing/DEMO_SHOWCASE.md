@@ -7,7 +7,7 @@ E-posta, dış bildirim veya yapay zekâ isteği üretmez. İçerikteki sonuçla
 ## Kullanım
 
 Önce yerel PostgreSQL veritabanının yedeğini alın. Organizasyon henüz kurulmadıysa
-`ATLAS_DEMO_PASSWORD` ortam değişkenini tanımlayarak `seed_demo` komutunu çalıştırın.
+`ONECS_DEMO_PASSWORD` ortam değişkenini tanımlayarak `seed_demo` komutunu çalıştırın.
 
 ```bash
 python backend/manage.py seed_showcase --polish-legacy-cards

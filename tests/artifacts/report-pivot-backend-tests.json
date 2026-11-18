@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-11-18T13:34:14.543735+00:00",
+  "database": "PostgreSQL isolated test_onecs_report_pivot_final",
+  "scope": "Synthetic fixtures; core regression including worker, rollup, pivot, notifications, attachments and LDAP/TLS regressions",
+  "labels": [
+    "core",
+    "administration.tests.test_integrations",
+    "administration.tests.test_connection_diagnostics",
+    "administration.tests.test_ldap_auto_login"
+  ],
+  "failures": 0,
+  "duration_seconds": 38.519,
+  "output": "Found 376 test(s).\nCreating test database for alias 'default'...\nSystem check identified no issues (0 silenced).\n........................................................................................................................................................................................................................................................................................................................................................................................\n----------------------------------------------------------------------\nRan 376 tests in 35.405s\n\nOK\nDestroying test database for alias 'default'...\n"
+}

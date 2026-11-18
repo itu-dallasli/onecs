@@ -5,10 +5,10 @@ from datetime import datetime, timedelta, timezone
 from django.db import IntegrityError, transaction
 
 from core.models import Case, Project, ProjectMembership, SLAInstance, WorkItem
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class ContextConstraintTests(AtlasTestCase):
+class ContextConstraintTests(OnecsTestCase):
     def setUp(self):
         super().setUp()
         self.project = Project.objects.create(

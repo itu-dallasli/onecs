@@ -1,9 +1,9 @@
 ---
-name: atlas-domain-change
-description: Atlas'ta proje, unit işi, vaka, SLA veya paylaşım akışını değiştirirken bağlama göre yetkiyi ve kalıcı işlem sınırlarını korur. Genel arayüz metni veya bağımsız projeler için kullanılmaz.
+name: onecs-domain-change
+description: onecs'ta proje, unit işi, vaka, SLA veya paylaşım akışını değiştirirken bağlama göre yetkiyi ve kalıcı işlem sınırlarını korur. Genel arayüz metni veya bağımsız projeler için kullanılmaz.
 ---
 
-# Atlas domain değişikliği
+# onecs domain değişikliği
 
 Değişikliğin amacını onaylı `docs/UYGULAMA_PLANI.md` ve teknik sınırlarını `docs/MIMARI_TASARIM.md` üzerinden belirle. Çalışan sürümün doğrulama durumunu `docs/TEST_MATRIX.md` ve `docs/QA_REPORT.md` ile karşılaştır; planlanan özellikleri çalışıyor kabul etme.
 

@@ -1,0 +1,197 @@
+{
+  "numTotalTestSuites": 4,
+  "numPassedTestSuites": 4,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 11,
+  "numPassedTests": 11,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1795006259985,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts canonicalizes Django URLs before query parameters",
+          "status": "passed",
+          "title": "canonicalizes Django URLs before query parameters",
+          "duration": 12.252292000000011,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not duplicate a canonical trailing slash",
+          "status": "passed",
+          "title": "does not duplicate a canonical trailing slash",
+          "duration": 0.39775000000000205,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses session cookies, CSRF and a unique request id on mutation",
+          "status": "passed",
+          "title": "uses session cookies, CSRF and a unique request id on mutation",
+          "duration": 1.0398330000000016,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses rotated csrf token returned by the server",
+          "status": "passed",
+          "title": "uses rotated csrf token returned by the server",
+          "duration": 0.6007079999999974,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts preserves human-readable integration test failures",
+          "status": "passed",
+          "title": "preserves human-readable integration test failures",
+          "duration": 0.8274159999999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts turns field validation errors into actionable feedback",
+          "status": "passed",
+          "title": "turns field validation errors into actionable feedback",
+          "duration": 0.3007920000000013,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not display a raw server traceback as user feedback",
+          "status": "passed",
+          "title": "does not display a raw server traceback as user feedback",
+          "duration": 0.24858299999999645,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts recovers list shape safely when optional results are absent",
+          "status": "passed",
+          "title": "recovers list shape safely when optional results are absent",
+          "duration": 0.34637499999999477,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts translates offline failures into a recoverable API error",
+          "status": "passed",
+          "title": "translates offline failures into a recoverable API error",
+          "duration": 0.9213749999999976,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006260141,
+      "endTime": 1795006260157.9214,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/lib/api.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics keeps each stored failure visible after the settings page is reopened",
+          "status": "passed",
+          "title": "keeps each stored failure visible after the settings page is reopened",
+          "duration": 20.683875,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics distinguishes an unconfigured profile from a failed external request",
+          "status": "passed",
+          "title": "distinguishes an unconfigured profile from a failed external request",
+          "duration": 2.1728750000000048,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006260176,
+      "endTime": 1795006260199.1729,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/Settings.test.tsx"
+    }
+  ],
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "31e35a3bf27a67543d0d5a042b32dac9aff41a64773d0abd0354284ff24dca73"
+  }
+}

@@ -1,6 +1,6 @@
-# Atlas geliştirme ve doğrulama yöntemi
+# onecs geliştirme ve doğrulama yöntemi
 
-Atlas, `UYGULAMA_PLANI.md` ve `MIMARI_TASARIM.md` Revizyon 3 üzerinden geliştirilmektedir. Bu belgelerdeki hedefler ile çalışan sürümün kanıtı ayrıdır. Uygulanan/test edilen kapsam `TEST_MATRIX.md` ve `QA_REPORT.md` içinde izlenir.
+onecs, `UYGULAMA_PLANI.md` ve `MIMARI_TASARIM.md` Revizyon 3 üzerinden geliştirilmektedir. Bu belgelerdeki hedefler ile çalışan sürümün kanıtı ayrıdır. Uygulanan/test edilen kapsam `TEST_MATRIX.md` ve `QA_REPORT.md` içinde izlenir.
 
 ## İş paylaşımı
 
@@ -22,7 +22,7 @@ Mock servis testi ile gerçek kurum entegrasyonu farklıdır. Yerel AI/SMTP test
 
 ## Tasarım kaynağı
 
-Penpard’ın sade kurumsal arayüzü görsel referanstır: açık gri canvas, beyaz kartlar, koyu gri ana aksiyon, ince altın vurgu, dar sol gezinme ve sekmeli ayarlar. Atlas’ın kaynak kodu ve veritabanı ayrıdır. Penpard erişim anahtarı, entegrasyon sırları ve iş kayıtları Atlas’a taşınmaz.
+Penpard’ın sade kurumsal arayüzü görsel referanstır: açık gri canvas, beyaz kartlar, koyu gri ana aksiyon, ince altın vurgu, dar sol gezinme ve sekmeli ayarlar. onecs’ın kaynak kodu ve veritabanı ayrıdır. Penpard erişim anahtarı, entegrasyon sırları ve iş kayıtları onecs’a taşınmaz.
 
 ## Desteklenen araç sürümleri
 

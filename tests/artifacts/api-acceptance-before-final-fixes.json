@@ -1,5 +1,5 @@
 {
-  "application": "Atlas",
+  "application": "Onecs",
   "timestamp_utc": "2026-11-18T11:54:20.817313+00:00",
   "base_url": "http://127.0.0.1:8000",
   "duration_seconds": 49.086,
@@ -10,171 +10,176 @@
   "skipped": 0,
   "results": [
     {
-      "test": "__main__.AtlasApiAcceptance.test_01_role_sessions",
+      "test": "__main__.OnecsApiAcceptance.test_01_role_sessions",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_02_unauthenticated_surfaces_rejected",
+      "test": "__main__.OnecsApiAcceptance.test_02_unauthenticated_surfaces_rejected",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_03_mutation_requires_csrf",
+      "test": "__main__.OnecsApiAcceptance.test_03_mutation_requires_csrf",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_04_logout_revokes_session",
+      "test": "__main__.OnecsApiAcceptance.test_04_logout_revokes_session",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_05_bad_login_has_no_session",
+      "test": "__main__.OnecsApiAcceptance.test_05_bad_login_has_no_session",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_06_bad_identifiers_never_crash_api",
+      "test": "__main__.OnecsApiAcceptance.test_06_bad_identifiers_never_crash_api",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_07_invalid_mutation_is_validation_error",
+      "test": "__main__.OnecsApiAcceptance.test_07_invalid_mutation_is_validation_error",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_08_login_requires_csrf",
+      "test": "__main__.OnecsApiAcceptance.test_08_login_requires_csrf",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_10_private_draft_and_pm_routing",
+      "test": "__main__.OnecsApiAcceptance.test_10_private_draft_and_pm_routing",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_11_project_revision_approval_and_stale_version",
+      "test": "__main__.OnecsApiAcceptance.test_11_project_revision_approval_and_stale_version",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_12_project_self_and_implicit_director_approval_denied",
+      "test": "__main__.OnecsApiAcceptance.test_12_project_self_and_implicit_director_approval_denied",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_13_project_resource_acceptance_does_not_grant_management",
+      "test": "__main__.OnecsApiAcceptance.test_13_project_resource_acceptance_does_not_grant_management",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_14_project_audience_cannot_read_full_contributions",
+      "test": "__main__.OnecsApiAcceptance.test_14_project_audience_cannot_read_full_contributions",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_15_project_delegation_scope_and_revocation",
+      "test": "__main__.OnecsApiAcceptance.test_15_project_delegation_scope_and_revocation",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_16_significant_project_change_keeps_published_revision",
+      "test": "__main__.OnecsApiAcceptance.test_16_significant_project_change_keeps_published_revision",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_17_project_totals_distinguish_managed_and_contributing_units",
+      "test": "__main__.OnecsApiAcceptance.test_17_project_totals_distinguish_managed_and_contributing_units",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_20_personal_work_and_formal_adoption",
+      "test": "__main__.OnecsApiAcceptance.test_20_personal_work_and_formal_adoption",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_21_formal_completion_requires_independent_acceptance",
+      "test": "__main__.OnecsApiAcceptance.test_21_formal_completion_requires_independent_acceptance",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_22_personal_work_completes_without_manager_acceptance",
+      "test": "__main__.OnecsApiAcceptance.test_22_personal_work_completes_without_manager_acceptance",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_23_unit_scope_and_private_parent",
+      "test": "__main__.OnecsApiAcceptance.test_23_unit_scope_and_private_parent",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_24_cross_unit_reassignment_denied_and_sla_not_reset",
+      "test": "__main__.OnecsApiAcceptance.test_24_cross_unit_reassignment_denied_and_sla_not_reset",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_25_rejected_creation_is_atomic",
+      "test": "__main__.OnecsApiAcceptance.test_25_rejected_creation_is_atomic",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_26_idempotency_deduplicates_and_does_not_skip_csrf",
+      "test": "__main__.OnecsApiAcceptance.test_26_idempotency_deduplicates_and_does_not_skip_csrf",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_27_contribution_authorship_is_server_owned",
+      "test": "__main__.OnecsApiAcceptance.test_27_contribution_authorship_is_server_owned",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_28_sla_reassignment_adjustment_and_self_extension",
+      "test": "__main__.OnecsApiAcceptance.test_28_sla_reassignment_adjustment_and_self_extension",
       "status": "failed",
       "detail": "'2026-11-19T14:53:56.059064+03:00' == '2026-11-19T14:53:56.059064+03:00'"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_29_contribution_revision_preserves_original_author",
+      "test": "__main__.OnecsApiAcceptance.test_29_contribution_revision_preserves_original_author",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_30_case_roles_notice_and_independent_verification",
+      "test": "__main__.OnecsApiAcceptance.test_30_case_roles_notice_and_independent_verification",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_40_announcement_targeting",
+      "test": "__main__.OnecsApiAcceptance.test_40_announcement_targeting",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_41_poll_rsvp_and_attendance_are_distinct",
+      "test": "__main__.OnecsApiAcceptance.test_41_poll_rsvp_and_attendance_are_distinct",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_42_community_public_card_keeps_source_private",
+      "test": "__main__.OnecsApiAcceptance.test_42_community_public_card_keeps_source_private",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_43_credential_claim_verification_and_scope",
+      "test": "__main__.OnecsApiAcceptance.test_43_credential_claim_verification_and_scope",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_44_closed_poll_rejects_late_response",
+      "test": "__main__.OnecsApiAcceptance.test_44_closed_poll_rejects_late_response",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_45_search_filters_hidden_resources",
+      "test": "__main__.OnecsApiAcceptance.test_45_search_filters_hidden_resources",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_46_project_card_separates_content_and_audience_approval",
+      "test": "__main__.OnecsApiAcceptance.test_46_project_card_separates_content_and_audience_approval",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_50_report_star_sources_and_generation",
+      "test": "__main__.OnecsApiAcceptance.test_50_report_star_sources_and_generation",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_60_admin_boundaries_and_unconfigured_integrations",
+      "test": "__main__.OnecsApiAcceptance.test_60_admin_boundaries_and_unconfigured_integrations",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_61_external_jwt_is_read_only_scoped_and_revocable",
+      "test": "__main__.OnecsApiAcceptance.test_61_external_jwt_is_read_only_scoped_and_revocable",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_62_ldap_secret_masking_and_unconfigured_result",
+      "test": "__main__.OnecsApiAcceptance.test_62_ldap_secret_masking_and_unconfigured_result",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_63_deactivated_account_loses_existing_session",
+      "test": "__main__.OnecsApiAcceptance.test_63_deactivated_account_loses_existing_session",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_64_test_mode_is_disabled_in_development",
+      "test": "__main__.OnecsApiAcceptance.test_64_test_mode_is_disabled_in_development",
       "status": "passed"
     },
     {
-      "test": "__main__.AtlasApiAcceptance.test_65_openapi_and_swagger_require_login",
+      "test": "__main__.OnecsApiAcceptance.test_65_openapi_and_swagger_require_login",
       "status": "failed",
       "detail": "500 not found in (401, 403)"
     }
   ],
-  "external_integrations_verified": false
+  "external_integrations_verified": false,
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "92ccb6e668546ce58fdb7d3185bf41b862814fc0dbf033abda6b27b5c5c22025"
+  }
 }

@@ -10,6 +10,7 @@ from rest_framework.exceptions import NotFound, ValidationError
 
 from .directory import _require_real_admin as require_admin
 from core.services import audit
+from .diagnostics import connection_failure_message
 from .models import AIConnectionProfile, ConfigurationVersion, IntegrationConfiguration, IntegrationTest
 from .security import decrypt_secrets, encrypt_secrets, validate_url
 
@@ -179,10 +180,10 @@ def test_ai_profile(actor, profile_id, expected_version=None):
                 raise ValueError("Empty model response")
             _record_usage(usage, result, time.monotonic() - started)
             status, message = "success", "Bu bağlantı profili ortak model ayarlarıyla gerçek kısa isteğe yanıt verdi."
-        except Exception:
+        except Exception as exc:
             usage.status, usage.completed_at = "unknown", timezone.now()
             usage.save(update_fields=["status", "completed_at"])
-            status, message = "failure", "Model bağlantısı doğrulanamadı; hedef, TLS, anahtar ve model erişimini kontrol edin."
+            status, message = "failure", connection_failure_message(exc, "ai")
     saved = IntegrationTest.objects.create(configuration=profile.configuration, configuration_version=version.version if version else 0, settings_fingerprint=_settings_fingerprint(config), status=status, message=message, checked_by=actor)
     audit(actor, "ai.profile.tested", profile, {"status": status, "configuration_version": saved.configuration_version, "settings_version": settings_version})
     return {"status": status, "message": message, "checked_at": saved.checked_at, "configuration_version": saved.configuration_version, "profile": public_ai_profile(profile)}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Atlas canlı HTTP kabul testleri; yalnız ayrı, sentetik test ortamında çalıştırın."""
+"""onecs canlı HTTP kabul testleri; yalnız ayrı, sentetik test ortamında çalıştırın."""
 
 from __future__ import annotations
 
@@ -68,7 +68,7 @@ class ApiClient:
 
     def csrf(self):
         cookies = {cookie.name: cookie.value for cookie in self.jar}
-        return cookies.get("atlas_csrftoken") or cookies.get("csrftoken", "")
+        return cookies.get("onecs_csrftoken") or cookies.get("csrftoken", "")
 
     def request(self, method, path, payload=None, *, csrf=True, headers=None):
         target = path if path.startswith("/") else f"{self.prefix}/{path.lstrip('/')}"
@@ -123,7 +123,7 @@ def person(data):
     return data
 
 
-class AtlasApiAcceptance(unittest.TestCase):
+class OnecsApiAcceptance(unittest.TestCase):
     """All callers use real independent sessions; no God Mode or database writes."""
 
     @classmethod
@@ -272,7 +272,7 @@ class AtlasApiAcceptance(unittest.TestCase):
     def test_05_bad_login_has_no_session(self):
         """Yanlış parola rol oturumu oluşturamaz ve teknik traceback döndürmez."""
         isolated = ApiClient(CONFIG["base_url"])
-        response = isolated.login("employee", "Atlas-invalid-" + uuid.uuid4().hex)
+        response = isolated.login("employee", "onecs-invalid-" + uuid.uuid4().hex)
         self.assertIn(response.status, (400, 401, 403))
         self.assertNotIn("Traceback", response.text)
         self.assertIn(isolated.request("GET", "dashboard/").status, (401, 403))
@@ -1476,7 +1476,7 @@ class AtlasApiAcceptance(unittest.TestCase):
 
     def test_47_full_text_search_reads_body_and_preserves_scope(self):
         """K14/K18: gövde kelimeleri farklı sırada bulunur; gizli kayıt varlığı açılmaz."""
-        token = "atlasgovde" + uuid.uuid4().hex[:12]
+        token = "onecsgovde" + uuid.uuid4().hex[:12]
         work = self.create_work(
             personal=True,
             description=f"{token} için kurum içi karşılaştırmalı yönetişim deneyi.",
@@ -2014,7 +2014,7 @@ class AtlasApiAcceptance(unittest.TestCase):
                 anonymous.request("GET", path, headers=headers).status, (401, 403)
             )
             response = self.api("admin", "GET", path, headers=headers)
-            self.assertIn("Atlas", response.text)
+            self.assertIn("onecs", response.text)
             self.assertNotIn("Traceback", response.text)
 
 
@@ -2047,7 +2047,7 @@ class EvidenceResult(unittest.TextTestResult):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-url", default="http://127.0.0.1:8000")
-    parser.add_argument("--password-env", default="ATLAS_DEMO_PASSWORD")
+    parser.add_argument("--password-env", default="ONECS_DEMO_PASSWORD")
     parser.add_argument(
         "--env-file", default=str(Path(__file__).resolve().parents[1] / ".env")
     )
@@ -2090,19 +2090,19 @@ def main():
     CONFIG.update(base_url=args.base_url.rstrip("/"), password=password)
     started = time.monotonic()
     if args.test_names:
-        available = set(unittest.defaultTestLoader.getTestCaseNames(AtlasApiAcceptance))
+        available = set(unittest.defaultTestLoader.getTestCaseNames(OnecsApiAcceptance))
         unknown = sorted(set(args.test_names) - available)
         if unknown:
             parser.error("Bilinmeyen test metodu: " + ", ".join(unknown))
         suite = unittest.TestSuite(
-            AtlasApiAcceptance(name) for name in dict.fromkeys(args.test_names)
+            OnecsApiAcceptance(name) for name in dict.fromkeys(args.test_names)
         )
     else:
-        suite = unittest.defaultTestLoader.loadTestsFromTestCase(AtlasApiAcceptance)
+        suite = unittest.defaultTestLoader.loadTestsFromTestCase(OnecsApiAcceptance)
     result = unittest.TextTestRunner(verbosity=2, resultclass=EvidenceResult).run(suite)
     evidence = {
-        "application": "Atlas",
-        "run_key": AtlasApiAcceptance.run_key,
+        "application": "onecs",
+        "run_key": OnecsApiAcceptance.run_key,
         "timestamp_utc": dt.datetime.now(dt.UTC).isoformat(),
         "base_url": args.base_url,
         "duration_seconds": round(time.monotonic() - started, 3),
@@ -2114,7 +2114,7 @@ def main():
         "selection": args.test_names or "all",
         "results": result.evidence,
         "external_integrations_verified": False,
-        "observations": AtlasApiAcceptance.observations,
+        "observations": OnecsApiAcceptance.observations,
     }
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)

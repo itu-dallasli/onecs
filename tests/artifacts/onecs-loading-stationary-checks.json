@@ -1,0 +1,45 @@
+{
+  "scope": "Smaller stationary onecs loading logo and context-aware centering",
+  "build": {
+    "command": "npm run build",
+    "exit_code": 0,
+    "status": "passed"
+  },
+  "desktop": {
+    "logo_width": 96,
+    "emblem_width": 120,
+    "logo_animation": "none",
+    "logo_transform": "none",
+    "later_logo_animation": "none",
+    "later_logo_transform": "none",
+    "ring_animation": "onecs-orbit-turn",
+    "ring_movement_observed": true,
+    "horizontal_center_difference_px": 0,
+    "vertical_center_difference_px": 1.49609375
+  },
+  "mobile": {
+    "viewport_width": 390,
+    "page_width": 390,
+    "logo_width": 88,
+    "emblem_width": 112,
+    "logo_animation": "none",
+    "logo_transform": "none",
+    "horizontal_center_difference_px": 0,
+    "vertical_center_difference_px": 0
+  },
+  "contexts": {
+    "page_loader_parent_display": "grid",
+    "card_loader_parent_display": "block",
+    "dark_card_visual": "passed",
+    "aria_status_preserved": true,
+    "reduced_motion_rule_preserved": true
+  },
+  "verification": "IAB temporary fixture rendering real Loading/OnecsBrand and application styles; no authenticated route or backend flow changed",
+  "temporary_preview_removed": true,
+  "viewport_override_reset": true,
+  "screenshots": [
+    "ui-onecs-loading-stationary.jpg",
+    "ui-onecs-loading-stationary-dark.jpg",
+    "ui-onecs-loading-stationary-mobile.jpg"
+  ]
+}

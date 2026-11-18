@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-11-18T13:07:20.990357+00:00",
+  "database": "PostgreSQL",
+  "test_database": "isolated LDAP first-login database",
+  "labels": [
+    "administration.tests",
+    "core.tests.test_persistence",
+    "core.tests.test_session_security",
+    "core.tests.test_policy"
+  ],
+  "failures": 0,
+  "duration_seconds": 8.792,
+  "runner_output": "Found 146 test(s).\nCreating test database for alias 'default'...\nSystem check identified no issues (0 silenced).\n..................................................................................................................................................\n----------------------------------------------------------------------\nRan 146 tests in 6.793s\n\nOK\nDestroying test database for alias 'default'...\n",
+  "scope": "Synthetic LDAP binds; real PostgreSQL concurrency. Does not verify a personal corporate password."
+}

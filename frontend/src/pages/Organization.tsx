@@ -175,11 +175,11 @@ function PersonRow({
   onSelect: (person: Person) => void;
 }) {
   return (
-    <button className="atlas-org-person" onClick={() => onSelect(person)}>
-      <span className="atlas-org-avatar">
+    <button className="onecs-org-person" onClick={() => onSelect(person)}>
+      <span className="onecs-org-avatar">
         {initials(person.display_name || person.username)}
       </span>
-      <span className="atlas-org-person-copy">
+      <span className="onecs-org-person-copy">
         <strong>{person.display_name || person.username}</strong>
         <small>
           {personRole(person)}
@@ -189,11 +189,11 @@ function PersonRow({
         </small>
       </span>
       {person.profile_kind === "DEMO" && (
-        <span className="atlas-org-demo">Örnek</span>
+        <span className="onecs-org-demo">Örnek</span>
       )}
       {person.profile_kind === "OFFICIAL_REFERENCE" && (
         <span
-          className="atlas-org-reference"
+          className="onecs-org-reference"
           title="Organizasyon şemasından alınan referans kayıt; dizin bağlantısı doğrulanmış hesap değildir."
         >
           Şema referansı
@@ -365,10 +365,10 @@ export default function Organization() {
     const open = expanded.has(node.id) || Boolean(needle);
     const members = nodeMembers(node, list<Person>(branchPeople.data));
     return (
-      <li className="atlas-org-subtree" key={node.id}>
-        <div className="atlas-org-branch-row">
+      <li className="onecs-org-subtree" key={node.id}>
+        <div className="onecs-org-branch-row">
           <button
-            className="atlas-org-expand"
+            className="onecs-org-expand"
             aria-expanded={open}
             aria-controls={`org-children-${node.id}`}
             aria-label={`${organizationName(node.name)} üyelerini ve alt ekiplerini ${open ? "daralt" : "aç"}`}
@@ -377,10 +377,10 @@ export default function Organization() {
             {open ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
           </button>
           <button
-            className="atlas-org-branch-name"
+            className="onecs-org-branch-name"
             onClick={() => openOrg(node)}
           >
-            <span className="atlas-org-small-icon">
+            <span className="onecs-org-small-icon">
               <Building2 size={19} />
             </span>
             <span>
@@ -391,15 +391,15 @@ export default function Organization() {
               </small>
             </span>
           </button>
-          <span className="atlas-org-branch-manager">
+          <span className="onecs-org-branch-manager">
             {node.manager_name || "Yönetici tanımlanmamış"}
           </span>
-          <span className="atlas-org-branch-count">
+          <span className="onecs-org-branch-count">
             <Users size={15} />
             {node.member_count ?? members.length}
           </span>
           <button
-            className="atlas-org-inspect"
+            className="onecs-org-inspect"
             onClick={() => openOrg(node)}
             aria-label={`${organizationName(node.name)} ayrıntılarını incele`}
           >
@@ -408,7 +408,7 @@ export default function Organization() {
         </div>
         {open && (
           <div
-            className="atlas-org-branch-content"
+            className="onecs-org-branch-content"
             id={`org-children-${node.id}`}
           >
             {children.length > 0 && (
@@ -418,7 +418,7 @@ export default function Organization() {
                 )}
               </ul>
             )}
-            <div className="atlas-org-branch-people">
+            <div className="onecs-org-branch-people">
               {members.map((member) => (
                 <PersonRow
                   key={member.id}
@@ -427,7 +427,7 @@ export default function Organization() {
                 />
               ))}
               {!members.length && !children.length && !branchPeople.loading && (
-                <p className="atlas-org-empty-note">
+                <p className="onecs-org-empty-note">
                   Bu ekip için görünür kişi bulunmuyor.
                 </p>
               )}
@@ -438,7 +438,7 @@ export default function Organization() {
     );
   }
   return (
-    <div className="atlas-organization-page">
+    <div className="onecs-organization-page">
       <PageHeader
         eyebrow="ORTAK YAPI, GÜÇLÜ İLETİŞİM"
         title="Organizasyon"
@@ -460,9 +460,9 @@ export default function Organization() {
         !byId.has(requestedOrgId) && (
           <ErrorState message="Organizasyon kaydı bulunamadı veya bu kaydı görüntüleme yetkiniz yok." />
         )}
-      <div className="atlas-org-summary" aria-label="Organizasyon özeti">
+      <div className="onecs-org-summary" aria-label="Organizasyon özeti">
         <div>
-          <span className="atlas-org-summary-icon">
+          <span className="onecs-org-summary-icon">
             <ShieldCheck size={21} />
           </span>
           <span>
@@ -473,7 +473,7 @@ export default function Organization() {
           </span>
         </div>
         <div>
-          <span className="atlas-org-summary-icon">
+          <span className="onecs-org-summary-icon">
             <GitBranch size={21} />
           </span>
           <span>
@@ -484,7 +484,7 @@ export default function Organization() {
           </span>
         </div>
         <div>
-          <span className="atlas-org-summary-icon">
+          <span className="onecs-org-summary-icon">
             <Users size={21} />
           </span>
           <span>
@@ -501,8 +501,8 @@ export default function Organization() {
           Çalışan
         </p>
       </div>
-      <Card className="atlas-org-card">
-        <div className="atlas-org-toolbar">
+      <Card className="onecs-org-card">
+        <div className="onecs-org-toolbar">
           <div className="segmented" aria-label="Organizasyon görünümü">
             <button
               className={tab === "tree" ? "active" : ""}
@@ -521,7 +521,7 @@ export default function Organization() {
               Ekip ve kişi rehberi
             </button>
           </div>
-          <label className="atlas-org-search">
+          <label className="onecs-org-search">
             <Search size={18} />
             <input
               value={query}
@@ -552,17 +552,17 @@ export default function Organization() {
           tab === "tree" ? (
             <>
               {directorate && (
-                <div className="atlas-org-director-wrap">
-                  <article className="atlas-org-director">
-                    <div className="atlas-org-director-label">
+                <div className="onecs-org-director-wrap">
+                  <article className="onecs-org-director">
+                    <div className="onecs-org-director-label">
                       <ShieldCheck size={15} />
                       SİBER GÜVENLİK DİREKTÖRLÜĞÜ
                     </div>
                     <button
-                      className="atlas-org-director-main"
+                      className="onecs-org-director-main"
                       onClick={() => selectManager(directorate)}
                     >
-                      <span className="atlas-org-avatar director">
+                      <span className="onecs-org-avatar director">
                         {initials(directorate.manager_name)}
                       </span>
                       <span>
@@ -573,7 +573,7 @@ export default function Organization() {
                       </span>
                       <ArrowUpRight size={19} />
                     </button>
-                    <div className="atlas-org-director-footer">
+                    <div className="onecs-org-director-footer">
                       <span>
                         <Building2 size={14} />
                         {topNodes.length} bağlı birim
@@ -584,20 +584,20 @@ export default function Organization() {
                       </span>
                     </div>
                   </article>
-                  <span className="atlas-org-trunk" aria-hidden="true">
+                  <span className="onecs-org-trunk" aria-hidden="true">
                     <ArrowDown size={15} />
                   </span>
                 </div>
               )}
               {visibleTopNodes.length ? (
                 <div
-                  className="atlas-org-chart-scroll"
+                  className="onecs-org-chart-scroll"
                   tabIndex={0}
                   role="region"
                   aria-label="Bağlı birimler; tüm birimleri görmek için yatay kaydırabilirsiniz"
                 >
                   <div
-                    className="atlas-org-unit-row"
+                    className="onecs-org-unit-row"
                     style={
                       {
                         "--org-unit-count": visibleTopNodes.length,
@@ -609,35 +609,35 @@ export default function Organization() {
                       const open = branchId === node.id;
                       return (
                         <article
-                          className={`atlas-org-unit-card ${open ? "is-open" : ""}`}
+                          className={`onecs-org-unit-card ${open ? "is-open" : ""}`}
                           key={node.id}
                         >
                           <div
-                            className="atlas-org-unit-number"
+                            className="onecs-org-unit-number"
                             aria-hidden="true"
                           >
                             {String(index + 1).padStart(2, "0")}
                           </div>
                           <button
-                            className="atlas-org-unit-main"
+                            className="onecs-org-unit-main"
                             onClick={() => openOrg(node)}
                           >
-                            <span className="atlas-org-unit-label">
+                            <span className="onecs-org-unit-label">
                               {node.code}
                             </span>
                             <h3 title={node.name}>
                               {organizationName(node.name)}
                             </h3>
-                            <span className="atlas-org-unit-learn">
+                            <span className="onecs-org-unit-learn">
                               Birimi tanı <ArrowUpRight size={15} />
                             </span>
                           </button>
                           <button
-                            className="atlas-org-manager-link"
+                            className="onecs-org-manager-link"
                             onClick={() => selectManager(node)}
                             aria-label={`${node.manager_name || organizationName(node.name)} yönetici bilgisi`}
                           >
-                            <span className="atlas-org-avatar">
+                            <span className="onecs-org-avatar">
                               {initials(node.manager_name)}
                             </span>
                             <span>
@@ -648,7 +648,7 @@ export default function Organization() {
                             </span>
                           </button>
                           <button
-                            className="atlas-org-unit-expand"
+                            className="onecs-org-unit-expand"
                             aria-expanded={open}
                             aria-controls={`org-branch-${node.id}`}
                             onClick={() => setBranchId(open ? null : node.id)}
@@ -684,7 +684,7 @@ export default function Organization() {
                   }
                 />
               )}
-              <div className="atlas-org-chart-caption">
+              <div className="onecs-org-chart-caption">
                 <span>
                   <Network size={15} />
                   Birim kartındaki kişi sayısına basarak alt ekipleri ve
@@ -696,13 +696,13 @@ export default function Organization() {
               </div>
               {branch && (
                 <section
-                  className="atlas-org-branch-panel"
+                  className="onecs-org-branch-panel"
                   id={`org-branch-${branch.id}`}
                   aria-label={`${organizationName(branch.name)} ekip ve çalışanları`}
                 >
-                  <div className="atlas-org-branch-heading">
+                  <div className="onecs-org-branch-heading">
                     <div>
-                      <span className="atlas-org-kicker">BİRİMİN İÇİNDEN</span>
+                      <span className="onecs-org-kicker">BİRİMİN İÇİNDEN</span>
                       <h3 title={branch.name}>
                         {organizationName(branch.name)}
                       </h3>
@@ -728,12 +728,12 @@ export default function Organization() {
                     <Loading label="Ekipler ve kişiler yükleniyor…" />
                   ) : (
                     <>
-                      <ul className="atlas-org-branches">
+                      <ul className="onecs-org-branches">
                         {childrenOf(branch.id)
                           .filter((child) => descendantMatches(child))
                           .map((child) => renderBranch(child))}
                       </ul>
-                      <div className="atlas-org-direct-members">
+                      <div className="onecs-org-direct-members">
                         <h4>Doğrudan birime bağlı kişiler</h4>
                         {nodeMembers(
                           branch,
@@ -747,14 +747,14 @@ export default function Organization() {
                         ))}
                         {!nodeMembers(branch, list<Person>(branchPeople.data))
                           .length && (
-                          <p className="atlas-org-empty-note">
+                          <p className="onecs-org-empty-note">
                             Bu birimde doğrudan bağlı görünür kişi bulunmuyor.
                           </p>
                         )}
                       </div>
                       {(branchPeople.data?.count || 0) >
                         list(branchPeople.data).length && (
-                        <p className="atlas-org-limit-note">
+                        <p className="onecs-org-limit-note">
                           İlk {list(branchPeople.data).length} kişi
                           gösteriliyor. Diğer kişilere rehberde adlarıyla
                           arayarak ulaşabilirsiniz.
@@ -766,26 +766,26 @@ export default function Organization() {
               )}
             </>
           ) : (
-            <div className="atlas-org-directory">
-              <div className="atlas-org-directory-heading">
+            <div className="onecs-org-directory">
+              <div className="onecs-org-directory-heading">
                 <h2>Ekipler</h2>
                 <span>{directoryNodes.length} sonuç</span>
               </div>
-              <div className="atlas-org-directory-grid">
+              <div className="onecs-org-directory-grid">
                 {directoryNodes.map((node) => (
                   <button
-                    className="atlas-org-directory-card"
+                    className="onecs-org-directory-card"
                     key={node.id}
                     onClick={() => openOrg(node)}
                   >
                     <div>
-                      <span className="atlas-org-small-icon">
+                      <span className="onecs-org-small-icon">
                         <Building2 size={20} />
                       </span>
                       <Badge>{kindLabel(node.kind)}</Badge>
                     </div>
                     <h3 title={node.name}>{organizationName(node.name)}</h3>
-                    <span className="atlas-org-directory-code">
+                    <span className="onecs-org-directory-code">
                       {node.code}
                     </span>
                     <p>
@@ -802,9 +802,9 @@ export default function Organization() {
                 ))}
               </div>
               {!directoryNodes.length && (
-                <p className="atlas-org-empty-note">Eşleşen ekip bulunamadı.</p>
+                <p className="onecs-org-empty-note">Eşleşen ekip bulunamadı.</p>
               )}
-              <div className="atlas-org-directory-heading">
+              <div className="onecs-org-directory-heading">
                 <h2>Kişiler</h2>
                 <span>
                   {directoryPeople.loading
@@ -821,7 +821,7 @@ export default function Organization() {
                 <Loading label="Kişiler yükleniyor…" />
               ) : peopleRows.length ? (
                 <>
-                  <div className="atlas-org-directory-people">
+                  <div className="onecs-org-directory-people">
                     {peopleRows.map((member) => (
                       <PersonRow
                         key={member.id}
@@ -831,7 +831,7 @@ export default function Organization() {
                     ))}
                   </div>
                   {(peopleOffset > 0 || peopleHaveNext) && (
-                    <div className="atlas-org-pagination">
+                    <div className="onecs-org-pagination">
                       <button
                         className="btn btn-secondary"
                         disabled={peopleOffset === 0 || directoryPeople.loading}
@@ -882,8 +882,8 @@ export default function Organization() {
           onClose={closeDetail}
           wide
         >
-          <div className="atlas-org-detail-hero">
-            <span className="atlas-org-small-icon">
+          <div className="onecs-org-detail-hero">
+            <span className="onecs-org-small-icon">
               <Building2 size={26} />
             </span>
             <div>
@@ -918,7 +918,7 @@ export default function Organization() {
               {childrenOf(activeDetail.id).map((child) => (
                 <button
                   key={child.id}
-                  className="atlas-org-detail-child"
+                  className="onecs-org-detail-child"
                   onClick={() => openOrg(child)}
                 >
                   <Building2 size={17} />
@@ -955,7 +955,7 @@ export default function Organization() {
             )}
             {(detailPeople.data?.count || 0) >
               list(detailPeople.data).length && (
-              <p className="atlas-org-limit-note">
+              <p className="onecs-org-limit-note">
                 İlk {list(detailPeople.data).length} kişi gösteriliyor. Diğer
                 kişilere rehberden ulaşabilirsiniz.
               </p>
@@ -1017,7 +1017,7 @@ function PersonWorkloadRecords({
       />
     );
   return (
-    <div className="atlas-person-records">
+    <div className="onecs-person-records">
       {records.map((record) => {
         const due = workloadDue(record);
         const late = Boolean(
@@ -1043,15 +1043,15 @@ function PersonWorkloadRecords({
           Math.min(100, Number(record.progress) || 0),
         );
         return (
-          <article className="atlas-person-record" key={record.id}>
-            <div className="atlas-person-record-top">
-              <span className="atlas-person-record-context">
+          <article className="onecs-person-record" key={record.id}>
+            <div className="onecs-person-record-top">
+              <span className="onecs-person-record-context">
                 {kind === "work" ? contextLabels[record.context] || "İş" : role}
               </span>
               <Status value={record.status} />
             </div>
             <Link
-              className="atlas-person-record-title"
+              className="onecs-person-record-title"
               to={workloadRoute(kind, record.id)}
               onClick={onNavigate}
             >
@@ -1059,7 +1059,7 @@ function PersonWorkloadRecords({
               <ArrowUpRight size={17} />
             </Link>
             {record.visibility === "SUMMARY" ? (
-              <p className="atlas-person-summary-access">
+              <p className="onecs-person-summary-access">
                 Yönetim özeti · teknik ayrıntılar erişim kapsamınız dışındadır.
               </p>
             ) : (
@@ -1067,7 +1067,7 @@ function PersonWorkloadRecords({
                 <p>{record.expected_outcome || record.description}</p>
               )
             )}
-            <div className="atlas-person-record-meta">
+            <div className="onecs-person-record-meta">
               <span>
                 <UserRound size={14} />
                 {role}
@@ -1087,7 +1087,7 @@ function PersonWorkloadRecords({
               {record.priority && <Status value={record.priority} />}
             </div>
             {kind === "project" && (
-              <div className="atlas-person-record-progress">
+              <div className="onecs-person-record-progress">
                 <div>
                   <span style={{ width: `${progress}%` }} />
                 </div>
@@ -1149,8 +1149,8 @@ function PersonPanel({
       onClose={onClose}
       wide
     >
-      <div className="atlas-person-header">
-        <span className="atlas-org-avatar director">
+      <div className="onecs-person-header">
+        <span className="onecs-org-avatar director">
           {initials(currentPerson.display_name || currentPerson.username)}
         </span>
         <div>
@@ -1175,7 +1175,7 @@ function PersonPanel({
       </div>
       {currentPerson.profile_kind === "DEMO" && <Badge>Örnek hesap</Badge>}
       {currentPerson.profile_kind === "OFFICIAL_REFERENCE" && (
-        <div className="atlas-org-reference-note">
+        <div className="onecs-org-reference-note">
           <ShieldCheck size={17} />
           <span>
             Organizasyon şeması referansı. Kurumsal dizin doğrulaması bu
@@ -1184,7 +1184,7 @@ function PersonPanel({
         </div>
       )}
       {assignmentDone && (
-        <div className="atlas-person-assigned" role="status">
+        <div className="onecs-person-assigned" role="status">
           <ShieldCheck size={18} />
           <span>
             <strong>{assignmentDone}</strong> kaydedildi. Uygulama bildirimi
@@ -1195,7 +1195,7 @@ function PersonPanel({
       {workload.loading && !data ? (
         <Loading label="Kişinin yetkiniz kapsamındaki işleri yükleniyor…" />
       ) : workload.error ? (
-        <div className="atlas-person-workload-denied">
+        <div className="onecs-person-workload-denied">
           <ShieldCheck size={23} />
           <strong>İş ayrıntıları sınırlı erişimde</strong>
           <p>
@@ -1209,7 +1209,7 @@ function PersonPanel({
       ) : null}
       {ready && (
         <>
-          <div className="atlas-person-workload-kpis">
+          <div className="onecs-person-workload-kpis">
             <div>
               <span>Açık iş</span>
               <strong>{summary?.open_work ?? 0}</strong>
@@ -1232,14 +1232,14 @@ function PersonPanel({
             </div>
           </div>
           {summary?.overdue_work > 0 && (
-            <div className="atlas-person-overdue-note">
+            <div className="onecs-person-overdue-note">
               <AlertTriangle size={17} />
               {summary.overdue_work} işin termini geçmiş. İşler sekmesinden
               sorumlulukları ve sonraki adımları inceleyebilirsiniz.
             </div>
           )}
           <div
-            className="atlas-person-tabs"
+            className="onecs-person-tabs"
             aria-label="Kişi ayrıntısı bölümleri"
           >
             {(
@@ -1270,7 +1270,7 @@ function PersonPanel({
             {currentPerson.roles?.length ? (
               currentPerson.roles.map((role, index) => (
                 <div
-                  className="atlas-org-person-role"
+                  className="onecs-org-person-role"
                   key={`${role.role}-${role.org_id || index}`}
                 >
                   <strong>{roleLabels[role.role] || "Çalışan"}</strong>
@@ -1297,7 +1297,7 @@ function PersonPanel({
           </div>
           {ready && (
             <>
-              <div className="atlas-person-context-totals">
+              <div className="onecs-person-context-totals">
                 <span>
                   <GitBranch size={16} />
                   {summary?.by_context?.UNIT_WORK ?? 0} birim işi
@@ -1311,7 +1311,7 @@ function PersonPanel({
                   {summary?.by_context?.CASE_ACTION ?? 0} vaka aksiyonu
                 </span>
               </div>
-              <div className="atlas-person-section-head">
+              <div className="onecs-person-section-head">
                 <h3>Üzerindeki işler</h3>
                 <button className="text-button" onClick={() => setTab("work")}>
                   Tümünü gör <ChevronRight size={14} />
@@ -1336,7 +1336,7 @@ function PersonPanel({
             onNavigate={onClose}
           />
           {summary.work_total > works.length && (
-            <p className="atlas-org-limit-note">
+            <p className="onecs-org-limit-note">
               İlk {works.length} / {summary.work_total} kayıt gösteriliyor.
             </p>
           )}
@@ -1351,7 +1351,7 @@ function PersonPanel({
             onNavigate={onClose}
           />
           {summary.projects > projects.length && (
-            <p className="atlas-org-limit-note">
+            <p className="onecs-org-limit-note">
               İlk {projects.length} / {summary.projects} proje gösteriliyor.
             </p>
           )}
@@ -1366,7 +1366,7 @@ function PersonPanel({
             onNavigate={onClose}
           />
           {summary.cases > cases.length && (
-            <p className="atlas-org-limit-note">
+            <p className="onecs-org-limit-note">
               İlk {cases.length} / {summary.cases} vaka gösteriliyor.
             </p>
           )}
@@ -1381,12 +1381,12 @@ function PersonPanel({
           {contributions.length ? (
             contributions.map((entry: any) => (
               <div
-                className="timeline-item atlas-person-contribution"
+                className="timeline-item onecs-person-contribution"
                 key={entry.id}
               >
                 <i />
                 <div>
-                  <div className="atlas-person-contribution-head">
+                  <div className="onecs-person-contribution-head">
                     <strong>
                       {entry.visibility === "SUMMARY"
                         ? "Proje katkısı · Yönetim özeti"
@@ -1424,7 +1424,7 @@ function PersonPanel({
             <EmptyState title="Görünür katkı kaydı yok" />
           )}
           {summary.contributions > contributions.length && (
-            <p className="atlas-org-limit-note">
+            <p className="onecs-org-limit-note">
               İlk {contributions.length} / {summary.contributions} katkı
               gösteriliyor.
             </p>

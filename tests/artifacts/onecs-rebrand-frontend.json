@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-11-18T16:34:07.789195+03:00",
+  "scope": "frontend, including public and rebuilt dist; node_modules excluded",
+  "commands": [
+    {
+      "command": "npm test",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "test_files": {
+        "passed": 13,
+        "total": 13
+      },
+      "tests": {
+        "passed": 73,
+        "total": 73
+      },
+      "duration_ms": 979
+    },
+    {
+      "command": "npm run build",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "modules_transformed": 1609,
+      "warnings": [
+        "JavaScript chunk larger than 500 kB after minification."
+      ],
+      "assets": [
+        {
+          "path": "dist/assets/index-Ck5KUnwJ.css",
+          "size_kb": 172.02,
+          "gzip_kb": 32.68
+        },
+        {
+          "path": "dist/assets/index-nhSKrgIu.js",
+          "size_kb": 582.35,
+          "gzip_kb": 167.12
+        }
+      ]
+    },
+    {
+      "command": "rg -n -i --hidden --glob '!node_modules/**' 'a[t]las' .",
+      "cwd": "frontend",
+      "exit_code": 1,
+      "matches": [],
+      "stderr": ""
+    },
+    {
+      "command": "rg --files --hidden -g !node_modules/** (case-insensitive legacy-name path filter)",
+      "cwd": "frontend",
+      "exit_code": 0,
+      "matching_paths": []
+    }
+  ],
+  "report_pivot_modal_selector": "onecs-modal",
+  "legacy_literals_found": false,
+  "legacy_paths_found": false
+}

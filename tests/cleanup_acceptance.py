@@ -60,11 +60,19 @@ def protected_state(selected):
         "administration.AIConnectionProfile",
         "administration.AIUsage",
         "administration.LDAPIdentity",
+        "administration.LDAPManagedGrant",
         "administration.LDAPImportBatch",
     ]
     result = {}
     for label in labels:
-        model = apps.get_model(label)
+        try:
+            model = apps.get_model(label)
+        except LookupError:
+            # Added by an independent LDAP worktree change; the feature-only
+            # snapshot does not require that optional model/migration.
+            if label == "administration.LDAPManagedGrant":
+                continue
+            raise
         digest = hashlib.sha256()
         count = 0
         for row in (
@@ -389,7 +397,7 @@ def main():
     from django.db import transaction
 
     database = settings.DATABASES["default"]
-    if settings.ATLAS_ENV not in {"development", "test", "demo"} or database[
+    if settings.ONECS_ENV not in {"development", "test", "demo"} or database[
         "HOST"
     ] not in {"127.0.0.1", "localhost", "::1"}:
         parser.error("Yalnız yerel development/test/demo veritabanı kullanılabilir")

@@ -1,4 +1,4 @@
-# Atlas — Siber Güvenlik Yönetim Platformu Uygulama Planı
+# onecs — Siber Güvenlik Yönetim Platformu Uygulama Planı
 
 18 Kasım 2026 · Revizyon 4 · Onaylı ürün planı. Geliştirme başlamıştır; çalışan sürümün kapsamı [README](../README.md), doğrulama sonuçları [QA Raporu](QA_REPORT.md) içindedir.
 
@@ -7,6 +7,8 @@ Bu plan yaklaşık **200 kişi, 1 direktör ve 10–15 unit head** bulunan organ
 Teknik tasarım, veri modeli ve erişim kuralları [Mimari Tasarım](MIMARI_TASARIM.md) belgesindedir. Bu iki belge güncel kapsamı birlikte tanımlar. Hedefler ile uygulanmış kapsam ayrıdır; çalışan özellikler ve gerçek test kanıtları README ve QA raporuyla doğrulanır. Yardımcı iş kuralı, güvenlik ve test Markdown belgeleri `docs/` altında tutulur; AI araçlarına ait yönergeler kendi ana dizinlerinde kalır.
 
 ## 1 Ürün hedefi ve kabul edilen kararlar
+
+18 Kasım ek kapsamı: proje talebi, iş/alt iş, vaka/ihbar, anons, paylaşım, etkinlik ve sertifika oluştururken seçili kişilere isteğe bağlı e-posta ve dosya/fotoğraf ekleme uygulanmıştır. Taslak proje başvuruda, anons/paylaşım yayında bildirim üretir; alıcı seçimi kayıt erişimini genişletmez. SMTP teslimi ve üretim tarayıcısı kurum pilotunda ayrıca doğrulanır. [Uygulanan sözleşme](services/RECORD_EXTRAS.md).
 
 Ürün, yöneticinin **ne önemli, kim sorumlu, ne bekleniyor, ne zaman bitecek ve benden hangi karar gerekiyor** sorularına hızlı cevap verir. Ekipler açısından da doğru kişiyi bulmayı, yardım istemeyi ve yapılan çalışmayı görünür kılmayı kolaylaştırır.
 
@@ -67,7 +69,7 @@ Gönderilmemiş proje taslağı hazırlayana özeldir. Gönderim PM inceleme kap
 
 ### 3.1 Sade açılış
 
-Direktör ana ekranında **Kritik gündem, Geciken taahhüt ve SLA, Kararım bekleniyor, Yaklaşan önemli sertifikalar** kartları bulunur. Altında en fazla beş öncelikli konu ve “Bu hafta ne değişti?” özeti yer alır. Haftalık rapor düğmesi seçilmiş aday sayısını gösterir. Anonslar ve CS’de Neler Oluyor alanı ikincil bölümde görünür; acil gündemi aşağı itmez.
+Direktör ana ekranında **Kritik gündem, Geciken taahhüt ve SLA, Kararım bekleniyor, Yaklaşan önemli sertifikalar** kartları bulunur. Altında en fazla beş öncelikli konu ile anonslar yer alır. 18 Kasım 2026 arayüz düzenlemesiyle “Bu hafta ne değişti?” kutusu kaldırılmıştır; gündem kartı anons yüksekliğine uzatılmaz. Haftalık rapora üstteki bağlantıdan erişilir. Haftalık rapor düğmesi seçilmiş aday sayısını gösterir. Anonslar ve CS’de Neler Oluyor alanı ikincil bölümde görünür; acil gündemi aşağı itmez.
 
 Her kartın kısa içeriği: **iş etkisi, sahip, yapılan, sonraki adım, termin/SLA, beklenen karar ve son güncelleme**. “Neden burada?” açıklaması kritik, gecikmiş veya karar bekleyen işaretinin nedenini gösterir. Kaynağı eski olan kayıt ayrıca işaretlenir.
 
@@ -292,6 +294,8 @@ Bölümler Yapılanlar / Kritik konular / Engeller ve gecikmeler / Karar ihtiya�
 
 İlk sürüm gerçek model çağrısı, Markdown ve yazdırılabilir çıktı içerir; sunucu PDF’i pilotta sağlamlaştırılır. AI bağlantısı yoksa açıkça belirtilen kurallı rapor çalışır. Önceden yazılmış metin canlı AI gibi gösterilmez. Hazır raporun yeniden açılması yeni model çağrısı yapmaz.
 
+Rapor ayrıntısı modal içinde Genel Rapor ve ekip bazlı pivot görünümünü birlikte sunar. Genel Rapor ilk sekme/satırdır; ekip seçimi raporun kayıtlı ve halen erişilebilen kaynaklarını bölüm bölüm gösterir. Sayılar AI tarafından üretilmez; raporu açmak yeni model çağrısı başlatmaz. Ekip etiketi yeni raporlarda snapshot ile korunur; eski raporlardaki güncel organizasyon çözümü ayrıca belirtilir. [Rapor/pivot sözleşmesi](services/REPORTING.md).
+
 ### 10.2 Düşük token ve güvenilir AI
 
 Yalnız değişen kayıtların kısa özetleri üretilir; önce açık proje/vaka ilişkileri kullanılır. Aynı kaynak/ACL/model/prompt sürümünde sonuç önbelleği kullanılır. Her sayfa/harf için çağrı yapılmaz. Çıktı, aday sayısı, yeniden deneme ve günlük/aylık maliyet limiti vardır.
@@ -309,6 +313,8 @@ Kontrollü salt okunur dış API ilk sürümdedir; kısa ömürlü JWT bearer, s
 ## 11 Ayarlar ve test ortamı
 
 İlk sürümde gerçekten uygulanacak sekmeler: Kullanıcılar/Roller ve Organizasyon, Proje Yetkileri, SLA Politikaları, E-posta, AI, API/OpenAPI, Günlükler ve İş Kuyruğu. Model/posta bağlantısı test edilir; sırlar kaydedildikten sonra okunamaz. LDAP, Teams ve gelişmiş saklama/dosya sekmeleri ilgili entegrasyon hazır olduğunda etkinleşir; boş ekran hazır özellik diye gösterilmez.
+
+**18 Kasım kullanıcı kararı:** LDAP kullanıcısı önceden elle içeri aktarılmadan giriş yapabilmelidir. Başarılı kişisel LDAP doğrulaması sonrasında hesap ve grup temelli ekip/rol eşlemesi otomatik oluşturulur. Tam organizasyon grubu çalışan kapsamını verir; yönetici rolleri açık ve yetkili grup–rol politikasıyla belirlenir. İsim/e-posta ile yerel hesap birleştirilmez; proje ve vaka yetki sınırları korunur.
 
 Lokal sistem hesabı ve güvenli LDAP/AD girişi hedef ürün gereksinimidir; gerçek LDAP bağlantısı pilot kabulünde tamamlanır. Kurumsal SSO ek seçenek olabilir, LDAP gereksinimini sessizce kaldırmaz. Tarayıcı güvenli sunucu oturumu/CSRF; dış API JWT kullanır. Bootstrap anahtarları ve DB ilk bağlantısı deployment katmanında kalır; işletim ayarları UI’dan yönetilir.
 
@@ -413,6 +419,7 @@ Bunlar mevcut sonuç değil, kabul hedefleridir. Katkı sayısını veya paylaş
 Geliştirme başlamadan/ilgili entegrasyon açılmadan organizasyon listesi, PM portföyleri ve bağlı yönetim birimleri, proje onay/delegasyon sahipleri, önemli değişiklik ölçütleri, SLA süreleri ve eskalasyon alıcıları, paylaşım yetkilileri, onaylı model/posta/LDAP erişimi belirlenir. Bu bilgiler gelene kadar belgelerdeki başlangıç seçenekleri sentetik test ayarları olarak kullanılır; gerçek kurum politikası diye sunulmaz.
 
 Pilot tamamlandığında proje ve unit yetkileri ayrılmış, vaka ve SLA davranışı doğrulanmış, kaynaklı rapor ve kontrollü paylaşım çalışmış, LDAP/posta bağlantıları gerçek test ortamında denenmiş ve kesinti/yedekten dönüş başarılı olmalıdır. Açık eksikler ve sonraki fazlar görünür tutulur; “kararlı sürüm” yalnız dokümanın ayrıntılı olmasıyla değil bu kabul sonuçlarıyla değerlendirilir.
+
 
 ## Revizyon 4 — Ekip ölçümü ve karar desteği
 

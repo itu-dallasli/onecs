@@ -1,4 +1,4 @@
-# Atlas güvenlik sınırları
+# onecs güvenlik sınırları
 
 ## Erişim
 

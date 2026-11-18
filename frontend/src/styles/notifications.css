@@ -1,0 +1,59 @@
+.notification-toolbar,
+.notification-actions,
+.notification-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.notification-toolbar {
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+.notification-toolbar .notification-filters {
+  margin-bottom: 0;
+}
+.notification-actions .btn {
+  font-size: 0.7rem;
+}
+.notification-entry {
+  border: 1px solid var(--border, #dfe5ed);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.notification-entry.unread {
+  border-color: #b9d5ed;
+}
+.onecs-notifications .notification-entry .notification-row {
+  border: 0;
+  border-radius: 0;
+}
+.notification-entry-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 16px 10px;
+  background: var(--surface, #fff);
+}
+.notification-read-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--brand, #176a9e);
+  padding: 5px 7px;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.notification-read-toggle:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.notification-pagination {
+  margin-top: 15px;
+}
+.notification-pagination small {
+  color: var(--muted, #64748b);
+}

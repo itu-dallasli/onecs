@@ -14,11 +14,11 @@ class TestIdentityMiddleware:
         request.real_user = real
         if (
             real.is_authenticated
-            and settings.ATLAS_ENV in ("test", "demo")
-            and settings.ATLAS_TEST_GOD_MODE
+            and settings.ONECS_ENV in ("test", "demo")
+            and settings.ONECS_TEST_GOD_MODE
             and is_system_admin(real)
         ):
-            effective = request.session.get("atlas_effective_user")
+            effective = request.session.get("onecs_effective_user")
             if effective:
                 user = User.objects.filter(pk=effective, is_active=True).first()
                 if user:
@@ -26,10 +26,10 @@ class TestIdentityMiddleware:
                     user._god_mode = False
                     request.user = user
                 else:
-                    request.session.pop("atlas_effective_user", None)
-            elif request.session.get("atlas_god_mode"):
+                    request.session.pop("onecs_effective_user", None)
+            elif request.session.get("onecs_god_mode"):
                 real._god_mode = True
         elif real.is_authenticated:
-            request.session.pop("atlas_effective_user", None)
-            request.session.pop("atlas_god_mode", None)
+            request.session.pop("onecs_effective_user", None)
+            request.session.pop("onecs_god_mode", None)
         return self.get_response(request)

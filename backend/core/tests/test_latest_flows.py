@@ -21,10 +21,10 @@ from core.models import (
     WorkItem,
 )
 from core.services import create_sla
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class ControlledSharingTests(AtlasTestCase):
+class ControlledSharingTests(OnecsTestCase):
     def submitted_card(self):
         project = Project.objects.create(
             title="Private project scope",
@@ -139,7 +139,7 @@ class ControlledSharingTests(AtlasTestCase):
         self.assertEqual(card.status, "CONTENT_APPROVED")
 
 
-class NoticeAndVerificationTests(AtlasTestCase):
+class NoticeAndVerificationTests(OnecsTestCase):
     def test_notice_conversion_retry_creates_one_formal_case_and_sla(self):
         notice = CaseNotice.objects.create(
             title="Reported suspicious access",
@@ -238,7 +238,7 @@ class NoticeAndVerificationTests(AtlasTestCase):
         self.assertEqual(case.verifier_id, self.team_manager.pk)
 
 
-class SelfServiceAndApiScopeTests(AtlasTestCase):
+class SelfServiceAndApiScopeTests(OnecsTestCase):
     def test_expertise_is_voluntary_self_declaration_and_cannot_edit_another_person(
         self,
     ):
@@ -325,7 +325,7 @@ class SelfServiceAndApiScopeTests(AtlasTestCase):
             name="Scoped read-only client",
             user=self.director,
             org_node=self.unit,
-            scopes=["atlas:read"],
+            scopes=["onecs:read"],
         )
         now = timezone.now()
         token = jwt.encode(

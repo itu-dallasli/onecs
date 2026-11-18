@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-11-18T13:24:37.544080+00:00",
+  "database": "PostgreSQL isolated test_onecs_announcements",
+  "scope": "Synthetic fixtures; core regression and LDAP/TLS integration regressions",
+  "excluded": "Concurrent attachment feature suite; independent connection-close failure recorded in shared-tree artifact",
+  "labels": [
+    "core.tests.test_api_docs",
+    "core.tests.test_api_scope_secondary",
+    "core.tests.test_canonical_seed",
+    "core.tests.test_continuity",
+    "core.tests.test_dashboard_announcements_notifications",
+    "core.tests.test_directory_search_notifications",
+    "core.tests.test_latest_flows",
+    "core.tests.test_people_workload",
+    "core.tests.test_persistence",
+    "core.tests.test_policy",
+    "core.tests.test_project_case_api",
+    "core.tests.test_project_fallback_copy",
+    "core.tests.test_project_insights",
+    "core.tests.test_record_extras_api",
+    "core.tests.test_record_notifications",
+    "core.tests.test_report_rollup",
+    "core.tests.test_session_security",
+    "core.tests.test_sla",
+    "core.tests.test_test_mode",
+    "core.tests.test_work_api",
+    "core.tests.test_worker",
+    "administration.tests.test_ldap_auto_login",
+    "administration.tests.test_connection_diagnostics",
+    "administration.tests.test_integrations"
+  ],
+  "failures": 0,
+  "duration_seconds": 21.526,
+  "output": "Found 324 test(s).\nCreating test database for alias 'default'...\nSystem check identified no issues (0 silenced).\n....................................................................................................................................................................................................................................................................................................................................\n----------------------------------------------------------------------\nRan 324 tests in 18.912s\n\nOK\nDestroying test database for alias 'default'...\n",
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "d927bfb2269fbbe28394258175900df113b8c86fa72a2c773605f5a81ae17a9d"
+  }
+}

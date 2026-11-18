@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-11-18T13:09:06.788681+00:00",
+  "migration_applied": true,
+  "auto_provision_enabled": true,
+  "match_organization_groups": true,
+  "api_unauthenticated_status": 401,
+  "frontend_status": 200,
+  "personal_password_tested_by_agent": false
+}

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { Check, ChevronDown, Search, Send, UserRound, X } from "lucide-react";
-import { api, list, useResource } from "../lib/api";
+import { list, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { Button, Drawer, ErrorState, Field, Loading } from "./ui";
+import RecordExtras, { emptyRecordExtras } from "./RecordExtras";
+import { createRecordWithExtras } from "../lib/recordExtras";
 import "../styles/organization.css";
 
 export type AssignmentPerson = {
@@ -39,6 +41,7 @@ export default function WorkAssignmentForm({
   const [due, setDue] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [extras, setExtras] = useState(emptyRecordExtras);
   useEffect(() => {
     const timer = window.setTimeout(
       () => setDebouncedSearch(search.trim()),
@@ -77,9 +80,9 @@ export default function WorkAssignmentForm({
     setBusy(true);
     setError("");
     try {
-      const work = await api("/work", {
-        method: "POST",
-        body: {
+      const work = await createRecordWithExtras(
+        "/work",
+        {
           title: title.trim(),
           description: description.trim(),
           expected_outcome: expected.trim(),
@@ -89,7 +92,8 @@ export default function WorkAssignmentForm({
           kind,
           ...(personal && due ? { due_at: new Date(due).toISOString() } : {}),
         },
-      });
+        extras,
+      );
       onCreated(work);
       onClose();
     } catch (failure) {
@@ -103,15 +107,17 @@ export default function WorkAssignmentForm({
     <Drawer
       title={defaultTarget ? "İş ata" : "İş oluştur"}
       subtitle="BİRİM İŞLERİ VE TAAHHÜTLER"
-      onClose={onClose}
+      onClose={() => {
+        if (!busy) onClose();
+      }}
       wide
     >
-      <form className="stack-form atlas-assignment-form" onSubmit={submit}>
+      <form className="stack-form onecs-assignment-form" onSubmit={submit}>
         <section
-          className="atlas-assignment-recipient"
+          className="onecs-assignment-recipient"
           aria-label="İşin sorumlusu"
         >
-          <div className="atlas-assignment-recipient-heading">
+          <div className="onecs-assignment-recipient-heading">
             <UserRound size={19} />
             <strong>Sorumlu kişi</strong>
             {!personal && (
@@ -119,7 +125,7 @@ export default function WorkAssignmentForm({
             )}
           </div>
           {manager && !defaultTarget && (
-            <div className="atlas-assignment-mode">
+            <div className="onecs-assignment-mode">
               <button
                 type="button"
                 aria-pressed={!personal}
@@ -147,8 +153,8 @@ export default function WorkAssignmentForm({
             </div>
           )}
           {personal ? (
-            <div className="atlas-assignment-selected">
-              <span className="atlas-org-avatar">
+            <div className="onecs-assignment-selected">
+              <span className="onecs-org-avatar">
                 {(user.display_name || user.username)
                   .slice(0, 2)
                   .toLocaleUpperCase("tr-TR")}
@@ -164,8 +170,8 @@ export default function WorkAssignmentForm({
           ) : (
             <>
               {target && (
-                <div className="atlas-assignment-selected">
-                  <span className="atlas-org-avatar">
+                <div className="onecs-assignment-selected">
+                  <span className="onecs-org-avatar">
                     {target.display_name.slice(0, 2).toLocaleUpperCase("tr-TR")}
                   </span>
                   <span>
@@ -192,15 +198,15 @@ export default function WorkAssignmentForm({
               {!pickerOpen && !target && (
                 <button
                   type="button"
-                  className="atlas-assignment-open-picker"
+                  className="onecs-assignment-open-picker"
                   onClick={() => setPickerOpen(true)}
                 >
                   Kişi seçin <ChevronDown size={18} />
                 </button>
               )}
               {pickerOpen && (
-                <div className="atlas-assignment-picker">
-                  <label className="atlas-org-search">
+                <div className="onecs-assignment-picker">
+                  <label className="onecs-org-search">
                     <Search size={17} />
                     <input
                       value={search}
@@ -219,7 +225,7 @@ export default function WorkAssignmentForm({
                     <Loading label="Yetkiniz kapsamındaki kişiler aranıyor…" />
                   ) : list<AssignmentPerson>(people.data).length ? (
                     <div
-                      className="atlas-assignment-options"
+                      className="onecs-assignment-options"
                       role="group"
                       aria-label="Atanabilecek kişiler"
                     >
@@ -236,7 +242,7 @@ export default function WorkAssignmentForm({
                               setError("");
                             }}
                           >
-                            <span className="atlas-org-avatar">
+                            <span className="onecs-org-avatar">
                               {(item.display_name || item.username || "")
                                 .slice(0, 2)
                                 .toLocaleUpperCase("tr-TR")}
@@ -255,13 +261,13 @@ export default function WorkAssignmentForm({
                         ))}
                     </div>
                   ) : (
-                    <p className="atlas-org-empty-note">
+                    <p className="onecs-org-empty-note">
                       Atanabilecek kişi bulunamadı. Yalnızca yönetim
                       kapsamınızdaki aktif kişiler listelenir.
                     </p>
                   )}
                   {(people.data?.count || 0) > list(people.data).length && (
-                    <p className="atlas-org-empty-note">
+                    <p className="onecs-org-empty-note">
                       İlk {list(people.data).length} kişi gösteriliyor; adıyla
                       arayarak daraltabilirsiniz.
                     </p>
@@ -269,7 +275,7 @@ export default function WorkAssignmentForm({
                 </div>
               )}
               {target && targetScope.loading && (
-                <p className="atlas-assignment-validation" role="status">
+                <p className="onecs-assignment-validation" role="status">
                   Kişinin aktifliği ve atama yetkisi doğrulanıyor…
                 </p>
               )}
@@ -361,6 +367,17 @@ export default function WorkAssignmentForm({
             />
           </Field>
         )}
+        <RecordExtras
+          value={extras}
+          onChange={setExtras}
+          defaultRecipients={selectedTarget ? [selectedTarget] : []}
+          disabled={busy}
+          emailHint={
+            personal
+              ? "Kayıt erişimi olan seçili kişilere ek e-posta bildirimi gönderebilirsiniz."
+              : "Atanan kişiye gerekli atama e-postası otomatik gönderilir. Bu alan, kayıt erişimi olan seçili kişilere ek bildirim göndermenizi sağlar."
+          }
+        />
         {error && <ErrorState message={error} />}
         <div className="form-actions">
           <Button

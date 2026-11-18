@@ -7,7 +7,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.test import APIClient
 
 from core.models import OrgNode, RoleGrant, User
-from administration.models import AIUsage, ConfigurationVersion
+from administration.models import AIUsage, ConfigurationVersion, IntegrationConfiguration
 from administration.security import (
     decrypt_secrets,
     encrypt_secrets,
@@ -26,14 +26,14 @@ class IntegrationServiceTests(TestCase):
     def setUp(self):
         self.key = Fernet.generate_key().decode()
         self.override = override_settings(
-            ATLAS_ENCRYPTION_KEY=self.key,
-            ATLAS_ALLOWED_INTEGRATION_HOSTS="api.example.test,localhost",
-            ATLAS_ALLOW_PRIVATE_INTEGRATION_HOSTS="localhost",
+            ONECS_ENCRYPTION_KEY=self.key,
+            ONECS_ALLOWED_INTEGRATION_HOSTS="api.example.test,localhost",
+            ONECS_ALLOW_PRIVATE_INTEGRATION_HOSTS="localhost",
         )
         self.override.enable()
         self.addCleanup(self.override.disable)
         self.user = User.objects.create_user(
-            username="admin", password="Atlas-Integration-123"
+            username="admin", password="Onecs-Integration-123"
         )
 
     def test_secret_encryption_and_no_plaintext_readback(self):
@@ -70,8 +70,55 @@ class IntegrationServiceTests(TestCase):
             "one@example.test",
         )
 
+    def test_inherited_product_name_updates_without_rewriting_configuration_history(self):
+        configuration = IntegrationConfiguration.objects.create(
+            section="general", active_version=1
+        )
+        previous = ConfigurationVersion.objects.create(
+            configuration=configuration,
+            version=1,
+            config={"application_name": "Previous product", "support_email": "old@example.test"},
+            created_by=self.user,
+        )
+        self.assertEqual(
+            public_configuration("general")["config"]["application_name"], "onecs"
+        )
+        result = update_configuration(
+            self.user,
+            "general",
+            {"support_email": "new@example.test"},
+            expected_version=1,
+        )
+        self.assertEqual(result["config"]["application_name"], "onecs")
+        self.assertEqual(result["config"]["support_email"], "new@example.test")
+        self.assertEqual(
+            configuration.versions.get(version=2).config["application_name"], "onecs"
+        )
+        previous.refresh_from_db()
+        self.assertEqual(previous.config["application_name"], "Previous product")
+        self.assertEqual(previous.config["support_email"], "old@example.test")
+
+    def test_product_name_accepts_current_brand_and_rejects_arbitrary_name(self):
+        result = update_configuration(
+            self.user, "general", {"application_name": "onecs"}, expected_version=0
+        )
+        self.assertEqual(result["config"]["application_name"], "onecs")
+        self.assertEqual(
+            ConfigurationVersion.objects.get().config["application_name"], "onecs"
+        )
+        with self.assertRaises(ValidationError) as caught:
+            update_configuration(
+                self.user,
+                "general",
+                {"application_name": "Other product"},
+                expected_version=1,
+            )
+        self.assertIn("onecs", str(caught.exception.detail["application_name"]))
+        self.assertEqual(ConfigurationVersion.objects.count(), 1)
+        self.assertEqual(public_configuration("general")["version"], 1)
+
     def test_missing_encryption_key_is_not_silently_replaced(self):
-        with override_settings(ATLAS_ENCRYPTION_KEY=""):
+        with override_settings(ONECS_ENCRYPTION_KEY=""):
             with self.assertRaises(ValidationError):
                 encrypt_secrets({"api_key": "nope"})
 
@@ -226,9 +273,6 @@ class IntegrationServiceTests(TestCase):
         self.assertEqual(call.call_count, 1)
         self.assertEqual(AIUsage.objects.count(), 1)
 
-    def test_empty_ldap_password_never_authenticates(self):
-        self.assertIsNone(authenticate_ldap("admin", ""))
-
     @patch("administration.security.socket.getaddrinfo", return_value=[(None, None, None, None, ("93.184.216.34", 0))])
     @patch("administration.services._ai_call")
     def test_success_attaches_system_inventory_when_model_text_omits_critical_source(self, call, dns):
@@ -315,9 +359,8 @@ class IntegrationServiceTests(TestCase):
         self.assertEqual(result["provider_diagnostics"], {"finish_reason": "stop", "content_characters": 20, "valid_json": False})
         self.assertNotIn("private-invalid-json", json.dumps(result))
 
-
-
-
+    def test_empty_ldap_password_never_authenticates(self):
+        self.assertIsNone(authenticate_ldap("admin", ""))
 
 
 class AdministrationAPITests(TestCase):
@@ -326,10 +369,10 @@ class AdministrationAPITests(TestCase):
             code="ICT-CS", name="Cyber Security", kind="DIRECTORATE"
         )
         self.admin = User.objects.create_user(
-            username="technical", password="Atlas-Technical-123", primary_org=self.org
+            username="technical", password="Onecs-Technical-123", primary_org=self.org
         )
         self.employee = User.objects.create_user(
-            username="employee", password="Atlas-Employee-123", primary_org=self.org
+            username="employee", password="Onecs-Employee-123", primary_org=self.org
         )
         RoleGrant.objects.create(user=self.admin, role="SYSTEM_ADMIN")
         RoleGrant.objects.create(user=self.employee, role="EMPLOYEE", org_node=self.org)
@@ -398,14 +441,14 @@ class AdministrationAPITests(TestCase):
                 "display_name": "New Person",
                 "email": "new@example.test",
                 "primary_org": str(self.org.pk),
-                "password": "Atlas-New-Account-987",
+                "password": "Onecs-New-Account-987",
             },
             format="json",
         )
         self.assertEqual(response.status_code, 201, response.data)
         self.assertNotIn("password", response.data)
         created = User.objects.get(username="new-person")
-        self.assertTrue(created.check_password("Atlas-New-Account-987"))
+        self.assertTrue(created.check_password("Onecs-New-Account-987"))
         self.assertTrue(created.role_grants.filter(role="EMPLOYEE").exists())
 
     def test_explicit_technical_and_director_authority_can_manage_other_users_roles(
@@ -437,7 +480,7 @@ class AdministrationAPITests(TestCase):
 
     def test_settings_update_audited_without_secrets(self):
         self.client.force_authenticate(self.admin)
-        with override_settings(ATLAS_ENCRYPTION_KEY=Fernet.generate_key().decode()):
+        with override_settings(ONECS_ENCRYPTION_KEY=Fernet.generate_key().decode()):
             response = self.client.patch(
                 "/api/v1/admin/settings/ai/",
                 {

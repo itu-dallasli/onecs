@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-11-18T13:40:36.715929+00:00",
+  "environment": "Isolated synthetic test database and loopback UI; normal login, God Mode off, separate test cookies",
+  "verified": [
+    "General Report selected first and first pivot row",
+    "Four unique sources across two teams, counts 4/3/1/1/1",
+    "Team selection shows only its own snapshot sections and no general AI text",
+    "Home selects General Report; End selects last team",
+    "Screenshot review: modal, pivot table, highlights and lowlights readable"
+  ],
+  "screenshots": [
+    "ui-report-pivot-general.jpg",
+    "ui-report-pivot-team.jpg",
+    "ui-report-pivot-sections.jpg"
+  ],
+  "limitations": "Default desktop viewport inspected; no mobile browser run or physical print/PDF test",
+  "runtime": "Temporary test servers stopped; normal application unchanged by test data"
+}

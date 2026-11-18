@@ -1,4 +1,4 @@
-# Atlas rapor ve AI akışı
+# onecs rapor ve AI akışı
 
 Bu belge mevcut uygulamayı açıklar; [Revizyon 3](../UYGULAMA_PLANI.md) hedefinin ve kurumsal pilot kabulünün tamamlandığı anlamına gelmez.
 

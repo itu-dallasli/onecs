@@ -1,0 +1,319 @@
+{
+  "numTotalTestSuites": 8,
+  "numPassedTestSuites": 8,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 19,
+  "numPassedTests": 19,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1795006489640,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics keeps missing and malformed counts distinct from measured zero",
+          "status": "passed",
+          "title": "keeps missing and malformed counts distinct from measured zero",
+          "duration": 1.0190419999999847,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics keeps work and case counts separate and never invents a missing case count",
+          "status": "passed",
+          "title": "keeps work and case counts separate and never invents a missing case count",
+          "duration": 0.7313749999999857,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics uses only the supplied visible agenda and includes unspecified priorities in its denominator",
+          "status": "passed",
+          "title": "uses only the supplied visible agenda and includes unspecified priorities in its denominator",
+          "duration": 0.155666999999994,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "dashboard chart source semantics"
+          ],
+          "fullName": "dashboard chart source semantics does not manufacture a distribution for an empty agenda",
+          "status": "passed",
+          "title": "does not manufacture a distribution for an empty agenda",
+          "duration": 0.28583399999999415,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006489912,
+      "endTime": 1795006489914.286,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/components/DashboardCharts.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export preserves missing scores separately from measured zero",
+          "status": "passed",
+          "title": "preserves missing scores separately from measured zero",
+          "duration": 1.011415999999997,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export does not turn blank human reviews into invented zero scores",
+          "status": "passed",
+          "title": "does not turn blank human reviews into invented zero scores",
+          "duration": 0.681541999999979,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export builds a trend only from real dated delivery snapshots",
+          "status": "passed",
+          "title": "builds a trend only from real dated delivery snapshots",
+          "duration": 0.22124999999999773,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "project insight presentation and export"
+          ],
+          "fullName": "project insight presentation and export escapes report and title content in printable HTML",
+          "status": "passed",
+          "title": "escapes report and title content in printable HTML",
+          "duration": 0.27504200000001333,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006489959,
+      "endTime": 1795006489961.2751,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/components/ProjectInsights.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts canonicalizes Django URLs before query parameters",
+          "status": "passed",
+          "title": "canonicalizes Django URLs before query parameters",
+          "duration": 13.663207999999997,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not duplicate a canonical trailing slash",
+          "status": "passed",
+          "title": "does not duplicate a canonical trailing slash",
+          "duration": 0.43966700000001424,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses session cookies, CSRF and a unique request id on mutation",
+          "status": "passed",
+          "title": "uses session cookies, CSRF and a unique request id on mutation",
+          "duration": 1.211999999999989,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses rotated csrf token returned by the server",
+          "status": "passed",
+          "title": "uses rotated csrf token returned by the server",
+          "duration": 0.649957999999998,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts preserves human-readable integration test failures",
+          "status": "passed",
+          "title": "preserves human-readable integration test failures",
+          "duration": 1.1334170000000086,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts turns field validation errors into actionable feedback",
+          "status": "passed",
+          "title": "turns field validation errors into actionable feedback",
+          "duration": 0.6053749999999809,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not display a raw server traceback as user feedback",
+          "status": "passed",
+          "title": "does not display a raw server traceback as user feedback",
+          "duration": 0.3059170000000222,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts recovers list shape safely when optional results are absent",
+          "status": "passed",
+          "title": "recovers list shape safely when optional results are absent",
+          "duration": 0.3595420000000047,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts translates offline failures into a recoverable API error",
+          "status": "passed",
+          "title": "translates offline failures into a recoverable API error",
+          "duration": 0.8942499999999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006489822,
+      "endTime": 1795006489840.8943,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/lib/api.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics keeps each stored failure visible after the settings page is reopened",
+          "status": "passed",
+          "title": "keeps each stored failure visible after the settings page is reopened",
+          "duration": 22.701374999999985,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics distinguishes an unconfigured profile from a failed external request",
+          "status": "passed",
+          "title": "distinguishes an unconfigured profile from a failed external request",
+          "duration": 1.909249999999986,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006489912,
+      "endTime": 1795006489936.9092,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/Settings.test.tsx"
+    }
+  ],
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "0d27d8fdda3ea3e60b500ef4cea21ceebddb107478e9c7888fc3f5a4469a09fb"
+  }
+}

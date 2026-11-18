@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-11-18T12:49:34.054814+00:00",
+  "database": "PostgreSQL",
+  "test_database": "isolated connection diagnostics database",
+  "labels": [
+    "administration.tests",
+    "core.tests.test_persistence",
+    "core.tests.test_session_security"
+  ],
+  "failures": 0,
+  "duration_seconds": 6.251,
+  "runner_output": "Found 75 test(s).\nCreating test database for alias 'default'...\nSystem check identified no issues (0 silenced).\n...........................................................................\n----------------------------------------------------------------------\nRan 75 tests in 4.434s\n\nOK\nDestroying test database for alias 'default'...\n",
+  "scope": "Synthetic adapters; does not prove live LDAP bind or model access."
+}

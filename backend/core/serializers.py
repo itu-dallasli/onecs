@@ -25,6 +25,7 @@ from .models import (
 )
 from .policy import (
     active_grants,
+    can_publish_announcement,
     can_approve_project,
     can_manage_case,
     can_manage_org,
@@ -513,6 +514,20 @@ class ParticipationSerializer(serializers.ModelSerializer):
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     author_name = serializers.CharField(source="created_by.display_name")
+    permissions = serializers.SerializerMethodField()
+
+    def get_permissions(self, obj) -> dict:
+        request = self.context.get("request")
+        if not request or getattr(request, "auth", None):
+            return {"publish": False, "withdraw": False}
+        return {
+            "publish": (
+                obj.status == "DRAFT"
+                and (obj.ends_at is None or obj.ends_at > timezone.now())
+                and can_publish_announcement(request.user, obj)
+            ),
+            "withdraw": obj.status != "WITHDRAWN" and can_manage_org(request.user, obj.owner_org_id),
+        }
 
     class Meta:
         model = Announcement
@@ -527,6 +542,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             "ends_at",
             "pinned",
             "author_name",
+            "permissions",
             "version",
             "created_at",
         ]
@@ -722,7 +738,11 @@ class ReportSerializer(serializers.ModelSerializer):
     permissions = serializers.SerializerMethodField()
 
     def get_permissions(self, obj) -> dict:
-        return {"manage": obj.created_by_id == self.context["request"].user.pk}
+        request = self.context["request"]
+        return {
+            "manage": not bool(getattr(request, "auth", None))
+            and obj.created_by_id == request.user.pk
+        }
 
     class Meta:
         model = Report
@@ -750,9 +770,20 @@ class ReportSerializer(serializers.ModelSerializer):
 
 class NotificationSerializer(serializers.ModelSerializer):
     is_read = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     def get_is_read(self, obj) -> bool:
         return obj.read_at is not None
+
+    def get_url(self, obj) -> str | None:
+        urls = self.context.get("notification_urls", {})
+        if str(obj.pk) in urls:
+            return urls[str(obj.pk)]
+        request = self.context.get("request")
+        if not request:
+            return None
+        from .notifications import notification_access
+        return notification_access(request.user, obj)[1]
 
     class Meta:
         model = Notification
@@ -764,6 +795,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             "resource_id",
             "read_at",
             "is_read",
+            "url",
             "created_at",
         ]
 

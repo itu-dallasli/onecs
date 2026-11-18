@@ -2,10 +2,10 @@
 
 from django.test import override_settings
 from core.models import AuditEvent, WorkItem
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class TestIdentityFlowTests(AtlasTestCase):
+class TestIdentityFlowTests(OnecsTestCase):
     def private_work(self):
         return WorkItem.objects.create(
             title="Private other-unit task",
@@ -14,7 +14,7 @@ class TestIdentityFlowTests(AtlasTestCase):
             owner_org=self.other_unit,
         )
 
-    @override_settings(ATLAS_ENV="demo", ATLAS_TEST_GOD_MODE=True)
+    @override_settings(ONECS_ENV="demo", ONECS_TEST_GOD_MODE=True)
     def test_god_mode_simulation_and_exit_keep_the_real_actor(self):
         hidden = self.private_work()
         self.as_user(self.admin)
@@ -60,7 +60,7 @@ class TestIdentityFlowTests(AtlasTestCase):
         )
         self.assertEqual(self.client.get(f"/api/v1/work/{hidden.pk}/").status_code, 404)
 
-    @override_settings(ATLAS_ENV="production", ATLAS_TEST_GOD_MODE=True)
+    @override_settings(ONECS_ENV="production", ONECS_TEST_GOD_MODE=True)
     def test_production_cannot_activate_bypass_even_with_a_test_flag(self):
         hidden = self.private_work()
         self.as_user(self.admin)
@@ -69,6 +69,6 @@ class TestIdentityFlowTests(AtlasTestCase):
         )
         self.assertEqual(response.status_code, 403)
         session = self.client.session
-        session["atlas_god_mode"] = True
+        session["onecs_god_mode"] = True
         session.save()
         self.assertEqual(self.client.get(f"/api/v1/work/{hidden.pk}/").status_code, 404)

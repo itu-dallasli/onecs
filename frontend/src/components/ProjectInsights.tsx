@@ -258,7 +258,7 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 export function printableProjectReport(title: string, markdown: string) {
-  return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><style>body{font:15px/1.8 system-ui,sans-serif;color:#163047;max-width:900px;margin:50px auto;padding:0 25px}header{border-bottom:2px solid #c9a85d;padding-bottom:20px;margin-bottom:30px}h1{font-size:28px}small{color:#678297}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}@media print{body{margin:15mm;max-width:none;padding:0}}</style></head><body><header><small>Atlas · PROJE YÖNETİMİ</small><h1>${escapeHtml(title)}</h1></header><pre>${escapeHtml(markdown)}</pre></body></html>`;
+  return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><style>body{font:15px/1.8 system-ui,sans-serif;color:#163047;max-width:900px;margin:50px auto;padding:0 25px}header{border-bottom:2px solid #c9a85d;padding-bottom:20px;margin-bottom:30px}h1{font-size:28px}small{color:#678297}pre{font:inherit;white-space:pre-wrap;overflow-wrap:anywhere}@media print{body{margin:15mm;max-width:none;padding:0}}</style></head><body><header><small>onecs · PROJE YÖNETİMİ</small><h1>${escapeHtml(title)}</h1></header><pre>${escapeHtml(markdown)}</pre></body></html>`;
 }
 function InlineMarkdown({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -1892,7 +1892,7 @@ function ProjectReportEditor({
               exported,
             )
           : exported,
-        name: `Atlas-${record.kind.toLowerCase()}-${record.period_end}.${html ? "html" : "md"}`,
+        name: `onecs-${record.kind.toLowerCase()}-${record.period_end}.${html ? "html" : "md"}`,
         type: html ? "text/html;charset=utf-8" : "text/markdown;charset=utf-8",
       });
     } catch (e) {

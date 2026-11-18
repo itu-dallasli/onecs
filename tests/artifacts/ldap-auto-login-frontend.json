@@ -1,0 +1,271 @@
+{
+  "numTotalTestSuites": 6,
+  "numPassedTestSuites": 6,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 16,
+  "numPassedTests": 16,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1795006943610,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts canonicalizes Django URLs before query parameters",
+          "status": "passed",
+          "title": "canonicalizes Django URLs before query parameters",
+          "duration": 17.228041000000005,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not duplicate a canonical trailing slash",
+          "status": "passed",
+          "title": "does not duplicate a canonical trailing slash",
+          "duration": 0.8208329999999933,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses session cookies, CSRF and a unique request id on mutation",
+          "status": "passed",
+          "title": "uses session cookies, CSRF and a unique request id on mutation",
+          "duration": 1.3196659999999838,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts uses rotated csrf token returned by the server",
+          "status": "passed",
+          "title": "uses rotated csrf token returned by the server",
+          "duration": 0.6761659999999949,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts preserves human-readable integration test failures",
+          "status": "passed",
+          "title": "preserves human-readable integration test failures",
+          "duration": 2.759666999999979,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts turns field validation errors into actionable feedback",
+          "status": "passed",
+          "title": "turns field validation errors into actionable feedback",
+          "duration": 0.5067910000000211,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts does not display a raw server traceback as user feedback",
+          "status": "passed",
+          "title": "does not display a raw server traceback as user feedback",
+          "duration": 0.3665420000000097,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts recovers list shape safely when optional results are absent",
+          "status": "passed",
+          "title": "recovers list shape safely when optional results are absent",
+          "duration": 0.3943749999999966,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "Onecs API client contracts"
+          ],
+          "fullName": "Onecs API client contracts translates offline failures into a recoverable API error",
+          "status": "passed",
+          "title": "translates offline failures into a recoverable API error",
+          "duration": 1.3702090000000169,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006943806,
+      "endTime": 1795006943831.37,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/lib/api.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings shows exact directory identities, organization and role scope",
+          "status": "passed",
+          "title": "shows exact directory identities, organization and role scope",
+          "duration": 8.740666000000004,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings lets a technical administrator manage employee mappings while protecting business roles",
+          "status": "passed",
+          "title": "lets a technical administrator manage employee mappings while protecting business roles",
+          "duration": 2.3404589999999814,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings allows business mapping edits with the server-confirmed director authority",
+          "status": "passed",
+          "title": "allows business mapping edits with the server-confirmed director authority",
+          "duration": 2.12770900000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings does not grant mapping write access from a business role alone",
+          "status": "passed",
+          "title": "does not grant mapping write access from a business role alone",
+          "duration": 2.7065839999999923,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "LDAP first-login group mappings"
+          ],
+          "fullName": "LDAP first-login group mappings keeps the server authorization error visible",
+          "status": "passed",
+          "title": "keeps the server authorization error visible",
+          "duration": 2.4829579999999964,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006943904,
+      "endTime": 1795006943922.483,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/LDAPLoginMappings.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics keeps each stored failure visible after the settings page is reopened",
+          "status": "passed",
+          "title": "keeps each stored failure visible after the settings page is reopened",
+          "duration": 22.82570899999999,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "AI connection diagnostics"
+          ],
+          "fullName": "AI connection diagnostics distinguishes an unconfigured profile from a failed external request",
+          "status": "passed",
+          "title": "distinguishes an unconfigured profile from a failed external request",
+          "duration": 2.0655830000000037,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1795006943888,
+      "endTime": 1795006943913.0657,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/tcmuygun/Documents/GitHub/SiberGüvenlikDashboard/frontend/src/pages/Settings.test.tsx"
+    }
+  ],
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "12d85687bffd76f006feaedd064318f8d195b06de92525fb1826209571ec0c68"
+  }
+}

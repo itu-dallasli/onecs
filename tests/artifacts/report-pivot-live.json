@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-11-18T13:38:56.316124+00:00",
+  "target": "http://127.0.0.1:3100/reports",
+  "actor": "Existing known local test account; normal credential authentication; no bypass",
+  "login_status": 200,
+  "report_detail_status": 200,
+  "pivot_status": 200,
+  "report_id_version_hash_match": true,
+  "source_count": 8,
+  "team_count": 6,
+  "team_total_matches_general": true,
+  "data_changes": "Only normal local test login session/audit; no reports, sources, AI jobs or real user records modified"
+}

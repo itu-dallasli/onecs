@@ -4,10 +4,10 @@ from datetime import timedelta
 from django.utils import timezone
 from core.models import Project, ProjectRevision, Report, ReportSelection, WorkItem
 from core.services import snapshot_source
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class ReportRollupTests(AtlasTestCase):
+class ReportRollupTests(OnecsTestCase):
     def ordinary_work(self):
         return WorkItem.objects.create(
             title="Noncritical milestone completed",

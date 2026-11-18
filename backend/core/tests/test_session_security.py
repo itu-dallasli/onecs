@@ -6,10 +6,16 @@ from django.conf import settings
 from rest_framework.test import APIClient
 
 from core.models import IdempotencyRecord, WorkItem
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class SessionSecurityTests(AtlasTestCase):
+class SessionSecurityTests(OnecsTestCase):
+    def test_product_authentication_names_are_consistent(self):
+        self.assertEqual(settings.JWT_ISSUER, "onecs")
+        self.assertEqual(settings.JWT_AUDIENCE, "onecs-readonly-api")
+        self.assertEqual(settings.SESSION_COOKIE_NAME, "onecs_sessionid")
+        self.assertEqual(settings.CSRF_COOKIE_NAME, "onecs_csrftoken")
+
     def csrf_client(self, user=None):
         client = APIClient(enforce_csrf_checks=True)
         if user:
@@ -22,12 +28,12 @@ class SessionSecurityTests(AtlasTestCase):
         return client, response.json()["csrf_token"]
 
     def test_local_login_and_logout_obey_csrf_and_session_lifecycle(self):
-        self.employee.set_password("Atlas-test-account-2026!")
+        self.employee.set_password("Onecs-test-account-2026!")
         self.employee.save()
         client, token = self.csrf_client()
         payload = {
             "username": self.employee.username,
-            "password": "Atlas-test-account-2026!",
+            "password": "Onecs-test-account-2026!",
             "method": "local",
         }
         denied = client.post("/api/v1/auth/login/", payload, format="json")

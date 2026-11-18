@@ -1,10 +1,11 @@
-# Atlas kimlik ve yetkilendirme sözleşmesi
+# onecs kimlik ve yetkilendirme sözleşmesi
 
 Yetki, etkin hesap + organizasyon kapsamı + kayıt ilişkisi + işlem izniyle belirlenir. UI düğmesi yetki kanıtı değildir; karar `backend/core/policy.py` ve sunucu akışlarında uygulanır.
 
 ## Kimlik ve kapsam
 
 - Tarayıcı `/api/v1/auth/csrf/` ile CSRF alır; `auth/login/` yerel veya LDAP yöntemiyle oturum açar. Yanlış/pasif hesap 401; LDAP başarısızlığı yerel girişe sessizce dönmez. `auth/logout/` oturumu kapatır.
+- LDAP ilk girişinde kişisel parola doğrulandıktan sonra sabit dış kimlikle hesap açılır; tam organizasyon grubu çalışan kapsamını, açık grup–rol kuralları onaylı yönetim kapsamını belirler. Kullanıcıyı önceden tek tek içeri aktarmak zorunlu değildir. LDAP yönetimli roller sonraki doğrulanmış girişte eşitlenir; manuel roller korunur.
 - Yerel/LDAP kimlik sağlama ve gerçek dizin bağlantısının sınırları [entegrasyon sözleşmesindedir](../services/INTEGRATIONS.md); kurumsal LDAP doğrulanmış varsayılmaz.
 - `RoleGrant`, etkinlik/süre ve organizasyon düğümünü taşır. `includes_descendants=false` yalnız o düğümü kapsar; kurum kodu öneki yetki sağlamaz.
 - Unit işleri organizasyon kapsamından; proje işleri PM/proje yetkisinden; vaka aksiyonları vaka koordinasyonundan yönetilir. Birden fazla rol, izinli kapsamları birleştirir; her işleme ait kısıtlar korunur.

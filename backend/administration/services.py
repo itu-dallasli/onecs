@@ -16,6 +16,7 @@ from django.db.models import Sum
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 
+from .diagnostics import connection_failure_message
 from .models import (
     AIUsage,
     ConfigurationVersion,
@@ -51,6 +52,7 @@ CONFIG_KEYS = {
         "timeout_seconds",
         "start_tls", "user_dn_template", "membership_attribute", "user_search_base", "group_search_base",
         "username_attribute", "display_name_attribute", "email_attribute", "department_attribute", "title_attribute", "manager_attribute",
+        "auto_provision_enabled", "match_organization_groups", "group_role_mappings",
     },
     "smtp": {
         "enabled",
@@ -80,7 +82,7 @@ CONFIG_KEYS = {
 }
 DEFAULTS = {
     "general": {
-        "application_name": "Atlas",
+        "application_name": "onecs",
         "timezone": "Europe/Istanbul",
         "support_email": "",
         "director_direct_start_enabled": False,
@@ -97,6 +99,7 @@ DEFAULTS = {
         "user_search_base": "", "group_search_base": "", "username_attribute": "sAMAccountName",
         "display_name_attribute": "displayName", "email_attribute": "mail", "department_attribute": "department",
         "title_attribute": "title", "manager_attribute": "manager",
+        "auto_provision_enabled": True, "match_organization_groups": True, "group_role_mappings": [],
     },
     "smtp": {
         "enabled": False,
@@ -136,6 +139,9 @@ def integration_snapshot(section):
             version=configuration.active_version
         ).first()
     config = {**DEFAULTS[section], **(version.config if version else {})}
+    if section == "general":
+        # The fixed product name can change without rewriting configuration history.
+        config["application_name"] = DEFAULTS["general"]["application_name"]
     return configuration, version, config
 
 
@@ -171,10 +177,11 @@ def _validate_config(section, config):
     if set(config) - CONFIG_KEYS[section]:
         raise ValidationError({"config": "Desteklenmeyen ayar alanı."})
     if len(json.dumps(config).encode()) > 32768 or any(
-        isinstance(value, (dict, list)) for value in config.values()
+        isinstance(value, (dict, list)) for key, value in config.items()
+        if not (section == "ldap" and key == "group_role_mappings")
     ):
         raise ValidationError({"config": "Ayar boyutu veya veri türü desteklenmiyor."})
-    for key in ("enabled", "use_tls", "use_ssl", "start_tls", "director_direct_start_enabled"):
+    for key in ("enabled", "use_tls", "use_ssl", "start_tls", "director_direct_start_enabled", "auto_provision_enabled", "match_organization_groups"):
         if key in config and not isinstance(config[key], bool):
             raise ValidationError({key: "Boolean değer gerekiyor."})
     for key in (
@@ -204,6 +211,9 @@ def _validate_config(section, config):
                     raise InvalidOperation
             except (InvalidOperation, ValueError):
                 raise ValidationError({key: "Negatif olmayan fiyat gerekiyor."})
+    if section == "ldap":
+        from .ldap_policy import validate_group_role_mappings
+        config["group_role_mappings"] = validate_group_role_mappings(config.get("group_role_mappings", []))
     if section == "ldap" and config.get("enabled"):
         parsed = validate_url(config.get("url"), ldap=True)
         if parsed.scheme == "ldap" and config.get("start_tls") is not True:
@@ -232,9 +242,11 @@ def _validate_config(section, config):
             validate_url(config.get("base_url"))
         if not config.get("model"):
             raise ValidationError({"model": "Model adı gerekiyor."})
-    if section == "general" and config.get("application_name") not in (None, "Atlas"):
+    if section == "general" and config.get("application_name") not in (
+        None, "onecs"
+    ):
         raise ValidationError(
-            {"application_name": "Uygulama adı Atlas olarak sabittir."}
+            {"application_name": "Uygulama adı onecs olarak sabittir."}
         )
 
 
@@ -256,7 +268,15 @@ def update_configuration(actor, section, changes, secrets=None, expected_version
         version=configuration.active_version
     ).first()
     config = {**DEFAULTS[section], **(previous.config if previous else {}), **changes}
+    if section == "general" and "application_name" not in changes:
+        config["application_name"] = DEFAULTS["general"]["application_name"]
     _validate_config(section, config)
+    if section == "ldap":
+        from .ldap_policy import validate_mapping_authority
+        validate_mapping_authority(actor, {**DEFAULTS[section], **(previous.config if previous else {})}, config)
+    if section == "general":
+        # Accept the previous fixed name from an older open settings screen.
+        config["application_name"] = DEFAULTS["general"]["application_name"]
     if not isinstance(secrets or {}, dict) or set(secrets or {}) - SECRET_KEYS[section]:
         raise ValidationError({"secrets": "Desteklenmeyen sır alanı."})
     current_secrets = decrypt_secrets(previous.encrypted_secrets) if previous else {}
@@ -298,9 +318,9 @@ def send_email(to, subject, body, *, message_id=None):
     _, version, config = integration_snapshot("smtp")
     if not version or not config.get("enabled"):
         raise ValidationError({"smtp": "E-posta entegrasyonu yapılandırılmadı."})
-    allowed = os.environ.get("ATLAS_TEST_EMAIL_RECIPIENTS", "")
+    allowed = os.environ.get("ONECS_TEST_EMAIL_RECIPIENTS", "")
     if (
-        getattr(settings, "ATLAS_ENV", os.environ.get("ATLAS_ENV", "development"))
+        getattr(settings, "ONECS_ENV", os.environ.get("ONECS_ENV", "development"))
         != "production"
     ):
         if to not in {
@@ -342,7 +362,7 @@ def _ldap_connection(config, secrets):
     tls = ldap3.Tls(
         validate=ssl.CERT_REQUIRED,
         version=ssl.PROTOCOL_TLS_CLIENT,
-        ca_certs_file=os.environ.get("ATLAS_LDAP_CA_FILE") or None,
+        ca_certs_file=os.environ.get("ONECS_LDAP_CA_FILE") or None,
     )
     server = ldap3.Server(
         parsed.hostname,
@@ -368,56 +388,18 @@ def _ldap_connection(config, secrets):
         if not connection.bind():
             raise ValidationError({"ldap": "Servis hesabı bind işlemi başarısız."})
         return connection
-    except Exception:
+    except ValidationError:
         _safe_ldap_unbind(connection)
-        raise ValidationError({"ldap": "LDAP TLS/servis bağlantısı doğrulanamadı."}) from None
+        raise
+    except Exception as exc:
+        _safe_ldap_unbind(connection)
+        raise ValidationError({"ldap": connection_failure_message(exc, "ldap")}) from None
 
 
 def authenticate_ldap(username, password):
-    """Authenticates only pre-provisioned active LDAP users, never grants roles."""
-
-    if not username or not password:
-        return None
-    _, version, config = integration_snapshot("ldap")
-    if not version or not config.get("enabled"):
-        return None
-    try:
-        connection = _ldap_connection(
-            config, decrypt_secrets(version.encrypted_secrets)
-        )
-        try:
-            from .directory import directory_base, directory_filter
-            query = directory_filter(config, "users", username, login=True)
-            connection.search(
-                directory_base(connection, config, "users"),
-                query,
-                attributes=["entryUUID", "objectGUID"],
-                size_limit=2,
-            )
-            if len(connection.entries) != 1:
-                return None
-            entry = connection.entries[0]
-            user_dn = config.get("user_dn_template", "").replace("{username}", username) or entry.entry_dn
-            subject = _ldap_subject(entry)
-            identity = (
-                LDAPIdentity.objects.filter(
-                    subject=subject,
-                    user__username=username,
-                    user__is_active=True,
-                    user__identity_source="ldap",
-                )
-                .select_related("user")
-                .first()
-            )
-            if not identity:
-                return None
-            if not connection.rebind(user=user_dn, password=password):
-                return None
-        finally:
-            _safe_ldap_unbind(connection)
-    except Exception:
-        return None
-    return identity.user
+    """Authenticate and synchronize the verified LDAP account and group grants."""
+    from .ldap_login import authenticate_ldap as directory_login
+    return directory_login(username, password)
 
 
 def _ldap_subject(entry):
@@ -463,6 +445,15 @@ def provision_ldap_identity(user):
 
 def _ai_call(config, secrets, messages, output_tokens):
     validate_url(config.get("base_url"))
+    verification = True
+    ca_file = os.environ.get("ONECS_AI_CA_FILE")
+    if ca_file:
+        try:
+            verification = ssl.create_default_context(cafile=ca_file)
+            # A supplied intermediate must chain to a root, not become an anchor.
+            verification.verify_flags &= ~ssl.VERIFY_X509_PARTIAL_CHAIN
+        except (OSError, ssl.SSLError):
+            raise ValidationError({"ai": "Model için yapılandırılan TLS CA dosyası okunamadı. Sunucudaki CA dosyasını kontrol edin."}) from None
     endpoint = config["base_url"].rstrip("/")
     if not endpoint.endswith("/chat/completions"):
         endpoint += "/chat/completions"
@@ -474,6 +465,7 @@ def _ai_call(config, secrets, messages, output_tokens):
         timeout=min(config.get("timeout_seconds", 180), 180),
         follow_redirects=False,
         trust_env=False,
+        verify=verification,
     ) as client:
         response = client.post(
             endpoint,
@@ -804,14 +796,14 @@ def test_integration(actor, section, recipient=None):
                         )
                 finally:
                     _safe_ldap_unbind(connection)
-                message = "LDAPS servis hesabı bağlantısı ve TLS doğrulaması başarılı."
+                message = "LDAP servis hesabı bağlantısı, TLS doğrulaması ve Base DN okuması başarılı."
             elif section == "smtp":
                 if not recipient:
                     raise ValidationError({"recipient": "Test alıcısı gerekiyor."})
                 send_email(
                     recipient,
-                    "Atlas e-posta bağlantı testi",
-                    "Atlas test iletisi. Bu ileti SMTP bağlantısının doğrulanması için gönderildi.",
+                    "onecs e-posta bağlantı testi",
+                    "onecs test iletisi. Bu ileti SMTP bağlantısının doğrulanması için gönderildi.",
                 )
                 message = "SMTP servisi test iletisini kabul etti; okunma veya son teslim garantisi değildir."
             elif section == "ai":
@@ -840,13 +832,8 @@ def test_integration(actor, section, recipient=None):
             else:
                 raise ValidationError({"section": "Bu sekmede bağlantı testi yok."})
             status = "success"
-        except ValidationError as exc:
-            status, message = "failure", str(exc.detail)[:350]
-        except Exception:
-            status, message = (
-                "failure",
-                "Bağlantı doğrulanamadı. Hedef, TLS, kimlik ve izinleri kontrol edin. Gizli değerler günlüklere yazılmadı.",
-            )
+        except Exception as exc:
+            status, message = "failure", connection_failure_message(exc, section)
     if not configuration:
         configuration = IntegrationConfiguration.objects.create(section=section)
     result = IntegrationTest.objects.create(

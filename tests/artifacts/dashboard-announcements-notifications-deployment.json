@@ -1,0 +1,10 @@
+{
+  "timestamp": "2026-11-18T13:26:47.638142+00:00",
+  "after_coordinated_restart": true,
+  "checks": {
+    "ui": 200,
+    "api_anonymous": 401
+  },
+  "scope": "Dashboard published/pending and notifications runtime code loaded; no migration for this task",
+  "api_proof": "dashboard-announcements-notifications-live.json"
+}

@@ -41,14 +41,14 @@
   padding: 0 3px;
   font-weight: 700;
 }
-.atlas-notifications .popover-title {
+.onecs-notifications .popover-title {
   display: flex;
   align-items: flex-start;
   gap: 20px;
   padding: 0 0 18px;
   border: 0;
 }
-.atlas-notifications .popover-title p {
+.onecs-notifications .popover-title p {
   margin: 0;
   color: var(--muted, #64748b);
   font-size: 0.78rem;
@@ -82,7 +82,7 @@
   overflow: auto;
   padding: 2px;
 }
-.atlas-notifications .notification-row {
+.onecs-notifications .notification-row {
   width: 100%;
   display: flex;
   align-items: stretch;
@@ -95,7 +95,7 @@
   gap: 9px;
   cursor: pointer;
 }
-.atlas-notifications .notification-row.unread {
+.onecs-notifications .notification-row.unread {
   background: #eef6fc;
   border-color: #b9d5ed;
   box-shadow: inset 3px 0 #0c80bf;
@@ -137,13 +137,13 @@
   background: #1288c1;
   box-shadow: 0 0 0 4px #168bc115;
 }
-.atlas-notifications .notification-row > span {
+.onecs-notifications .notification-row > span {
   font-size: 0.75rem;
   line-height: 1.65;
   color: var(--muted, #5e6f81);
   padding-left: 18px;
 }
-.atlas-notifications .notification-row small {
+.onecs-notifications .notification-row small {
   font-size: 0.65rem;
   padding-left: 18px;
   color: var(--muted, #5e6f81);
@@ -167,7 +167,7 @@
   font-size: 0.61rem;
   font-weight: 600;
 }
-[data-theme="dark"] .atlas-notifications .notification-row.unread {
+[data-theme="dark"] .onecs-notifications .notification-row.unread {
   background: #142d40;
   border-color: #234f6a;
 }
@@ -183,10 +183,10 @@
   .app-topbar .global-search {
     width: min(46vw, 360px);
   }
-  .atlas-notifications .popover-title {
+  .onecs-notifications .popover-title {
     flex-wrap: wrap;
   }
-  .atlas-notifications .notification-row {
+  .onecs-notifications .notification-row {
     padding: 15px 12px;
   }
   .notification-heading {
@@ -221,7 +221,7 @@
   .notification-heading .read-state {
     margin-left: 18px;
   }
-  .atlas-notifications .popover-title p {
+  .onecs-notifications .popover-title p {
     flex-basis: 100%;
   }
 }
@@ -290,16 +290,16 @@
     align-items: center;
     justify-content: center;
   }
-  .sidebar-collapsed .sidebar-brand .atlas-brand {
+  .sidebar-collapsed .sidebar-brand .onecs-brand {
     gap: 0;
     justify-content: center;
   }
-  .sidebar-collapsed .sidebar-brand .atlas-brand-symbol {
+  .sidebar-collapsed .sidebar-brand .onecs-brand-artwork {
     width: min(54px, 100%);
     height: auto;
     margin: 0;
   }
-  .sidebar-collapsed .atlas-brand-copy,
+  .sidebar-collapsed .onecs-brand-subtitle,
   .sidebar-collapsed .nav-item-label,
   .sidebar-collapsed .sidebar-label,
   .sidebar-collapsed .sidebar-status-label,

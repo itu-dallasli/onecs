@@ -30,7 +30,7 @@ from core.models import (
 )
 from core.services import audit, contribute, create_sla, enqueue_notification
 
-# Codes are stable Atlas identifiers; the supplied chart establishes names and
+# Codes are stable onecs identifiers; the supplied chart establishes names and
 # reporting lines, not a verified HR directory identifier or authentication map.
 OFFICIAL_UNITS = [
     ("IS", "Infrastructure Security", "Hakan Tokay", "infrastructure_head"),
@@ -73,7 +73,7 @@ EMPLOYEES = {
 
 
 class Command(BaseCommand):
-    help = "Resmî şema referansı ve açıkça işaretli örnek hesaplarla Atlas demosunu kurar; mevcut işleri sıfırlamaz."
+    help = "Resmî şema referansı ve açıkça işaretli örnek hesaplarla onecs demosunu kurar; mevcut işleri sıfırlamaz."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -84,11 +84,11 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
-        if settings.ATLAS_ENV not in ("development", "demo", "test"):
+        if settings.ONECS_ENV not in ("development", "demo", "test"):
             raise CommandError("Demo seed üretim ortamında çalıştırılamaz.")
-        password = os.environ.get("ATLAS_DEMO_PASSWORD")
+        password = os.environ.get("ONECS_DEMO_PASSWORD")
         if not password or len(password) < 10:
-            raise CommandError("ATLAS_DEMO_PASSWORD en az 10 karakter olmalıdır.")
+            raise CommandError("ONECS_DEMO_PASSWORD en az 10 karakter olmalıdır.")
         if (
             OrgNode.objects.filter(code__in=LEGACY_CODES).exists()
             or User.objects.filter(username__regex=r"^cs[0-9]{3}$").exists()
@@ -202,7 +202,7 @@ class Command(BaseCommand):
                     "name": name,
                     "parent": units[parent_code],
                     "kind": "TEAM",
-                    "description": "Kurum organizasyon sayfasında doğrulanan ekip referansı. Kod Atlas içi sabit tanımlayıcıdır.",
+                    "description": "Kurum organizasyon sayfasında doğrulanan ekip referansı. Kod onecs içi sabit tanımlayıcıdır.",
                 },
             )
             person(
@@ -655,6 +655,6 @@ class Command(BaseCommand):
         call_command("seed_project_insights", stdout=self.stdout)
         self.stdout.write(
             self.style.SUCCESS(
-                f"Atlas hazır: 7 unit, 6 farklı unit yöneticisi ve direktör şema referansı; {len(employees)} açıkça işaretli örnek çalışan. Örnek alt ekip: {'açık' if options['with_demo_team'] else 'kapalı'}. Mevcut iş akışları korunmuştur."
+                f"onecs hazır: 7 unit, 6 farklı unit yöneticisi ve direktör şema referansı; {len(employees)} açıkça işaretli örnek çalışan. Örnek alt ekip: {'açık' if options['with_demo_team'] else 'kapalı'}. Mevcut iş akışları korunmuştur."
             )
         )

@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Atlas API
+  title: onecs API
   version: 1.0.0
-  description: Rol ve kayıt kapsamı ile korunan Atlas yönetişim API. Dış JWT tüketicileri
+  description: Rol ve kayıt kapsamı ile korunan onecs yönetişim API. Dış JWT tüketicileri
     salt okunurdur.
 paths:
   /api/v1/activity/:
@@ -11,7 +11,7 @@ paths:
       tags:
       - Overview
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -27,7 +27,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -56,7 +56,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -79,7 +79,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -115,7 +115,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -137,7 +137,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '204':
@@ -169,7 +169,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -206,7 +206,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -224,7 +224,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -242,7 +242,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -280,7 +280,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -298,7 +298,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -337,7 +337,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -367,7 +367,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -397,7 +397,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -427,7 +427,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -443,7 +443,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -461,7 +461,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -484,7 +484,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -521,7 +521,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -537,7 +537,7 @@ paths:
       tags:
       - Administration
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -564,7 +564,7 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -599,7 +599,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedUser'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -614,7 +614,7 @@ paths:
       tags:
       - announcements
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -628,21 +628,21 @@ paths:
     post:
       operationId: announcements_create
       tags:
-      - announcements
+      - Announcement
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Announcement'
+              $ref: '#/components/schemas/AnnouncementCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Announcement'
+              $ref: '#/components/schemas/AnnouncementCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Announcement'
+              $ref: '#/components/schemas/AnnouncementCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -664,7 +664,7 @@ paths:
       tags:
       - announcements
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -698,7 +698,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -732,7 +732,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -747,7 +747,7 @@ paths:
       tags:
       - api-clients
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -775,7 +775,7 @@ paths:
               $ref: '#/components/schemas/ApiClient'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -797,7 +797,7 @@ paths:
       tags:
       - api-clients
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -831,7 +831,7 @@ paths:
               $ref: '#/components/schemas/ApiClient'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -865,7 +865,7 @@ paths:
               $ref: '#/components/schemas/ApiClient'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -873,6 +873,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiClient'
+          description: ''
+  /api/v1/attachments/:
+    get:
+      operationId: attachments_list
+      parameters:
+      - in: query
+        name: resource_id
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: resource_type
+        schema:
+          type: string
+      tags:
+      - attachments
+      security:
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttachmentList'
+          description: ''
+    post:
+      operationId: attachments_create
+      tags:
+      - attachments
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AttachmentUpload'
+        required: true
+      security:
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+          description: ''
+  /api/v1/attachments/{id}/:
+    delete:
+      operationId: attachments_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: Bir attachment öğesini tanımlayan UUID metni.
+        required: true
+      tags:
+      - attachments
+      security:
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/attachments/{id}/download/:
+    get:
+      operationId: attachments_download_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: Bir attachment öğesini tanımlayan UUID metni.
+        required: true
+      tags:
+      - attachments
+      security:
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
           description: ''
   /api/v1/auth/csrf/:
     get:
@@ -918,7 +1008,7 @@ paths:
       tags:
       - Identity
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -934,7 +1024,7 @@ paths:
       tags:
       - Identity
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -950,7 +1040,7 @@ paths:
       tags:
       - case-notices
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -964,21 +1054,21 @@ paths:
     post:
       operationId: case_notices_create
       tags:
-      - case-notices
+      - CaseNotice
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Notice'
+              $ref: '#/components/schemas/CaseNoticeCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Notice'
+              $ref: '#/components/schemas/CaseNoticeCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Notice'
+              $ref: '#/components/schemas/CaseNoticeCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -1000,7 +1090,7 @@ paths:
       tags:
       - case-notices
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1034,7 +1124,7 @@ paths:
               $ref: '#/components/schemas/Notice'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1068,7 +1158,7 @@ paths:
               $ref: '#/components/schemas/Notice'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1083,7 +1173,7 @@ paths:
       tags:
       - cases
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1111,7 +1201,7 @@ paths:
               $ref: '#/components/schemas/CaseCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -1133,7 +1223,7 @@ paths:
       tags:
       - cases
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1155,7 +1245,7 @@ paths:
       tags:
       - Case
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1188,7 +1278,7 @@ paths:
               $ref: '#/components/schemas/CaseActionCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1222,7 +1312,7 @@ paths:
               $ref: '#/components/schemas/Case'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1256,7 +1346,7 @@ paths:
               $ref: '#/components/schemas/ProgressAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1290,7 +1380,7 @@ paths:
               $ref: '#/components/schemas/CaseCloseRequest'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1324,7 +1414,7 @@ paths:
               $ref: '#/components/schemas/Case'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1358,7 +1448,7 @@ paths:
               $ref: '#/components/schemas/Case'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1392,7 +1482,7 @@ paths:
               $ref: '#/components/schemas/CaseVerifyClose'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1407,7 +1497,7 @@ paths:
       tags:
       - community
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1421,21 +1511,21 @@ paths:
     post:
       operationId: community_create
       tags:
-      - community
+      - Community
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Card'
+              $ref: '#/components/schemas/CommunityCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Card'
+              $ref: '#/components/schemas/CommunityCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Card'
+              $ref: '#/components/schemas/CommunityCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -1457,7 +1547,7 @@ paths:
       tags:
       - community
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1491,7 +1581,7 @@ paths:
               $ref: '#/components/schemas/Card'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1525,7 +1615,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1559,7 +1649,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1593,7 +1683,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1627,7 +1717,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1642,7 +1732,7 @@ paths:
       tags:
       - contributions
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1666,7 +1756,7 @@ paths:
       tags:
       - contributions
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1698,7 +1788,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedProgress'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1713,7 +1803,7 @@ paths:
       tags:
       - credentials
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1727,21 +1817,21 @@ paths:
     post:
       operationId: credentials_create
       tags:
-      - credentials
+      - Credential
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Credential'
+              $ref: '#/components/schemas/CredentialCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Credential'
+              $ref: '#/components/schemas/CredentialCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Credential'
+              $ref: '#/components/schemas/CredentialCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -1763,7 +1853,7 @@ paths:
       tags:
       - credentials
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1795,7 +1885,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedCredential'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1810,7 +1900,7 @@ paths:
       tags:
       - Overview
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1826,7 +1916,7 @@ paths:
       tags:
       - events
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1840,21 +1930,21 @@ paths:
     post:
       operationId: events_create
       tags:
-      - events
+      - Event
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/EventCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/EventCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Event'
+              $ref: '#/components/schemas/EventCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -1876,7 +1966,7 @@ paths:
       tags:
       - events
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1910,7 +2000,7 @@ paths:
               $ref: '#/components/schemas/Event'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -1932,41 +2022,7 @@ paths:
       tags:
       - events
       security:
-      - AtlasBearer: []
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Event'
-          description: ''
-  /api/v1/events/{id}/poll-response/:
-    post:
-      operationId: events_poll_response_create
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - Event
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PollResponseAction'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PollResponseAction'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PollResponseAction'
-        required: true
-      security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2000,7 +2056,41 @@ paths:
               $ref: '#/components/schemas/Event'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/poll-response/:
+    post:
+      operationId: events_poll_response_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PollResponseAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PollResponseAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PollResponseAction'
+        required: true
+      security:
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2034,7 +2124,7 @@ paths:
               $ref: '#/components/schemas/EventRSVPAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2049,7 +2139,7 @@ paths:
       tags:
       - Overview
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2062,34 +2152,41 @@ paths:
   /api/v1/notifications/:
     get:
       operationId: notifications_list
+      parameters:
+      - in: query
+        name: limit
+        schema:
+          type: integer
+        description: 1–100, varsayılan 50
+      - in: query
+        name: offset
+        schema:
+          type: integer
+        description: Sıfır tabanlı sayfa başlangıcı
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Bildirim başlığında arama
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - all
+          - read
+          - unread
       tags:
       - notifications
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notification'
-          description: ''
-  /api/v1/notifications/mark-all-read/:
-    post:
-      operationId: notifications_mark_all_read_create
-      tags:
-      - Notification
-      security:
-      - AtlasBearer: []
-      - cookieAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Notification'
+                $ref: '#/components/schemas/NotificationInbox'
           description: ''
   /api/v1/notifications/{id}/:
     get:
@@ -2104,7 +2201,7 @@ paths:
       tags:
       - notifications
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2137,7 +2234,22 @@ paths:
             schema:
               $ref: '#/components/schemas/NotificationReadState'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/mark-all-read/:
+    post:
+      operationId: notifications_mark_all_read_create
+      tags:
+      - Notification
+      security:
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2152,7 +2264,7 @@ paths:
       tags:
       - organization
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2176,7 +2288,7 @@ paths:
       tags:
       - organization
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2208,7 +2320,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedOrg'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2223,7 +2335,7 @@ paths:
       tags:
       - participation-requests
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2247,7 +2359,7 @@ paths:
       tags:
       - participation-requests
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2281,7 +2393,7 @@ paths:
               $ref: '#/components/schemas/ResourceDecision'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2296,7 +2408,7 @@ paths:
       tags:
       - people
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2320,7 +2432,7 @@ paths:
       tags:
       - people
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2352,7 +2464,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedPerson'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2374,7 +2486,7 @@ paths:
       tags:
       - people
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2397,7 +2509,7 @@ paths:
       tags:
       - people
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2419,7 +2531,7 @@ paths:
       tags:
       - people
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2435,7 +2547,7 @@ paths:
       tags:
       - project-managers
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2463,7 +2575,7 @@ paths:
               $ref: '#/components/schemas/PM'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -2485,7 +2597,7 @@ paths:
       tags:
       - project-managers
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2500,7 +2612,7 @@ paths:
       tags:
       - projects
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2528,7 +2640,7 @@ paths:
               $ref: '#/components/schemas/ProjectCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -2550,7 +2662,7 @@ paths:
       tags:
       - projects
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2582,7 +2694,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedProject'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2604,7 +2716,7 @@ paths:
       tags:
       - projects
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2637,7 +2749,7 @@ paths:
               $ref: '#/components/schemas/Project'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2671,7 +2783,7 @@ paths:
               $ref: '#/components/schemas/Project'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2705,7 +2817,7 @@ paths:
               $ref: '#/components/schemas/ProjectClose'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2727,7 +2839,7 @@ paths:
       tags:
       - Project
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2760,7 +2872,7 @@ paths:
               $ref: '#/components/schemas/ProjectResourceRequest'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2794,7 +2906,7 @@ paths:
               $ref: '#/components/schemas/ProgressAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2828,7 +2940,7 @@ paths:
               $ref: '#/components/schemas/Project'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2862,7 +2974,7 @@ paths:
               $ref: '#/components/schemas/ProjectReview'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2884,7 +2996,7 @@ paths:
       tags:
       - projects
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2918,7 +3030,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2940,7 +3052,7 @@ paths:
       tags:
       - Project
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -2973,7 +3085,7 @@ paths:
               $ref: '#/components/schemas/ProjectTaskCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3007,7 +3119,7 @@ paths:
               $ref: '#/components/schemas/Project'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3043,7 +3155,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3086,7 +3198,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3123,7 +3235,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3152,7 +3264,7 @@ paths:
       tags:
       - Project insights
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3194,7 +3306,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3223,7 +3335,7 @@ paths:
       tags:
       - Project insights
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3266,7 +3378,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3289,7 +3401,7 @@ paths:
       tags:
       - Project insights
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3326,7 +3438,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3369,7 +3481,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3412,7 +3524,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3449,7 +3561,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3492,7 +3604,7 @@ paths:
               type: object
               additionalProperties: {}
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3508,7 +3620,7 @@ paths:
       tags:
       - report-selections
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3536,7 +3648,7 @@ paths:
               $ref: '#/components/schemas/ReportSelection'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -3558,7 +3670,7 @@ paths:
       tags:
       - report-selections
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3573,7 +3685,7 @@ paths:
       tags:
       - reports
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3600,7 +3712,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ReportCreate'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -3622,7 +3734,7 @@ paths:
       tags:
       - reports
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3656,7 +3768,7 @@ paths:
               $ref: '#/components/schemas/ReportApproval'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3690,7 +3802,7 @@ paths:
               $ref: '#/components/schemas/VersionedAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3698,6 +3810,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/reports/{id}/pivot/:
+    get:
+      operationId: reports_pivot_retrieve
+      description: Raporun donmuş kaynaklarından ekip pivotu. Sayaçlar dönem sonu
+        dahil hesaplanır; mevcut kaynak erişimi yeniden doğrulanır. AI çağrısı veya
+        kayıt güncellemesi yapmaz.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - reports
+      security:
+      - OnecsBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportPivot'
           description: ''
   /api/v1/schema/:
     get:
@@ -3849,7 +3986,7 @@ paths:
       tags:
       - Overview
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3865,7 +4002,7 @@ paths:
       tags:
       - sla-policies
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3889,7 +4026,7 @@ paths:
       tags:
       - sla-policies
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3921,7 +4058,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedSLAPolicy'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3936,7 +4073,7 @@ paths:
       tags:
       - Overview
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3963,7 +4100,7 @@ paths:
               $ref: '#/components/schemas/TestModeRequest'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -3979,7 +4116,7 @@ paths:
       tags:
       - work
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4007,7 +4144,7 @@ paths:
               $ref: '#/components/schemas/UnitWorkCreate'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '201':
@@ -4029,7 +4166,7 @@ paths:
       tags:
       - work
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4061,7 +4198,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedWork'
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4095,7 +4232,7 @@ paths:
               $ref: '#/components/schemas/Work'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4129,7 +4266,7 @@ paths:
               $ref: '#/components/schemas/WorkAdopt'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4163,7 +4300,7 @@ paths:
               $ref: '#/components/schemas/WorkAssign'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4185,7 +4322,7 @@ paths:
       tags:
       - Work
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4219,7 +4356,7 @@ paths:
               $ref: '#/components/schemas/ProgressAction'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4253,7 +4390,7 @@ paths:
               $ref: '#/components/schemas/SLAAdjustment'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4287,7 +4424,7 @@ paths:
               $ref: '#/components/schemas/WorkStatus'
         required: true
       security:
-      - AtlasBearer: []
+      - OnecsBearer: []
       - cookieAuth: []
       responses:
         '200':
@@ -4330,6 +4467,10 @@ components:
           type: boolean
         author_name:
           type: string
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
         version:
           type: integer
           maximum: 2147483647
@@ -4344,6 +4485,48 @@ components:
       - created_at
       - id
       - owner_org_id
+      - permissions
+      - title
+    AnnouncementCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 240
+        body:
+          type: string
+        all_cs:
+          type: boolean
+        audience_org_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        pinned:
+          type: boolean
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+      required:
+      - body
       - title
     AnswerEnum:
       enum:
@@ -4381,6 +4564,61 @@ components:
       - id
       - name
       - org_node_id
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        size:
+          type: integer
+          readOnly: true
+        content_type:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        scan_status:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content_type
+      - created_at
+      - id
+      - name
+      - scan_status
+      - size
+      - status
+    AttachmentList:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+        count:
+          type: integer
+      required:
+      - count
+      - results
+    AttachmentUpload:
+      type: object
+      properties:
+        file:
+          type: string
+          format: uri
+      required:
+      - file
     Card:
       type: object
       properties:
@@ -4558,6 +4796,21 @@ components:
         version:
           type: integer
           minimum: 1
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
       required:
       - assignee_id
       - title
@@ -4590,8 +4843,49 @@ components:
           format: uuid
         kind:
           type: string
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
       required:
       - priority
+      - title
+    CaseNoticeCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+      required:
+      - description
       - title
     CaseVerifyClose:
       type: object
@@ -4604,6 +4898,60 @@ components:
       required:
       - evidence
       - version
+    CommunityCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 240
+        body:
+          type: string
+        kind:
+          $ref: '#/components/schemas/CommunityCreateKindEnum'
+        all_cs:
+          type: boolean
+        audience_org_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        source_type:
+          type: string
+        source_id:
+          type: string
+          format: uuid
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+      required:
+      - body
+      - title
+    CommunityCreateKindEnum:
+      enum:
+      - SUCCESS
+      - HELP
+      - OFFER
+      - LESSON
+      - KNOWLEDGE
+      type: string
+      description: |-
+        * `SUCCESS` - SUCCESS
+        * `HELP` - HELP
+        * `OFFER` - OFFER
+        * `LESSON` - LESSON
+        * `KNOWLEDGE` - KNOWLEDGE
     ContextEnum:
       enum:
       - UNIT_WORK
@@ -4672,6 +5020,48 @@ components:
       - name
       - permissions
       - user
+    CredentialCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        issuer:
+          type: string
+          maxLength: 180
+        user_id:
+          type: string
+          format: uuid
+        issued_on:
+          type: string
+          format: date
+        expires_on:
+          type: string
+          format: date
+        no_expiry:
+          type: boolean
+        important:
+          type: boolean
+        reference:
+          type: string
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+      required:
+      - issuer
+      - name
     Event:
       type: object
       properties:
@@ -4758,6 +5148,47 @@ components:
       - polls
       - rsvp
       - title
+    EventCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        location:
+          type: string
+        owner_org_id:
+          type: string
+          format: uuid
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        invitee_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+      required:
+      - title
     EventRSVPAction:
       type: object
       properties:
@@ -4795,14 +5226,6 @@ components:
       required:
       - id
       - role
-    KindEnum:
-      enum:
-      - TASK
-      - COMMITMENT
-      type: string
-      description: |-
-        * `TASK` - TASK
-        * `COMMITMENT` - COMMITMENT
     LoginRequest:
       type: object
       properties:
@@ -4816,6 +5239,20 @@ components:
       required:
       - password
       - username
+    MetadataProvenanceEnum:
+      enum:
+      - snapshot
+      - current_authorized
+      - mixed
+      - unassigned
+      - empty
+      type: string
+      description: |-
+        * `snapshot` - snapshot
+        * `current_authorized` - current_authorized
+        * `mixed` - mixed
+        * `unassigned` - unassigned
+        * `empty` - empty
     MethodEnum:
       enum:
       - local
@@ -4903,6 +5340,10 @@ components:
         is_read:
           type: boolean
           readOnly: true
+        url:
+          type: string
+          nullable: true
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -4912,6 +5353,33 @@ components:
       - id
       - is_read
       - title
+      - url
+    NotificationInbox:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        count:
+          type: integer
+        unread_count:
+          type: integer
+          description: Filtre/sayfa dışında kalanlar dahil tüm yetkili okunmamış kayıtlar
+        limit:
+          type: integer
+        offset:
+          type: integer
+        next_offset:
+          type: integer
+          nullable: true
+      required:
+      - count
+      - limit
+      - next_offset
+      - offset
+      - results
+      - unread_count
     NotificationReadState:
       type: object
       properties:
@@ -5870,6 +6338,21 @@ components:
         due_at:
           type: string
           format: date-time
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
       required:
       - description
       - title
@@ -5927,6 +6410,21 @@ components:
         version:
           type: integer
           minimum: 1
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
       required:
       - assignee_id
       - title
@@ -6027,6 +6525,180 @@ components:
         period_end:
           type: string
           format: date
+    ReportPivot:
+      type: object
+      properties:
+        general:
+          $ref: '#/components/schemas/ReportPivotGeneral'
+        report_id:
+          type: string
+          format: uuid
+        report_version:
+          type: integer
+        content_hash:
+          type: string
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        as_of:
+          type: string
+          format: date
+        source_count:
+          type: integer
+          minimum: 0
+        metadata_provenance:
+          $ref: '#/components/schemas/MetadataProvenanceEnum'
+        section_order:
+          type: array
+          items:
+            type: string
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportPivotTeam'
+      required:
+      - as_of
+      - content_hash
+      - general
+      - metadata_provenance
+      - period_end
+      - period_start
+      - report_id
+      - report_version
+      - section_order
+      - source_count
+      - teams
+    ReportPivotCounts:
+      type: object
+      properties:
+        open:
+          type: integer
+          minimum: 0
+        completed:
+          type: integer
+          minimum: 0
+        critical:
+          type: integer
+          minimum: 0
+        overdue:
+          type: integer
+          minimum: 0
+      required:
+      - completed
+      - critical
+      - open
+      - overdue
+    ReportPivotGeneral:
+      type: object
+      properties:
+        source_count:
+          type: integer
+          minimum: 0
+        counts:
+          $ref: '#/components/schemas/ReportPivotCounts'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportPivotSection'
+      required:
+      - counts
+      - sections
+      - source_count
+    ReportPivotSection:
+      type: object
+      properties:
+        key:
+          type: string
+        title:
+          type: string
+        count:
+          type: integer
+          minimum: 0
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportPivotSource'
+      required:
+      - count
+      - key
+      - sources
+      - title
+    ReportPivotSource:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+        title:
+          type: string
+        status:
+          type: string
+        priority:
+          type: string
+        description:
+          type: string
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+        owner_org: {}
+        selection_reason:
+          type: string
+        team_id:
+          type: string
+          format: uuid
+          nullable: true
+        section:
+          $ref: '#/components/schemas/SectionEnum'
+      required:
+      - id
+      - section
+      - team_id
+      - type
+    ReportPivotTeam:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        name:
+          type: string
+        code:
+          type: string
+        metadata_provenance:
+          $ref: '#/components/schemas/MetadataProvenanceEnum'
+        source_count:
+          type: integer
+          minimum: 0
+        counts:
+          $ref: '#/components/schemas/ReportPivotCounts'
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportPivotSection'
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportPivotSource'
+      required:
+      - code
+      - counts
+      - id
+      - metadata_provenance
+      - name
+      - sections
+      - source_count
+      - sources
     ReportSelection:
       type: object
       properties:
@@ -6173,6 +6845,32 @@ components:
       - id
       - priority
       - unit
+    SectionEnum:
+      enum:
+      - highlights
+      - lowlights
+      - escalations
+      - information
+      - next_steps
+      type: string
+      description: |-
+        * `highlights` - highlights
+        * `lowlights` - lowlights
+        * `escalations` - escalations
+        * `information` - information
+        * `next_steps` - next_steps
+    StatusEnum:
+      enum:
+      - PENDING_SCAN
+      - READY
+      - REJECTED
+      - DELETED
+      type: string
+      description: |-
+        * `PENDING_SCAN` - PENDING_SCAN
+        * `READY` - READY
+        * `REJECTED` - REJECTED
+        * `DELETED` - DELETED
     TestModeRequest:
       type: object
       properties:
@@ -6183,6 +6881,16 @@ components:
           format: uuid
       required:
       - mode
+    TypeEnum:
+      enum:
+      - work
+      - project
+      - case
+      type: string
+      description: |-
+        * `work` - work
+        * `project` - project
+        * `case` - case
     UnitWorkCreate:
       type: object
       properties:
@@ -6198,14 +6906,37 @@ components:
         personal:
           type: boolean
         kind:
-          $ref: '#/components/schemas/KindEnum'
+          $ref: '#/components/schemas/UnitWorkCreateKindEnum'
         priority:
           $ref: '#/components/schemas/PriorityEnum'
         due_at:
           type: string
           format: date-time
+        attachment_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 5
+        send_email:
+          type: boolean
+          default: false
+        notification_recipient_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
       required:
       - title
+    UnitWorkCreateKindEnum:
+      enum:
+      - TASK
+      - COMMITMENT
+      type: string
+      description: |-
+        * `TASK` - TASK
+        * `COMMITMENT` - COMMITMENT
     User:
       type: object
       properties:
@@ -6276,6 +7007,14 @@ components:
           minimum: 1
       required:
       - version
+    VisibilityEnum:
+      enum:
+      - DETAIL
+      - SUMMARY
+      type: string
+      description: |-
+        * `DETAIL` - DETAIL
+        * `SUMMARY` - SUMMARY
     Work:
       type: object
       properties:
@@ -6438,7 +7177,7 @@ components:
       - status
       - version
   securitySchemes:
-    AtlasBearer:
+    OnecsBearer:
       type: http
       scheme: bearer
       bearerFormat: JWT
@@ -6447,4 +7186,4 @@ components:
     cookieAuth:
       type: apiKey
       in: cookie
-      name: atlas_sessionid
+      name: onecs_sessionid

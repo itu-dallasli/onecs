@@ -1,4 +1,4 @@
-# Atlas ekip paylaşımı ve keşif akışı
+# onecs ekip paylaşımı ve keşif akışı
 
 Mevcut ürün, ekip rehberi/uzmanlık beyanını ve kaynakla ilişkili paylaşım kartlarını kullanır. Serbest mesajlaşma veya çalışan performans puanı üretmez.
 
@@ -19,6 +19,14 @@ Mevcut ürün, ekip rehberi/uzmanlık beyanını ve kaynakla ilişkili paylaşı
 - Sürüm isteyen işlemlerde eski `version` 409, eksik izin 403, geçersiz tür/durum 400 üretir. İçerik onayı ile hedef kitle yayını ayrı adımlardır.
 - `Organizasyon` ekranındaki uzmanlık gönüllü kişisel beyandır; `PATCH /people/{id}/` başka kişinin uzmanlığını düzenlemeye izin vermez. Sertifika doğrulamasıyla eşdeğer değildir.
 - Mevcut otomatik yayından kaldırma yerine yetkili geri çekme kullanılır; kaynak sınıfı değişikliklerine bağlı kapsamlı yeniden inceleme ve AI uzmanlık eşleştirme hedef çalışmadır.
+
+## Anons ve dashboard
+
+Anons önerisi `DRAFT` olarak kaydedilir. Sahip organizasyonda güncel `DIRECTOR` veya `UNIT_HEAD` yetkisine sahip yayın karar vericilerine uygulama içi bildirim oluşturulur. Yayın kararı `PUBLISHED` durumuna geçirir ve o andaki aktif hedef kitleye, yayıncı dahil, tekilleştirilmiş uygulama içi bildirim yazar. Durum, audit ve bu kayıtlar aynı transaction'dadır; buradaki otomatik akış e-posta göndermez. Aynı idempotency anahtarıyla tekrar yayın isteği yeni bildirim üretmez.
+
+Dashboard yayındaki anonsları ve yayın kararı bekleyenleri ayrı bölümlerde gösterir. Anons kartı öncelikli gündemin yanında, dar ekranlarda altında tam genişlikte yer alır. “Bu hafta ne değişti?” kutusu kaldırılmıştır; gündem kartı içeriğinin sonunda biter ve haftalık rapora sayfa başlığındaki bağlantıdan erişilir. Her bölüm ilk beş kaydı, toplam sayıyı ve tümüne bağlantıyı taşır. Yayındaki bölüm yalnız yayın zaman aralığı ve hedef kitlesi uygun kayıtları içerir. Bekleyen bölüm kullanıcının kendi önerilerini ve yayın kararı verebildiği taslakları gösterir; kendi önerisini görmek yayın yetkisi vermez. Karar sayacına yalnız yayın karar vericisinin kapsamındaki taslaklar eklenir. Süresi dolmuş taslak bekleyen listede kalır, yayın düğmesi verilmez; yetkili geri çekebilir.
+
+Yayın sonrası eski karar bildirimi gizlenir. İleri tarihli yayın bildirimi başlangıcına kadar, süresi dolmuş/geri çekilmiş yayın bildirimi de bundan sonra görünmez. Alıcının rolü/kaynak erişimi her liste, detay ve okundu işleminde yeniden uygulanır. Yayından sonra yeni katılan çalışanlar için geçmiş bildirim üretilmez; canlı anonslar dashboard'da güncel hedef kitle politikasına göre görünür.
 
 ## Kod ve doğrulama
 

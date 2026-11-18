@@ -1,10 +1,10 @@
-# Atlas · Organizasyon referansı, arama ve bildirimler
+# onecs · Organizasyon referansı, arama ve bildirimler
 
 Bu belge çalışan `core` API sözleşmesini açıklar. Kurumsal organizasyon sayfasında doğrulanan kişi/ekip adları bir **şema referansıdır**; yerel referans hesabı gerçek LDAP kimliği veya kurumsal parola doğrulaması sayılmaz. İş, vaka, katkı, sertifika ve etkinlik kayıtları açıkça belirtilmiş demo senaryolarıdır.
 
 ## Organizasyon referansı ve seed
 
-`seed_demo` direktör Emin İslam Tatlı altında yedi unit kurar: Infrastructure Security, Security Assurance & Architecture, Cyber Defence Center, Identity Access Management, Offensive Security, Security Management, Managed Security Services. Hakan Tokay IS ve MSS için aynı `User` ve iki `UNIT_HEAD` grant'iyle temsil edilir. Kodlar `ICT-CS-*` biçiminde **Atlas içi sabit eşleme anahtarlarıdır**; doğrulanmış HR/dizin kodu olarak sunulmaz.
+`seed_demo` direktör Emin İslam Tatlı altında yedi unit kurar: Infrastructure Security, Security Assurance & Architecture, Cyber Defence Center, Identity Access Management, Offensive Security, Security Management, Managed Security Services. Hakan Tokay IS ve MSS için aynı `User` ve iki `UNIT_HEAD` grant'iyle temsil edilir. Kodlar `ICT-CS-*` biçiminde **onecs içi sabit eşleme anahtarlarıdır**; doğrulanmış HR/dizin kodu olarak sunulmaz.
 
 Doğrulanan alt ekipler ve yöneticiler ayrıca eklenir; referans dizinin tam kurumsal kadro olduğu iddia edilmez; yönetici bulunmayan çalışan grupları için sahte yönetim düğümü yaratılmaz. AST'nin 13 doğrulanmış çalışan referansı bulunur. `profile_kind=OFFICIAL_REFERENCE` kaynak türünü, `DEMO` açıkça kurgusal hesabı, `LOCAL` yerel kullanıcıyı, `LDAP` gerçek dizin eşlemesini ayırır. Referans kişilerin bilinmeyen e-postaları boş kalır. Açık demo giriş alias'ları dışındaki referans hesapların parolaları kullanılamaz durumdadır.
 
@@ -22,8 +22,12 @@ Her unit için bir açıkça “Demo” işaretli örnek çalışan vardır; `cs
 
 ## Bildirim okundu durumu
 
-`GET /api/v1/notifications/?status=all|unread|read` yalnız güncel kaydına erişilebilen, oturum sahibine gönderilmiş bildirimleri döndürür. `read_at` ile `is_read` tutarlıdır. Geçersiz filtre 400'dür; başka alıcının veya yetkisi iptal edilmiş kaydın bildirim detayı 404'tür.
+`GET /api/v1/notifications/?status=all|unread|read&limit=50&offset=0` yalnız güncel kaydına erişilebilen, oturum sahibine gönderilmiş bildirimleri döndürür. Yanıt `results`, filtrelenmiş `count`, tüm yetkili kayıtların `unread_count` toplamı, `limit`, `offset`, `next_offset` taşır. Sayfa boyutu 1–100 aralığındadır. `read_at` ile `is_read` tutarlıdır. Geçersiz filtre/sayfalama 400'dür; başka alıcının veya yetkisi iptal edilmiş kaydın bildirim detayı 404'tür. Silinmiş veya bozuk kaynak kimlikli bildirimler listeyi bozmaz, sayaca katılmaz.
 
-`POST /notifications/{id}/read/` varsayılan olarak okundu işaretler; `{read:false}` yeniden okunmamış yapar. `read` gerçek boolean olmalıdır. `POST /notifications/mark-all-read/` yalnız o anda yetkili ve görünür okunmamış kayıtları değiştirir; `{updated:n}` döndürür. İşlemler audit edilir. Dış JWT salt okunurdur ve bu yazma işlemlerini kullanamaz; ikincil bildirim sorguları da ek organizasyon kapsamını korur. Okundu durumu e-posta teslimi veya aksiyonun tamamlanması anlamına gelmez.
+Her satırın `url` alanı sunucunun güncel kaynak politikasına göre ürettiği uygulama içi hedeftir. Personel tahsisi bildirimi ilgili talebi, vaka bildirimi ilgili değerlendirme kaydını açar; bu hedefler ana proje/vaka ayrıntısına erişim vermez. Bilinmeyen iç bildirim türü için hedef `null` olur; dış API'de bilinmeyen kaynak kapalıdır.
+
+`POST /notifications/{id}/read/` varsayılan olarak okundu işaretler; `{read:false}` yeniden okunmamış yapar. `read` gerçek boolean olmalıdır. `POST /notifications/mark-all-read/` yalnız o anda yetkili ve görünür okunmamış kayıtları değiştirir; `{updated:n}` döndürür. Liste filtresi bu yazma işlemlerinin kapsamını değiştirmez. İşlemler audit ile aynı transaction'da kalıcıdır. Dış JWT salt okunurdur ve bu yazma işlemlerini kullanamaz; ikincil bildirim sorguları da ek organizasyon kapsamını korur. Okundu durumu e-posta teslimi veya aksiyonun tamamlanması anlamına gelmez.
+
+Arayüz zili sunucunun toplamını gösterir; yalnız ilk sayfayı saymaz. Çekmece açıldığında, pencere odaklandığında ve 15 saniyelik aralıklarla yenilenir; yüklenmiş tüm sayfalar güncellenir. Okundu kaydı başarılı olmadan hedefe gidilmez. Eski yenileme yanıtları yeni okundu durumunu ezemez; kullanıcı değişince önbellek temizlenir. Bu periyodik yenileme gerçek zamanlı push teslimi değildir.
 
 Kod: [seed](../../backend/core/management/commands/seed_demo.py), [API](../../backend/core/views.py), [policy](../../backend/core/policy.py), [serializer](../../backend/core/serializers.py). Testler: [referans seed](../../backend/core/tests/test_canonical_seed.py), [arama ve bildirim](../../backend/core/tests/test_directory_search_notifications.py), [JWT ikincil kapsam](../../backend/core/tests/test_api_scope_secondary.py). Gerçek koşu sonucu [QA raporunda](../QA_REPORT.md) saklanır; test dosyasının bulunması çalıştırıldığı anlamına gelmez.

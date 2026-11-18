@@ -2,14 +2,12 @@ import {
   ArrowDownToLine,
   ArrowRight,
   ArrowUpRight,
-  BellRing,
   CalendarDays,
   CheckCheck,
   Clock3,
   FileText,
   Layers3,
   ShieldAlert,
-  Sparkles,
   Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -17,6 +15,7 @@ import { api, date, list, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { organizationLabel } from "../lib/organization";
 import DashboardCharts, { dashboardCount } from "../components/DashboardCharts";
+import DashboardAnnouncements from "../components/DashboardAnnouncements";
 import {
   Badge,
   Button,
@@ -79,7 +78,7 @@ export default function Dashboard() {
         }).format(updateTime)
       : "Bilgi alınamadı";
   return (
-    <div className="atlas-dashboard">
+    <div className="onecs-dashboard">
       <PageHeader
         eyebrow="DİREKTÖRLÜK OPERASYON MERKEZİ"
         title="Genel Bakış"
@@ -196,60 +195,11 @@ export default function Dashboard() {
             <ArrowRight size={15} />
           </Link>
         </Card>
-        <div className="dashboard-right">
-          <Card className="weekly-card">
-            <div className="weekly-icon">
-              <Sparkles size={21} />
-            </div>
-            <span className="eyebrow">YÖNETİM ÖZETİ</span>
-            <h2>Bu hafta ne değişti?</h2>
-            <p>
-              {typeof d.weekly_summary === "string"
-                ? d.weekly_summary
-                : "İşlerinizdeki ilerlemeleri kaynaklarıyla bir araya getirin. Yıldızladığınız kayıtlar haftalık raporunuza hazır."}
-            </p>
-            <div className="weekly-facts">
-              <span>
-                <i />
-                Kritik ve geciken konular
-              </span>
-              <span>
-                <i />
-                Ekiplerin katkıları ve sonraki adımlar
-              </span>
-              <span>
-                <i />
-                Kaynak bağlantılı kısa özet
-              </span>
-            </div>
-            <Link className="btn btn-primary" to="/reports">
-              Rapor çalışma alanı
-              <ArrowRight size={16} />
-            </Link>
-            <small>Yayınlamadan önce yönetici kontrolü</small>
-          </Card>
-          <Card className="announcements-card">
-            <SectionTitle title="Duyurular" actions={<BellRing size={17} />} />
-            {list(d.announcements).length ? (
-              list(d.announcements)
-                .slice(0, 2)
-                .map((a: any) => (
-                  <div className="announcement-item" key={a.id}>
-                    <Badge
-                      tone={a.priority === "CRITICAL" ? "danger" : "neutral"}
-                    >
-                      {a.audience_label || "CS DUYURUSU"}
-                    </Badge>
-                    <strong>{a.title}</strong>
-                    <p>{a.summary || a.body || a.description}</p>
-                    <small>{date(a.created_at)}</small>
-                  </div>
-                ))
-            ) : (
-              <div className="compact-empty">Yeni duyuru bulunmuyor.</div>
-            )}
-          </Card>
-        </div>
+        <DashboardAnnouncements
+          published={d.announcements}
+          pending={d.pending_announcements}
+          counts={d.announcement_counts}
+        />
       </div>
       <DashboardCharts
         units={list(d.unit_summaries)}

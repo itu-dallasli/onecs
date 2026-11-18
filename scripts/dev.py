@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Atlas's isolated local stack without changing another application's ports."""
+"""Run onecs's isolated local stack without changing another application's ports."""
 
 from __future__ import annotations
 
@@ -62,7 +62,7 @@ def local_postgres(env):
         )
     RUNTIME.mkdir(exist_ok=True)
     data = RUNTIME / "postgres"
-    user = env.get("POSTGRES_USER", "atlas")
+    user = env.get("POSTGRES_USER", "onecs")
     if not (data / "PG_VERSION").exists():
         execute(
             [
@@ -101,7 +101,7 @@ def local_postgres(env):
             str(port),
             "-U",
             user,
-            env.get("POSTGRES_DB", "atlas"),
+            env.get("POSTGRES_DB", "onecs"),
         ],
         env=env,
         capture_output=True,
@@ -112,12 +112,16 @@ def local_postgres(env):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Atlas yerel geliştirme yöneticisi")
+    parser = argparse.ArgumentParser(description="onecs yerel geliştirme yöneticisi")
     parser.add_argument(
         "--check", action="store_true", help="Django kontrolünü çalıştır ve çık"
     )
     parser.add_argument(
         "--seed", action="store_true", help="Sentetik demo verilerini oluştur/güncelle"
+    )
+    parser.add_argument(
+        "--skip-migrations", action="store_true",
+        help="Mevcut veritabanıyla yeniden başlat; bekleyen migration'ları uygulama",
     )
     args = parser.parse_args()
     env = environment()
@@ -127,9 +131,10 @@ def main():
             "Önce python3 -m venv .venv ve .venv/bin/pip install -r requirements.lock.txt çalıştırın."
         )
     local_postgres(env)
-    execute(
-        [python, "manage.py", "migrate", "--noinput"], cwd=ROOT / "backend", env=env
-    )
+    if not args.skip_migrations:
+        execute(
+            [python, "manage.py", "migrate", "--noinput"], cwd=ROOT / "backend", env=env
+        )
     if args.seed:
         execute([python, "manage.py", "seed_demo"], cwd=ROOT / "backend", env=env)
     execute([python, "manage.py", "check"], cwd=ROOT / "backend", env=env)
@@ -137,7 +142,7 @@ def main():
         return
     if port_open(8000) or port_open(3100):
         raise SystemExit(
-            "8000 veya 3100 portu kullanılıyor. Çalışan Atlas sürecini kullanın veya önce durdurun."
+            "8000 veya 3100 portu kullanılıyor. Çalışan onecs sürecini kullanın veya önce durdurun."
         )
     npm = shutil.which("npm", path=env["PATH"])
     if not npm:
@@ -179,7 +184,7 @@ def main():
             proc = subprocess.Popen([str(a) for a in command], cwd=cwd, env=env)
             processes.append((name, proc))
         print(
-            "\nAtlas: http://localhost:3100 · API: http://127.0.0.1:8000/api/v1/\n",
+            "\nonecs: http://localhost:3100 · API: http://127.0.0.1:8000/api/v1/\n",
             flush=True,
         )
         while all(proc.poll() is None for _, proc in processes):

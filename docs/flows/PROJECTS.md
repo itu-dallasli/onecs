@@ -1,4 +1,4 @@
-# Atlas · Proje başvurusu ve PM yönetimi
+# onecs · Proje başvurusu ve PM yönetimi
 
 Proje yönetimi PM kapsamındadır; personel tahsisini kabul eden Unit Head proje içeriğini yönetmiş olmaz.
 

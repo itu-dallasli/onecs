@@ -1,4 +1,4 @@
-# Atlas kişisel sertifika akışı
+# onecs kişisel sertifika akışı
 
 Mevcut modül kişisel sertifika metaverisini ve yönetici tarafından önemli seçilen kayıtların süre uyarılarını tutar. Denetim kanıt dosyası veya kurumsal sertifika deposu tamamlanmış özellik değildir.
 

@@ -14,6 +14,11 @@ import {
 } from "lucide-react";
 import { api, date, list, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
+import RecordExtras, {
+  emptyRecordExtras,
+  RecordAttachments,
+} from "../components/RecordExtras";
+import { createRecordWithExtras } from "../lib/recordExtras";
 import {
   Badge,
   Button,
@@ -39,6 +44,7 @@ type Announcement = {
   author_name: string;
   version: number;
   created_at: string;
+  permissions?: { publish: boolean; withdraw: boolean };
 };
 type Org = {
   id: string;
@@ -67,15 +73,28 @@ export default function Announcements() {
   const { data: orgData } = useResource<any>("/organization");
   const orgs = list<Org>(orgData),
     records = list<Announcement>(data);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedStatus = searchParams.get("status") || "all";
   const [query, setQuery] = useState(""),
-    [status, setStatus] = useState("all"),
+    [status, setStatus] = useState(() =>
+      ["DRAFT", "PUBLISHED", "WITHDRAWN"].includes(requestedStatus)
+        ? requestedStatus
+        : "all",
+    ),
     [creating, setCreating] = useState(false),
     [selected, setSelected] = useState<Announcement | null>(null),
     [busy, setBusy] = useState(""),
     [failure, setFailure] = useState(""),
     [success, setSuccess] = useState(""),
     [form, setForm] = useState(initial);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [extras, setExtras] = useState(emptyRecordExtras);
+  useEffect(() => {
+    setStatus(
+      ["DRAFT", "PUBLISHED", "WITHDRAWN"].includes(requestedStatus)
+        ? requestedStatus
+        : "all",
+    );
+  }, [requestedStatus]);
   const requestedId = searchParams.get("id")?.toLowerCase() || null;
   const validId =
     !!requestedId &&
@@ -142,12 +161,13 @@ export default function Announcements() {
     );
   const create = async (event: FormEvent) => {
     event.preventDefault();
+    if (busy) return;
     setBusy("create");
     setFailure("");
     try {
-      await api("/announcements", {
-        method: "POST",
-        body: {
+      await createRecordWithExtras(
+        "/announcements",
+        {
           ...form,
           starts_at: form.starts_at
             ? new Date(form.starts_at).toISOString()
@@ -156,9 +176,11 @@ export default function Announcements() {
             ? new Date(form.ends_at).toISOString()
             : undefined,
         },
-      });
+        extras,
+      );
       setCreating(false);
       setForm(initial);
+      setExtras(emptyRecordExtras());
       setSuccess(
         "Anons taslağı kaydedildi. Yayın kararını yetkili Birim yöneticisi veya direktör verir.",
       );
@@ -243,7 +265,7 @@ export default function Announcements() {
         </div>
       )}
       <div className="announcements-summary">
-        <span className="atlas-settings-title-icon">
+        <span className="onecs-settings-title-icon">
           <Megaphone size={23} />
         </span>
         <div>
@@ -257,7 +279,7 @@ export default function Announcements() {
       </div>
       <Card>
         <div className="announcements-toolbar">
-          <div className="atlas-settings-search">
+          <div className="onecs-settings-search">
             <Search size={16} />
             <input
               aria-label="Anonslarda ara"
@@ -280,7 +302,15 @@ export default function Announcements() {
               <button
                 key={option.value}
                 className={status === option.value ? "active" : ""}
-                onClick={() => setStatus(option.value)}
+                onClick={() => {
+                  setStatus(option.value);
+                  setSearchParams((current) => {
+                    const next = new URLSearchParams(current);
+                    if (option.value === "all") next.delete("status");
+                    else next.set("status", option.value);
+                    return next;
+                  });
+                }}
               >
                 {option.label}
               </button>
@@ -359,7 +389,8 @@ export default function Announcements() {
                 </button>
               </footer>
               {item.status === "DRAFT" &&
-                scope(item.owner_org_id, ["DIRECTOR", "UNIT_HEAD"]) && (
+                (item.permissions?.publish ??
+                  scope(item.owner_org_id, ["DIRECTOR", "UNIT_HEAD"])) && (
                   <div className="announcement-card-action">
                     <Button
                       variant="secondary"
@@ -448,7 +479,7 @@ export default function Announcements() {
                   </label>
                 ))}
             </fieldset>
-            <p className="atlas-settings-footnote">
+            <p className="onecs-settings-footnote">
               Ekip seçilmezse kendi biriminize yönelik taslak oluşur.
             </p>
             <div className="announcements-date-grid">
@@ -476,6 +507,12 @@ export default function Announcements() {
               />
               <span>Yayınlandığında öne çıkar</span>
             </label>
+            <RecordExtras
+              value={extras}
+              onChange={setExtras}
+              disabled={!!busy}
+              emailHint="Seçtiğiniz kişilere e-posta, anons yayınlandıktan ve başlangıç zamanı geldikten sonra gönderilir. Kişiler anonsun hedef kitlesinde olmalıdır; e-posta seçimi erişim hakkı vermez."
+            />
             <div className="drawer-actions">
               <Button
                 type="button"
@@ -511,6 +548,10 @@ export default function Announcements() {
               </span>
             </div>
             <p>{selected.body}</p>
+            <RecordAttachments
+              resourceType="announcement"
+              resourceId={selected.id}
+            />
             <dl>
               <div>
                 <dt>Başlangıç</dt>
@@ -539,7 +580,8 @@ export default function Announcements() {
             {failure && <ErrorState message={failure} />}
             <div className="drawer-actions">
               {selected.status === "DRAFT" &&
-                scope(selected.owner_org_id, ["DIRECTOR", "UNIT_HEAD"]) && (
+                (selected.permissions?.publish ??
+                  scope(selected.owner_org_id, ["DIRECTOR", "UNIT_HEAD"])) && (
                   <Button
                     onClick={() => action(selected, "publish")}
                     disabled={!!busy}
@@ -549,11 +591,12 @@ export default function Announcements() {
                   </Button>
                 )}
               {selected.status === "PUBLISHED" &&
-                scope(selected.owner_org_id, [
-                  "DIRECTOR",
-                  "UNIT_HEAD",
-                  "TEAM_MANAGER",
-                ]) && (
+                (selected.permissions?.withdraw ??
+                  scope(selected.owner_org_id, [
+                    "DIRECTOR",
+                    "UNIT_HEAD",
+                    "TEAM_MANAGER",
+                  ])) && (
                   <Button
                     variant="secondary"
                     onClick={() => action(selected, "withdraw")}

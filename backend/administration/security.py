@@ -20,11 +20,11 @@ def _env_list(name):
 
 def encrypt_secrets(value):
     key = getattr(
-        settings, "ATLAS_ENCRYPTION_KEY", os.environ.get("ATLAS_ENCRYPTION_KEY", "")
+        settings, "ONECS_ENCRYPTION_KEY", os.environ.get("ONECS_ENCRYPTION_KEY", "")
     )
     if not key:
         raise ValidationError(
-            {"secrets": "Sunucuda ATLAS_ENCRYPTION_KEY tanımlanmalı."}
+            {"secrets": "Sunucuda ONECS_ENCRYPTION_KEY tanımlanmalı."}
         )
     try:
         return (
@@ -40,7 +40,7 @@ def decrypt_secrets(encrypted):
     if not encrypted:
         return {}
     key = getattr(
-        settings, "ATLAS_ENCRYPTION_KEY", os.environ.get("ATLAS_ENCRYPTION_KEY", "")
+        settings, "ONECS_ENCRYPTION_KEY", os.environ.get("ONECS_ENCRYPTION_KEY", "")
     )
     try:
         return json.loads(
@@ -57,8 +57,8 @@ def decrypt_secrets(encrypted):
 def validate_destination(host, *, scheme="https"):
     """Only deployment-authorized destinations; a UI setting cannot expand trust."""
     host = str(host or "").strip().lower().rstrip(".")
-    allowed = _env_list("ATLAS_ALLOWED_INTEGRATION_HOSTS")
-    private_allowed = _env_list("ATLAS_ALLOW_PRIVATE_INTEGRATION_HOSTS")
+    allowed = _env_list("ONECS_ALLOWED_INTEGRATION_HOSTS")
+    private_allowed = _env_list("ONECS_ALLOW_PRIVATE_INTEGRATION_HOSTS")
     if not host or host not in allowed:
         raise ValidationError(
             {"destination": "Hedef sunucu deployment izin listesinde bulunmuyor."}

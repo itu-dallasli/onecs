@@ -1,10 +1,10 @@
-# Atlas API sözleşmesi
+# onecs API sözleşmesi
 
 Çalışan API `/api/v1/` altındadır. Oturum açmış kullanıcı için [yerel Swagger](http://localhost:3100/api/v1/docs/) ve [OpenAPI şeması](http://localhost:3100/api/v1/schema/) sunulur. Sürüm kontrolüne alınan [OpenAPI YAML](api/openapi.yaml), `manage.py spectacular --validate --fail-on-warn` ile mevcut koddan üretilir. Şema, nesne bazlı policy kontrolünün yerine geçmez.
 
 ## Kimlik ve işlem sınırı
 
-Tarayıcı önce `GET /auth/csrf/`, sonra `POST /auth/login/` kullanır. Login metodu `local` veya `ldap` olur; istek alanları Swagger'da tanımlıdır. Oturum `atlas_sessionid` HttpOnly cookie'sinde, CSRF değeri `atlas_csrftoken` cookie'sinde tutulur. Yazma istekleri `X-CSRFToken` taşır; parolalar veya bearer tokenlar URL'ye eklenmez. `GET /auth/me/` güncel kullanıcı ve arayüz yetki özetini, `POST /auth/logout/` çıkışı sağlar.
+Tarayıcı önce `GET /auth/csrf/`, sonra `POST /auth/login/` kullanır. Login metodu `local` veya `ldap` olur; istek alanları Swagger'da tanımlıdır. Oturum `onecs_sessionid` HttpOnly cookie'sinde, CSRF değeri `onecs_csrftoken` cookie'sinde tutulur. Yazma istekleri `X-CSRFToken` taşır; parolalar veya bearer tokenlar URL'ye eklenmez. `GET /auth/me/` güncel kullanıcı ve arayüz yetki özetini, `POST /auth/logout/` çıkışı sağlar.
 
 Dış tüketici, yetkili kullanıcıya bağlı `ApiClient` için üretilen kısa ömürlü JWT bearer kullanır. Tokenın scope'u, istemcinin organizasyon sınırı ve kullanıcının güncel kayıt yetkisi birlikte uygulanır. Dış API salt okunurdur; yönetim ve kimlik uçlarına erişemez. İstemciyi iptal etmek veya kullanıcısını pasifleştirmek mevcut tokenın kullanımını da keser. Tokenı oluşturmak kurumun bütün verisini açmaz.
 
@@ -28,8 +28,13 @@ Domain değişiklikleri nesnenin `version` değerini ister. Eski sürüm `409` d
 | `dashboard`, `search`, `notifications` | Yetkili özet, PostgreSQL araması ve uygulama içi bildirimler |
 | `sla-policies`, `api-clients` | Sürümlü SLA politikası ve kontrollü veri tüketicileri |
 | `admin/*` | Kullanıcı/rol, LDAP/SMTP/AI ayarı ve bağlantı testi, kullanım, audit ve kuyruk |
+| `attachments` | İlişkisiz özel dosya yükleme, kayıt ekleri, yetkili indirme ve ilişkisiz dosya temizliği |
 
 İş/proje/vaka için aynı aksiyon adının bulunması aynı yetki anlamına gelmez. Proje kaynak tahsisinin kabulü, Unit Head'e projeyi yönetme yetkisi vermez. Her grubun ayrıntılı akışı [akış belgelerinde](flows/AUTHORIZATION.md) açıklanır. OpenAPI uçları ve temel istek şemalarını gösterir; özel aksiyonların bütün durum/yetki koşulları şemada ifade edilmez. Gerçek payload ve yanıt örnekleri bağımsız HTTP kabul testlerinde de bulunur.
+
+## Oluşturma formlarının ek alanları
+
+Proje/iş/vaka/ihbar/anons/paylaşım/etkinlik/sertifika create POST'ları ve proje görevi/vaka aksiyonu/alt iş create aksiyonları `attachment_ids: UUID[]` (en fazla 5), `send_email: boolean` ve `notification_recipient_ids: UUID[]` (en fazla 20) kabul eder. Multipart dosya önce `/attachments/` ucuna yüklenir; yalnız aynı kişinin ilişkisiz dosyası domain transaction'ında bağlanır. E-posta seçimi yetki vermez; taslaklarda tercihler başvuru/yayın anına kadar saklanır. Liste, korumalı indirme, tarama durumu ve işletim ayrıntıları [Kayıt Ekleri](services/RECORD_EXTRAS.md) belgesindedir.
 
 ## Rehber, tam metin arama ve bildirimler
 
@@ -41,7 +46,7 @@ Kişi yanıtında `profile_kind`, `identity_source`, `role_label` ve etkin `role
 
 | Endpoint | Davranış |
 | --- | --- |
-| `GET /notifications/?status=all\|unread\|read` | Yalnız mevcut alıcının ve güncel kaynak erişiminin izin verdiği kayıtlar; `read_at`, `is_read` |
+| `GET /notifications/?status=all\|unread\|read&limit=50&offset=0` | Yetkili alıcı kayıtları; `results`, filtreli `count`, global `unread_count`, `limit`, `offset`, `next_offset`; satırlarda `read_at`, `is_read`, kanonik `url` |
 | `POST /notifications/{id}/read/` | Varsayılan okundu; `{read:false}` yeniden okunmadı; alan gerçek boolean olmalı |
 | `POST /notifications/mark-all-read/` | Yalnız o anda görünür okunmamış bildirimleri değiştirir; `{updated:n}` |
 
@@ -81,6 +86,7 @@ Rapor üretiminde `BackgroundJob`, posta/bildirimde `OutboxEvent` kalıcı kayna
 
 HTTP sözleşmesi bağımsız rol oturumlarıyla [kabul testlerinde](testing/README.md) doğrulanır. 18 Kasım 2026 koşusunda [46 HTTP testi](../tests/artifacts/api-acceptance-ui-org-overhaul.json) ve PostgreSQL üzerinde [191 backend testi ile 41 alt senaryo](../tests/artifacts/backend-tests.json) geçti. Kurum LDAP/SMTP/model bağlantısı için bu yerel kanıt yeterli değildir.
 
+
 ## Proje ölçümü ve değerlendirme
 
 Aşağıdaki uçlar mevcut session/CSRF, sürüm ve merkezi proje yetkisini uygular; dış JWT salt okunurdur.
@@ -101,3 +107,7 @@ Aşağıdaki uçlar mevcut session/CSRF, sürüm ve merkezi proje yetkisini uygu
 Tablodaki kısa yollar `/api/v1` köküne göredir. Sayısal düzeltme alanları delivery/quality/stakeholder/overall; 0–100 veya null kabul eder. `computed_values`, `original_markdown` ve kaynaklar istemci tarafından değiştirilemez. Kaynak değiştiğinde eski taslağı düzenleme/yayınlama 409 ile durur. Formül ve rapor döneminin sınırları [akış belgesindedir](flows/PROJECT_INSIGHTS.md).
 
 Kişi iş yükü ve atama kapsamı [servis sözleşmesinde](services/PEOPLE_WORKLOAD.md) bulunur.
+
+Dashboard anons sözleşmesi: `announcements` yayındaki ve hedef kitlesi uygun anonsları, `pending_announcements` kişinin kendi önerilerini veya yayın kararı verebildiği taslakları taşır. `announcement_counts.published/pending` toplam, `announcement_limit=5` önizleme sınırıdır. Anons satırının `permissions.publish/withdraw` alanları sunucunun işlem iznidir; salt okunur token bu izinleri alamaz. Listeyi görmek yayın kararı vermeye yetmez. Bildirim yazmaları liste filtrelerinden bağımsız olarak güncel kaynak erişimini uygular.
+
+`GET /reports/{id}/pivot/` kayıtlı raporun `report_id`, `report_version`, `content_hash`, dönem, `general` ve `teams` gruplarını döndürür. Her grupta tekil kaynak sayısı, açık/tamamlanan/aktif kritik/dönem sonuna göre geciken sayaçları ve sıralı bölümler bulunur. Güncel rapor/kaynak yetkisi ve dış JWT organizasyon kapsamı korunur; GET model çağrısı veya kayıt güncellemesi yapmaz. [Rapor pivot servisi](services/REPORTING.md).

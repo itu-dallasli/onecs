@@ -1,0 +1,164 @@
+{
+  "checked_from_utc": "2026-11-18T12:46:57.855257+00:00",
+  "checked_until_utc": "2026-11-18T12:46:58.407935+00:00",
+  "observations": [
+    {
+      "target": "LDAP",
+      "checked_at_utc": "2026-11-18T12:46:57.875700+00:00",
+      "dns": "resolved",
+      "tcp": "connected",
+      "openssl_tls": {
+        "trust_source": "system_default",
+        "verified": false,
+        "verify_code": 10,
+        "reason": "certificate has expired",
+        "failure_depth": 1
+      },
+      "peer_leaf": {
+        "not_before_utc": "2026-01-23T23:37:30+00:00",
+        "not_after_utc": "2036-01-21T23:37:30+00:00",
+        "valid_at_check": true
+      },
+      "expired_matching_intermediate_not_after_utc": [
+        "2026-11-14T21:16:18+00:00"
+      ],
+      "application_tls": {
+        "client": "ldap3",
+        "trust_source": "python_system_default",
+        "verified": false,
+        "verify_code": null,
+        "reason": "certificate has expired"
+      }
+    },
+    {
+      "target": "AI profil 1",
+      "checked_at_utc": "2026-11-18T12:46:58.095524+00:00",
+      "dns": "resolved",
+      "tcp": "connected",
+      "openssl_tls": {
+        "trust_source": "system_default",
+        "verified": false,
+        "verify_code": 10,
+        "reason": "certificate has expired",
+        "failure_depth": 1
+      },
+      "peer_leaf": {
+        "not_before_utc": "2026-02-12T08:56:25+00:00",
+        "not_after_utc": "2028-02-12T08:56:25+00:00",
+        "valid_at_check": true
+      },
+      "expired_matching_intermediate_not_after_utc": [
+        "2026-11-14T21:16:18+00:00"
+      ],
+      "application_tls": {
+        "client": "httpx_equivalent_tls_only",
+        "trust_source": "certifi",
+        "verified": false,
+        "verify_code": 20,
+        "reason": "unable to get local issuer certificate"
+      }
+    },
+    {
+      "target": "AI profil 2",
+      "checked_at_utc": "2026-11-18T12:46:58.266828+00:00",
+      "dns": "resolved",
+      "tcp": "connected",
+      "openssl_tls": {
+        "trust_source": "system_default",
+        "verified": false,
+        "verify_code": 10,
+        "reason": "certificate has expired",
+        "failure_depth": 1
+      },
+      "peer_leaf": {
+        "not_before_utc": "2026-02-12T08:56:25+00:00",
+        "not_after_utc": "2028-02-12T08:56:25+00:00",
+        "valid_at_check": true
+      },
+      "expired_matching_intermediate_not_after_utc": [
+        "2026-11-14T21:16:18+00:00"
+      ],
+      "application_tls": {
+        "client": "httpx_equivalent_tls_only",
+        "trust_source": "certifi",
+        "verified": false,
+        "verify_code": 20,
+        "reason": "unable to get local issuer certificate"
+      }
+    }
+  ],
+  "ephemeral_root_only_tls_checks": [
+    {
+      "target": "LDAP",
+      "checked_at_utc": "2026-11-18T12:47:19.565925+00:00",
+      "trust_source": "ephemeral_valid_existing_system_roots_only",
+      "new_trust_anchors_added": false,
+      "tls_verified": true,
+      "verify_code": null
+    },
+    {
+      "target": "AI profil 1",
+      "checked_at_utc": "2026-11-18T12:47:19.612181+00:00",
+      "trust_source": "ephemeral_valid_existing_system_roots_only",
+      "new_trust_anchors_added": false,
+      "tls_verified": false,
+      "verify_code": 20,
+      "reason": "unable to get local issuer certificate"
+    },
+    {
+      "target": "AI profil 2",
+      "checked_at_utc": "2026-11-18T12:47:19.650180+00:00",
+      "trust_source": "ephemeral_valid_existing_system_roots_only",
+      "new_trust_anchors_added": false,
+      "tls_verified": false,
+      "verify_code": 20,
+      "reason": "unable to get local issuer certificate"
+    }
+  ],
+  "current_intermediate_validation": [
+    {
+      "checked_at_utc": "2026-11-18T12:48:45.838221+00:00",
+      "trust_source": "valid_existing_system_roots_only",
+      "new_trust_anchors_added": false,
+      "verified": true,
+      "not_before_utc": "2025-03-07T12:53:54+00:00",
+      "not_after_utc": "2045-03-07T13:03:54+00:00"
+    }
+  ],
+  "verified_full_chain_tls_checks": [
+    {
+      "target": "LDAP",
+      "checked_at_utc": "2026-11-18T12:49:02.093999+00:00",
+      "trust_source": "existing_valid_system_roots_plus_independently_verified_current_intermediate",
+      "new_trust_anchors_added": false,
+      "partial_chain_enabled": false,
+      "certificate_time_check_enabled": true,
+      "hostname_check_enabled": true,
+      "tls_verified": true,
+      "verify_code": null
+    },
+    {
+      "target": "AI profil 1",
+      "checked_at_utc": "2026-11-18T12:48:45.848438+00:00",
+      "trust_source": "existing_valid_system_roots_plus_independently_verified_current_intermediate",
+      "new_trust_anchors_added": false,
+      "partial_chain_enabled": false,
+      "certificate_time_check_enabled": true,
+      "hostname_check_enabled": true,
+      "tls_verified": true,
+      "verify_code": null
+    },
+    {
+      "target": "AI profil 2",
+      "checked_at_utc": "2026-11-18T12:48:45.912504+00:00",
+      "trust_source": "existing_valid_system_roots_plus_independently_verified_current_intermediate",
+      "new_trust_anchors_added": false,
+      "partial_chain_enabled": false,
+      "certificate_time_check_enabled": true,
+      "hostname_check_enabled": true,
+      "tls_verified": true,
+      "verify_code": null
+    }
+  ],
+  "local_public_ca_bundle_created": true
+}

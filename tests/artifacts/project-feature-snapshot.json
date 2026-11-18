@@ -1,12 +1,12 @@
 {
-  "name": "Atlas Project Insights standalone feature snapshot verification",
+  "name": "Onecs Project Insights standalone feature snapshot verification",
   "checked_at": "2026-11-18T13:29:45.359333+00:00",
   "passed": true,
   "source": {
     "kind": "exported alternative-index feature snapshot",
     "initial_source_tree": "ddc2e453b006308a2030f2cb7975306c8f9b428c",
     "tree_scope": "48 owned files before README, QA documentation and evidence additions; runtime source unchanged by those additions. This is not the final commit/full-tree hash.",
-    "baseline_brand": "Atlas",
+    "baseline_brand": "Onecs",
     "includes": [
       "core.0006_project_insights",
       "Project Insights, workload/assignment, sidebar/dashboard feature code"
@@ -18,7 +18,7 @@
     ]
   },
   "isolation": {
-    "database": "test_atlas_feature_snapshot",
+    "database": "test_onecs_feature_snapshot",
     "base_connection_database": "postgres",
     "test_database_removed_after_run": true,
     "live_application_database_used": false,
@@ -110,5 +110,10 @@
     "Backend adapter/mocked provider tests do not establish live LDAP or AI success.",
     "UI and HTTP evidence were collected separately; this snapshot run did not repeat those flows.",
     "The Project CLOSURE live AI output remains unconfirmed; separate evidence records truncation/budget fallback."
-  ]
+  ],
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "98af0dd79ce712bc81ea5c4c3a6a29257b0c60a7ab596ca329a70cb22be39b26"
+  }
 }

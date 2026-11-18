@@ -2,10 +2,10 @@
 
 from core.models import PMAppointment, Project, User
 from core.policy import can_approve_project, can_read_project, can_reroute_project
-from core.tests.base import AtlasTestCase
+from core.tests.base import OnecsTestCase
 
 
-class ProjectContinuityTests(AtlasTestCase):
+class ProjectContinuityTests(OnecsTestCase):
     def proposal(self, status="SUBMITTED"):
         return Project.objects.create(
             title="Pending charter",

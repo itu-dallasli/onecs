@@ -1,0 +1,64 @@
+{
+  "scope": "onecs product branding and shared loading presentation",
+  "production_build": {
+    "status": "passed",
+    "command": "npm run build",
+    "exit_code": 0
+  },
+  "frontend_tests": {
+    "status": "passed",
+    "command": "npm test",
+    "files": 5,
+    "tests": 24,
+    "exit_code": 0
+  },
+  "backend_tests": {
+    "status": "passed",
+    "tests": 66,
+    "database": "local PostgreSQL test database",
+    "command": "../.venv/bin/python manage.py test administration.tests.test_integrations core.tests.test_api_docs core.tests.test_worker core.tests.test_project_insights --noinput --verbosity 1",
+    "elapsed_seconds": 5.496,
+    "external_service_calls": false
+  },
+  "ui": {
+    "actual_login": {
+      "desktop": "passed",
+      "mobile": "passed",
+      "viewport_width": 390,
+      "page_width": 390,
+      "title": "onecs · Siber Güvenlik Yönetim Uygulaması"
+    },
+    "component_preview": {
+      "scope": "Temporary fixture using real OnecsBrand, ProductLogo, Loading and application styles",
+      "light_sidebar": "passed",
+      "dark_sidebar": "passed",
+      "collapsed_sidebar": "passed",
+      "loading": "passed",
+      "mobile_loading": "passed",
+      "rotation_observed": true,
+      "logo_animation": "onecs-logo-turn",
+      "logo_duration": "5.6s",
+      "orbit_animation": "onecs-orbit-turn",
+      "orbit_duration": "7s",
+      "status_role": "status",
+      "aria_live": "polite",
+      "initial_transform": "matrix(-0.892681, -0.450688, 0.450688, -0.892681, 0, 0)",
+      "later_transform": "matrix(-0.990322, -0.13879, 0.13879, -0.990322, 0, 0)",
+      "viewport_width": 390,
+      "page_width": 390
+    },
+    "reduced_motion": "Source rule checked; operating system preference was not changed",
+    "authenticated_route_acceptance": "Not rerun; page Loading wiring and pathname remount inspected in source",
+    "temporary_preview_removed": true,
+    "viewport_override_reset": true
+  },
+  "screenshots": [
+    "ui-onecs-login.jpg",
+    "ui-onecs-login-mobile.jpg",
+    "ui-onecs-loading.jpg",
+    "ui-onecs-loading-preview.jpg",
+    "ui-onecs-loading-dark.jpg",
+    "ui-onecs-loading-mobile.jpg",
+    "ui-onecs-collapsed.jpg"
+  ]
+}

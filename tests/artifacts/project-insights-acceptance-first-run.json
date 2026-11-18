@@ -1,5 +1,5 @@
 {
-  "application": "Atlas",
+  "application": "Onecs",
   "suite": "project-insights-and-person-workload",
   "timestamp_utc": "2026-11-18T12:56:37.817693+00:00",
   "base_url": "http://127.0.0.1:8000",
@@ -104,5 +104,10 @@
     "backend_subtests": 41,
     "http_tests": 46,
     "frontend_tests": 9
+  },
+  "brand_normalization": {
+    "date": "2026-11-18",
+    "note": "Historical output labels and identifiers use the current product name. Test outcomes are unchanged. The original file is preserved in the local archive.",
+    "original_sha256": "f742af1c7b446613cf831a7eb14d5ee604fb220d577dadd6b415edce988c45df"
   }
 }

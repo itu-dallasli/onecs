@@ -1,4 +1,4 @@
-# Atlas etkinlik, anket ve katılım akışı
+# onecs etkinlik, anket ve katılım akışı
 
 Tercih anketi, katılım niyeti ve gerçekleşmiş katılım üç ayrı kayıttır. Mevcut ekran `frontend/src/pages/Community.tsx` içindeki etkinlik görünümüdür.
 

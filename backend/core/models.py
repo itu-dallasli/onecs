@@ -603,7 +603,6 @@ class ProjectTeamPlan(Record):
         ]
 
 
-
 class ProjectDeliverable(Record):
     plan = models.ForeignKey(
         ProjectTeamPlan, on_delete=models.PROTECT, related_name="deliverables"
@@ -634,7 +633,6 @@ class ProjectDeliverable(Record):
         ]
 
 
-
 class ProjectProgressSnapshot(Record):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="progress_snapshots"
@@ -642,7 +640,6 @@ class ProjectProgressSnapshot(Record):
     scores = models.JSONField(default=dict)
     teams = models.JSONField(default=list)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT)
-
 
 
 class ProjectClosureSurvey(Record):
@@ -655,7 +652,6 @@ class ProjectClosureSurvey(Record):
     invitees = models.ManyToManyField(User, related_name="project_closure_surveys")
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="+")
     closes_at = models.DateTimeField()
-
 
 
 class ProjectSurveyResponse(Record):
@@ -671,7 +667,6 @@ class ProjectSurveyResponse(Record):
                 fields=["survey", "user"], name="project_survey_person_unique"
             )
         ]
-
 
 
 class ProjectInsightReport(Record):
@@ -698,7 +693,6 @@ class ProjectInsightReport(Record):
     published_at = models.DateTimeField(null=True)
 
 
-
 class ProjectInsightEdit(Record):
     report = models.ForeignKey(
         ProjectInsightReport, on_delete=models.CASCADE, related_name="edits"
@@ -707,3 +701,44 @@ class ProjectInsightEdit(Record):
     markdown = models.TextField()
     reviewed_scores = models.JSONField(default=dict)
     reason = models.TextField()
+
+
+class Attachment(Record):
+    """Private uploads are staged before the owning domain transaction claims them."""
+
+    uploaded_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="uploads")
+    resource_type = models.CharField(max_length=32, blank=True)
+    resource_id = models.UUIDField(null=True, blank=True)
+    name = models.CharField(max_length=180)
+    storage_key = models.CharField(max_length=100)
+    size = models.PositiveIntegerField()
+    content_type = models.CharField(max_length=100)
+    sha256 = models.CharField(max_length=64)
+    status = models.CharField(max_length=24, default="PENDING_SCAN")
+    scan_status = models.CharField(max_length=24, default="pending")
+    upload_key = models.UUIDField(null=True, blank=True)
+    bound_at = models.DateTimeField(null=True, blank=True)
+    purged_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["resource_type", "resource_id"], name="attachment_resource_idx")]
+        constraints = [
+            models.CheckConstraint(
+                condition=(Q(resource_type="", resource_id__isnull=True) | (~Q(resource_type="") & Q(resource_id__isnull=False))),
+                name="attachment_context_pair",
+            ),
+            models.UniqueConstraint(fields=["uploaded_by", "upload_key"], condition=Q(upload_key__isnull=False), name="attachment_upload_request_unique"),
+        ]
+
+
+class RecordEmailPreference(models.Model):
+    resource_type = models.CharField(max_length=32)
+    resource_id = models.UUIDField()
+    send_email = models.BooleanField(default=False)
+    recipient_ids = models.JSONField(default=list)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="+")
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["resource_type", "resource_id"], name="record_email_preference_unique")]
