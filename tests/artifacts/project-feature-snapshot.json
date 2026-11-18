@@ -1,0 +1,114 @@
+{
+  "name": "Atlas Project Insights standalone feature snapshot verification",
+  "checked_at": "2026-11-18T13:29:45.359333+00:00",
+  "passed": true,
+  "source": {
+    "kind": "exported alternative-index feature snapshot",
+    "initial_source_tree": "ddc2e453b006308a2030f2cb7975306c8f9b428c",
+    "tree_scope": "48 owned files before README, QA documentation and evidence additions; runtime source unchanged by those additions. This is not the final commit/full-tree hash.",
+    "baseline_brand": "Atlas",
+    "includes": [
+      "core.0006_project_insights",
+      "Project Insights, workload/assignment, sidebar/dashboard feature code"
+    ],
+    "excludes_concurrent_changes": [
+      "LDAPManagedGrant/LDAP first-login policy",
+      "Onecs branding",
+      "record attachments and announcement changes"
+    ]
+  },
+  "isolation": {
+    "database": "test_atlas_feature_snapshot",
+    "base_connection_database": "postgres",
+    "test_database_removed_after_run": true,
+    "live_application_database_used": false,
+    "dev_launcher_executed": false,
+    "seed_executed": false,
+    "external_live_provider_test_executed": false,
+    "secrets_copied_to_files": false,
+    "environment_source": "parent scripts.dev.environment() in memory, inherited only by subprocesses"
+  },
+  "runtime": {
+    "python": "3.13.3",
+    "node": "v22.15.1"
+  },
+  "backend": {
+    "passed": 234,
+    "subtests_passed": 45,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 19.598,
+    "warning_count": 2,
+    "warnings": [
+      "ldap3 pyasn1 tagMap/typeMap deprecations"
+    ],
+    "log": ".runtime/feature-snapshot-backend.log",
+    "junit": ".runtime/feature-snapshot-backend.xml"
+  },
+  "frontend": {
+    "passed": 17,
+    "total": 17,
+    "failed": 0,
+    "skipped": 0,
+    "strict_typescript": "passed",
+    "production_build": "passed",
+    "build_ms": 245,
+    "entry_js_kb": 543.22,
+    "entry_gzip_kb": 156.25,
+    "warning": "Vite entry chunk exceeds 500 kB minified. No device latency/load result is inferred.",
+    "log": ".runtime/feature-snapshot-frontend-build.log"
+  },
+  "schema": {
+    "result": "passed",
+    "validate": true,
+    "fail_on_warn": true,
+    "warnings": 0,
+    "log": ".runtime/feature-snapshot-schema.log"
+  },
+  "migration_drift": {
+    "result": "passed",
+    "check": true,
+    "dry_run": true,
+    "message": "No changes detected",
+    "log": ".runtime/feature-snapshot-migrations.log"
+  },
+  "process_checks": [
+    {
+      "check": "backend",
+      "returncode": 0,
+      "seconds": 20.827,
+      "log": ".runtime/feature-snapshot-backend.log"
+    },
+    {
+      "check": "frontend-tests",
+      "returncode": 0,
+      "seconds": 1.994,
+      "log": ".runtime/feature-snapshot-frontend-tests.log"
+    },
+    {
+      "check": "frontend-build",
+      "returncode": 0,
+      "seconds": 4.56,
+      "log": ".runtime/feature-snapshot-frontend-build.log"
+    },
+    {
+      "check": "schema",
+      "returncode": 0,
+      "seconds": 1.473,
+      "log": ".runtime/feature-snapshot-schema.log"
+    },
+    {
+      "check": "migrations",
+      "returncode": 0,
+      "seconds": 0.535,
+      "log": ".runtime/feature-snapshot-migrations.log"
+    }
+  ],
+  "limits": [
+    "Separate snapshot proof does not include concurrent LDAP first-login, Onecs branding, record attachment or announcement work.",
+    "Backend adapter/mocked provider tests do not establish live LDAP or AI success.",
+    "UI and HTTP evidence were collected separately; this snapshot run did not repeat those flows.",
+    "The Project CLOSURE live AI output remains unconfirmed; separate evidence records truncation/budget fallback."
+  ]
+}

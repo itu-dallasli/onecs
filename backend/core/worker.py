@@ -17,6 +17,15 @@ from .policy import report_source, can_manage_org
 from .services import generate_report, scan_slas, enqueue_notification
 
 
+def fail_related_reports(job):
+    from .models import Report, ProjectInsightReport
+
+    Report.objects.filter(job=job, status="GENERATING").update(status="FAILED")
+    ProjectInsightReport.objects.filter(job=job, status="GENERATING").update(
+        status="FAILED"
+    )
+
+
 def claim_job():
     now = timezone.now()
     with transaction.atomic():
@@ -34,6 +43,7 @@ def claim_job():
             job.status = "FAILED"
             job.last_error = "Yeniden deneme sınırına ulaşıldı."
             job.save()
+            fail_related_reports(job)
             return None
         job.status = "RUNNING"
         job.lease_token = uuid.uuid4()
@@ -51,9 +61,14 @@ def process_job():
     if not job:
         return False
     try:
-        if job.kind != "REPORT":
+        if job.kind == "PROJECT_INSIGHT":
+            from .project_insights import generate_project_insight
+
+            result = generate_project_insight(job)
+        elif job.kind == "REPORT":
+            result = generate_report(job)
+        else:
             raise ValidationError("Desteklenmeyen iş türü.")
-        result = generate_report(job)
         BackgroundJob.objects.filter(
             pk=job.pk, lease_token=job.lease_token, status="RUNNING"
         ).update(
@@ -66,20 +81,19 @@ def process_job():
     except Exception as exc:
         permanent = isinstance(exc, APIException) and exc.status_code < 500
         status = "FAILED" if permanent or job.attempts >= 3 else "RETRY"
-        BackgroundJob.objects.filter(
-            pk=job.pk, lease_token=job.lease_token, status="RUNNING"
-        ).update(
-            status=status,
-            last_error="İş kuralları veya kaynak erişimi doğrulanamadı."
-            if permanent
-            else "Sağlayıcı/işlem hatası; sınırlı yeniden deneme uygulanıyor.",
-            next_attempt_at=timezone.now() + timedelta(seconds=15 * job.attempts),
-            lease_until=None,
-        )
-        if status == "FAILED":
-            from .models import Report
-
-            Report.objects.filter(job=job, status="GENERATING").update(status="FAILED")
+        with transaction.atomic():
+            updated = BackgroundJob.objects.filter(
+                pk=job.pk, lease_token=job.lease_token, status="RUNNING"
+            ).update(
+                status=status,
+                last_error="İş kuralları veya kaynak erişimi doğrulanamadı."
+                if permanent
+                else "Sağlayıcı/işlem hatası; sınırlı yeniden deneme uygulanıyor.",
+                next_attempt_at=timezone.now() + timedelta(seconds=15 * job.attempts),
+                lease_until=None,
+            )
+            if updated and status == "FAILED":
+                fail_related_reports(job)
     return True
 
 

@@ -129,6 +129,7 @@ class AtlasApiAcceptance(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.run_key = "QA-" + uuid.uuid4().hex[:10]
+        cls.observations = {}
         cls.clients = {}
         cls.users = {}
         for username in (
@@ -1644,7 +1645,9 @@ class AtlasApiAcceptance(unittest.TestCase):
             expected=(202,),
         ).data
         self.assertEqual(queued["status"], "GENERATING")
-        deadline = time.monotonic() + 35
+        # Live AI may use the configured 180-second provider deadline. Allow
+        # bounded worker/commit overhead instead of assuming a quick TLS fallback.
+        deadline = time.monotonic() + 210
         current = queued
         while time.monotonic() < deadline:
             current = self.api("unithead", "GET", f"reports/{report['id']}/").data
@@ -1657,9 +1660,19 @@ class AtlasApiAcceptance(unittest.TestCase):
         self.assertEqual(
             current["status"], "READY", "Rapor worker tarafından tamamlanmadı"
         )
+        self.observations["report_50_generation_mode"] = current["generated_mode"]
         self.assertTrue(current["markdown"].strip())
         self.assertTrue(current["content_hash"])
-        self.assertIn(work["id"], current["markdown"])
+        referenced = [
+            source_id for source_id in source_ids if source_id in current["markdown"]
+        ]
+        self.observations["report_50_visible_source_references"] = len(referenced)
+        self.observations["report_50_snapshot_sources"] = len(source_ids)
+        self.assertEqual(
+            set(referenced),
+            set(source_ids),
+            "Raporun kaynak dizini seçilmiş ve zorunlu snapshot kayıtlarını korumalı",
+        )
         if current["generated_mode"] == "RULE_BASED":
             self.assertIn("kurallı", current["markdown"])
             self.assertIn("canlı AI çıktısı değildir", current["markdown"])
@@ -2079,6 +2092,7 @@ def main():
     result = unittest.TextTestRunner(verbosity=2, resultclass=EvidenceResult).run(suite)
     evidence = {
         "application": "Atlas",
+        "run_key": AtlasApiAcceptance.run_key,
         "timestamp_utc": dt.datetime.now(dt.UTC).isoformat(),
         "base_url": args.base_url,
         "duration_seconds": round(time.monotonic() - started, 3),
@@ -2090,6 +2104,7 @@ def main():
         "selection": args.test_names or "all",
         "results": result.evidence,
         "external_integrations_verified": False,
+        "observations": AtlasApiAcceptance.observations,
     }
     path = Path(args.output)
     path.parent.mkdir(parents=True, exist_ok=True)

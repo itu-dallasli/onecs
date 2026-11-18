@@ -79,4 +79,25 @@ Rapor üretiminde `BackgroundJob`, posta/bildirimde `OutboxEvent` kalıcı kayna
 .venv/bin/python backend/manage.py spectacular --file docs/api/openapi.yaml --validate --fail-on-warn
 ```
 
-HTTP sözleşmesi bağımsız rol oturumlarıyla [kabul testlerinde](../tests/README.md) doğrulanır. 18 Kasım 2026 koşusunda [46 HTTP testi](../tests/artifacts/api-acceptance-ui-org-overhaul.json) ve PostgreSQL üzerinde [191 backend testi ile 41 alt senaryo](../tests/artifacts/backend-tests.json) geçti. Kurum LDAP/SMTP/model bağlantısı için bu yerel kanıt yeterli değildir.
+HTTP sözleşmesi bağımsız rol oturumlarıyla [kabul testlerinde](testing/README.md) doğrulanır. 18 Kasım 2026 koşusunda [46 HTTP testi](../tests/artifacts/api-acceptance-ui-org-overhaul.json) ve PostgreSQL üzerinde [191 backend testi ile 41 alt senaryo](../tests/artifacts/backend-tests.json) geçti. Kurum LDAP/SMTP/model bağlantısı için bu yerel kanıt yeterli değildir.
+
+## Proje ölçümü ve değerlendirme
+
+Aşağıdaki uçlar mevcut session/CSRF, sürüm ve merkezi proje yetkisini uygular; dış JWT salt okunurdur.
+
+| Uç | Davranış |
+| --- | --- |
+| `GET /api/v1/projects/{id}/insights/` | Yetkili ekip ölçümleri, puanlar, anketler, raporlar ve kaydedilmiş snapshot geçmişi |
+| `POST /projects/{id}/team-plans/` / `PATCH .../{plan_id}/` | Katılımcı ekip planı ve ağırlığı |
+| `POST /projects/{id}/deliverables/` / `PATCH .../{delivery_id}/` | Kanıtlı teslimat/ilerleme/kalite; güncellemede version |
+| `POST /projects/{id}/surveys/` | Soru metinleri, açık invitee_ids ve son tarih ile isimli anket |
+| `POST .../surveys/{survey_id}/respond/` | Bütün soru kimlikleri için 1–5 answers; anket version, düzenlemede response_version |
+| `POST .../surveys/{survey_id}/close/` | Kapanış yetkisiyle anketi kapatır |
+| `POST .../insight-reports/` | DAILY/WEEKLY/CLOSURE, period_start/end, generation_mode AI veya RULE_BASED; 202 kalıcı job |
+| `GET/PATCH .../insight-reports/{report_id}/` | Taslak ve sürümlü markdown/reviewed_scores/edit_reason düzenlemesi |
+| `POST .../insight-reports/{report_id}/publish/` | Ayrı yönetim kararı; kapanış için COMPLETED |
+| `GET .../insight-reports/{report_id}/markdown/` | İnsan düzenlemesi ve gerekçeyi içeren Markdown |
+
+Tablodaki kısa yollar `/api/v1` köküne göredir. Sayısal düzeltme alanları delivery/quality/stakeholder/overall; 0–100 veya null kabul eder. `computed_values`, `original_markdown` ve kaynaklar istemci tarafından değiştirilemez. Kaynak değiştiğinde eski taslağı düzenleme/yayınlama 409 ile durur. Formül ve rapor döneminin sınırları [akış belgesindedir](flows/PROJECT_INSIGHTS.md).
+
+Kişi iş yükü ve atama kapsamı [servis sözleşmesinde](services/PEOPLE_WORKLOAD.md) bulunur.

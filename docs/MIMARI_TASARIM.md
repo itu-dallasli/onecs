@@ -1,6 +1,6 @@
 # Atlas — Siber Güvenlik Yönetim Platformu Mimari Tasarımı
 
-18 Kasım 2026 · Revizyon 3 · Hedef mimari ve kararlar. Çalışan sürümün kapsamı [README](../README.md), doğrulama sonuçları [QA Raporu](QA_REPORT.md) içindedir; hedeflerin tamamı uygulanmış kabul edilmez.
+18 Kasım 2026 · Revizyon 4 · Hedef mimari ve kararlar. Çalışan sürümün kapsamı [README](../README.md), doğrulama sonuçları [QA Raporu](QA_REPORT.md) içindedir; hedeflerin tamamı uygulanmış kabul edilmez.
 
 Ürün kapsamı ve K01–K40 kabul senaryoları [Uygulama Planı](UYGULAMA_PLANI.md) belgesindedir. Bu revizyon yaklaşık 200 kişi, 1 direktör, 10–15 unit head, gerektiğinde team manager ve çalışanlardan oluşan organizasyonu esas alır. Son kullanıcı kararları: **projeleri proje yöneticisi yönetir; unit işleri organizasyon yöneticileri tarafından yönetilir; vakalarda ve yönetici atamalı işlerde değiştirilebilir süre hedefleri uygulanır; ekiplerin birbirini tanıması mevcut ekranlardaki kontrollü paylaşımlarla desteklenir.**
 
@@ -649,3 +649,11 @@ Tam hedefte iki giriş yöntemi, Teams ve API/MCP entegrasyonları korunur; ilk 
 İlerleyen AI özelliklerinde de veri toplamadan önce yetki, kaynak kimlik/sürümleri, insan önizlemesi ve sınırlı bütçe korunur. AI erişim, yayın, atama veya kapanış kararının yerine geçmez. Anonim etkinlik geri bildirimi normal kullanıcı yanıtına “anonim” bayrağı koyarak açılmaz; kimlik/oy ayrımı, küçük grup ifşası ve log politikasını içeren ayrı mahremiyet tasarımı gerektirir.
 
 Bu revizyonun mimari sonucu: **projede PM, unit işinde organizasyon yöneticisi, vakada yetkili vaka yönetimi karar verir; ortak altyapı bu sınırları korur. SLA ve arka plan işleri kesintiye dayanıklı kayıtlarla yürür; ekipler kontrollü paylaşım üzerinden birbirini tanır; yönetici kaynak bağlı rapor ve sade gündemle karar alır.**
+
+## Revizyon 4 — Kalıcı proje ölçümü
+
+`ProjectTeamPlan` ekip ağırlığını, `ProjectDeliverable` teslimat ilerlemesi/kanıtı/kaliteyi, `ProjectProgressSnapshot` gerçekten kaydedilmiş zaman serisini saklar. `ProjectClosureSurvey` ve kişi başına benzersiz `ProjectSurveyResponse` isimli değerlendirmeyi taşır. `ProjectInsightReport` özgün metin, hesaplanan temel, insan düzenlemesi, kaynak hash'i ve kalıcı iş bağlantısını ayırır; `ProjectInsightEdit` düzenleme geçmişidir. Veritabanı ağırlık, puan ve benzersizlik sınırlarını da uygular.
+
+Endpoint'ler mevcut session+CSRF, merkezi proje yetkisi, salt okunur dış JWT, transaction/audit/outbox ve sürüm denetimini kullanır. `PROJECT_INSIGHT` işi mevcut worker üzerinden yürür; profil ve ayar sürümü sabitlenir, kaynak/erişim geçerliliği tamamlamada tekrar kontrol edilir. AI'ya kişisel anket cevapları yerine toplu ölçüm gönderilir. Teknik yönetici rolü iş verisini yönetmek için yeterli değildir. Formül ve yayın koşulları [akış belgesinde](flows/PROJECT_INSIGHTS.md) tanımlıdır.
+
+Kişi modalı yeni iş kuralları üretmez; kişi iş yükü sorgusunu ve mevcut `UNIT_WORK` servisini kullanır. Erişim yoksa sayaç, teknik not ve atama düğmesi de sunulmaz. Dashboard grafikleri mevcut yetkili API verisinden türetilir, bağımsız grafik veritabanı veya istemci AI çağrısı eklenmez. Yeni yardımcı Markdown belgeleri `docs/` altında tutulur.

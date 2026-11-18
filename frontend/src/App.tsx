@@ -22,6 +22,8 @@ import {
   Layers3,
   LogOut,
   Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   MessageSquare,
   Moon,
   Network,
@@ -55,6 +57,14 @@ import Community from "./pages/Community";
 import Reports from "./pages/Reports";
 import Announcements from "./pages/Announcements";
 import Settings from "./pages/Settings";
+const sidebarPreferenceKey = "atlas.sidebar.collapsed";
+function initialSidebarCollapsed() {
+  try {
+    return window.localStorage.getItem(sidebarPreferenceKey) === "true";
+  } catch {
+    return false;
+  }
+}
 const nav = [
   { to: "/dashboard", label: "Genel Bakış", icon: Home },
   { to: "/projects", label: "Projeler", icon: Layers3 },
@@ -239,6 +249,19 @@ function Shell({
   const location = useLocation();
   const navigate = useNavigate();
   const [mobile, setMobile] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(
+    initialSidebarCollapsed,
+  );
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(
+        sidebarPreferenceKey,
+        String(sidebarCollapsed),
+      );
+    } catch {
+      /* Navigation remains usable when browser storage is unavailable. */
+    }
+  }, [sidebarCollapsed]);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [noticeOpen, setNoticeOpen] = useState(false);
@@ -310,7 +333,9 @@ function Shell({
   );
   return (
     <AuthContext.Provider value={{ user, refresh }}>
-      <div className={`app-shell ${mobile ? "mobile-nav-open" : ""}`}>
+      <div
+        className={`app-shell ${mobile ? "mobile-nav-open" : ""} ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
+      >
         <a className="skip-link" href="#main-content">
           İçeriğe geç
         </a>
@@ -321,7 +346,11 @@ function Shell({
             onClick={() => setMobile(false)}
           />
         )}
-        <aside className="app-sidebar">
+        <aside
+          className="app-sidebar"
+          id="atlas-sidebar"
+          aria-label="Atlas gezinme alanı"
+        >
           <NavLink
             className="sidebar-brand"
             to="/dashboard"
@@ -329,19 +358,42 @@ function Shell({
           >
             <Brand />
           </NavLink>
-          <div className="sidebar-label">ÇALIŞMA ALANI</div>
-          <nav aria-label="Ana gezinme">
+          <div className="sidebar-section-header">
+            <div className="sidebar-label">ÇALIŞMA ALANI</div>
+            <button
+              type="button"
+              className="sidebar-collapse-toggle"
+              onClick={() => setSidebarCollapsed((value) => !value)}
+              aria-expanded={!sidebarCollapsed}
+              aria-controls="atlas-primary-navigation"
+              aria-label={
+                sidebarCollapsed ? "Yan menüyü genişlet" : "Yan menüyü daralt"
+              }
+              title={
+                sidebarCollapsed ? "Yan menüyü genişlet" : "Yan menüyü daralt"
+              }
+            >
+              {sidebarCollapsed ? (
+                <PanelLeftOpen size={18} aria-hidden="true" />
+              ) : (
+                <PanelLeftClose size={18} aria-hidden="true" />
+              )}
+            </button>
+          </div>
+          <nav aria-label="Ana gezinme" id="atlas-primary-navigation">
             {nav.map((item, index) => (
               <div key={item.to}>
                 {index === 5 && <div className="sidebar-divider" />}
                 <NavLink
                   to={item.to}
+                  title={item.label}
+                  aria-label={item.label}
                   className={({ isActive }) =>
                     `nav-item ${isActive ? "is-active" : ""}`
                   }
                 >
                   <item.icon size={18} />
-                  <span>{item.label}</span>
+                  <span className="nav-item-label">{item.label}</span>
                 </NavLink>
               </div>
             ))}
@@ -350,19 +402,21 @@ function Shell({
                 <div className="sidebar-divider" />
                 <NavLink
                   to="/settings"
+                  title="Ayarlar"
+                  aria-label="Ayarlar"
                   className={({ isActive }) =>
                     `nav-item ${isActive ? "is-active" : ""}`
                   }
                 >
                   <SettingsIcon size={18} />
-                  <span>Ayarlar</span>
+                  <span className="nav-item-label">Ayarlar</span>
                 </NavLink>
               </>
             )}
           </nav>
-          <div className="sidebar-bottom">
+          <div className="sidebar-bottom" title="Atlas · Güvenli çalışma alanı">
             <div className="environment-dot" />
-            <span>Güvenli çalışma alanı</span>
+            <span className="sidebar-status-label">Güvenli çalışma alanı</span>
             <span className="version">v0.1</span>
           </div>
         </aside>
@@ -371,6 +425,8 @@ function Shell({
             <button
               className="icon-button mobile-menu"
               aria-label="Menüyü aç"
+              aria-expanded={mobile}
+              aria-controls="atlas-sidebar"
               onClick={() => setMobile(true)}
             >
               <Menu size={20} />

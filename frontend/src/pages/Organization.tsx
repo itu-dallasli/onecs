@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import WorkAssignmentForm from "../components/WorkAssignmentForm";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -7,15 +8,22 @@ import {
   ChevronDown,
   ChevronRight,
   GitBranch,
+  Clock3,
+  Layers3,
+  Plus,
+  AlertTriangle,
   Mail,
   Network,
   Search,
   ShieldCheck,
   Users,
+  UserRound,
 } from "lucide-react";
 import { date, list, useResource } from "../lib/api";
 import {
   Badge,
+  Button,
+  Status,
   Card,
   Drawer,
   EmptyState,
@@ -664,7 +672,16 @@ export default function Organization() {
               ) : (
                 <EmptyState
                   title="Aramanızla eşleşen birim bulunamadı"
-                  description="Birim adı, kodu veya yönetici adıyla yeniden deneyin."
+                  description="Bu ağaçta birim, ekip ve yönetici adları aranır. Kişi adı arıyorsanız aynı aramayla rehbere geçebilirsiniz."
+                  actions={
+                    <Button
+                      variant="secondary"
+                      onClick={() => setTab("directory")}
+                    >
+                      <Users size={16} />
+                      Kişi rehberinde ara
+                    </Button>
+                  }
                 />
               )}
               <div className="atlas-org-chart-caption">
@@ -947,8 +964,139 @@ export default function Organization() {
         </Drawer>
       )}
       {visiblePerson && (
-        <PersonPanel person={visiblePerson} onClose={closeDetail} />
+        <PersonPanel
+          key={visiblePerson.id}
+          person={visiblePerson}
+          onClose={closeDetail}
+        />
       )}
+    </div>
+  );
+}
+type PersonWorkloadTab =
+  "overview" | "work" | "projects" | "cases" | "contributions";
+const contextLabels: Record<string, string> = {
+  UNIT_WORK: "Birim işi",
+  PROJECT_TASK: "Proje görevi",
+  CASE_ACTION: "Vaka aksiyonu",
+};
+const projectRoleLabels: Record<string, string> = {
+  PROJECT_MANAGER: "Proje yöneticisi",
+  LEAD: "Proje lideri",
+  MEMBER: "Proje katılımcısı",
+  CONTRIBUTOR: "Katkı sağlayan",
+};
+function workloadDue(record: any) {
+  return record.sla?.current_due_at || record.due_at;
+}
+function workloadRoute(kind: "work" | "project" | "case", id: string) {
+  return `${kind === "project" ? "/projects" : kind === "case" ? "/cases" : "/work"}?id=${encodeURIComponent(id)}`;
+}
+function PersonWorkloadRecords({
+  records,
+  kind,
+  personId,
+  onNavigate,
+}: {
+  records: any[];
+  kind: "work" | "project" | "case";
+  personId: string;
+  onNavigate: () => void;
+}) {
+  if (!records.length)
+    return (
+      <EmptyState
+        title={
+          kind === "work"
+            ? "Görünür iş bulunmuyor"
+            : kind === "project"
+              ? "Görünür proje bulunmuyor"
+              : "Görünür vaka bulunmuyor"
+        }
+        description="Yalnızca kişinin ilişkili olduğu ve erişim yetkiniz bulunan kayıtlar gösterilir."
+      />
+    );
+  return (
+    <div className="atlas-person-records">
+      {records.map((record) => {
+        const due = workloadDue(record);
+        const late = Boolean(
+          record.sla?.is_overdue ||
+          (due &&
+            new Date(due).getTime() < Date.now() &&
+            !["COMPLETED", "CLOSED", "CANCELLED"].includes(record.status)),
+        );
+        const role =
+          kind === "project"
+            ? projectRoleLabels[record.membership_role] || "Proje katılımcısı"
+            : kind === "case"
+              ? record.coordinator?.id === personId
+                ? "Vaka koordinatörü"
+                : list(record.members).some(
+                      (member: any) => member.id === personId,
+                    )
+                  ? "Vaka üyesi"
+                  : "Vaka aksiyonu / katkısı"
+              : "Atanan sorumlu";
+        const progress = Math.max(
+          0,
+          Math.min(100, Number(record.progress) || 0),
+        );
+        return (
+          <article className="atlas-person-record" key={record.id}>
+            <div className="atlas-person-record-top">
+              <span className="atlas-person-record-context">
+                {kind === "work" ? contextLabels[record.context] || "İş" : role}
+              </span>
+              <Status value={record.status} />
+            </div>
+            <Link
+              className="atlas-person-record-title"
+              to={workloadRoute(kind, record.id)}
+              onClick={onNavigate}
+            >
+              {record.title}
+              <ArrowUpRight size={17} />
+            </Link>
+            {record.visibility === "SUMMARY" ? (
+              <p className="atlas-person-summary-access">
+                Yönetim özeti · teknik ayrıntılar erişim kapsamınız dışındadır.
+              </p>
+            ) : (
+              (record.expected_outcome || record.description) && (
+                <p>{record.expected_outcome || record.description}</p>
+              )
+            )}
+            <div className="atlas-person-record-meta">
+              <span>
+                <UserRound size={14} />
+                {role}
+              </span>
+              {due ? (
+                <span className={late ? "is-overdue" : ""}>
+                  <Clock3 size={14} />
+                  {date(due, true)}
+                  {late ? " · Gecikti" : ""}
+                </span>
+              ) : (
+                <span>
+                  <Clock3 size={14} />
+                  Termin tanımlanmadı
+                </span>
+              )}
+              {record.priority && <Status value={record.priority} />}
+            </div>
+            {kind === "project" && (
+              <div className="atlas-person-record-progress">
+                <div>
+                  <span style={{ width: `${progress}%` }} />
+                </div>
+                <strong>%{progress}</strong>
+              </div>
+            )}
+          </article>
+        );
+      })}
     </div>
   );
 }
@@ -959,93 +1107,330 @@ function PersonPanel({
   person: Person;
   onClose: () => void;
 }) {
-  const activity = useResource<any>(`/people/${person.id}/contributions`);
+  const workload = useResource<any>(`/people/${person.id}/workload`);
+  const [tab, setTab] = useState<PersonWorkloadTab>("overview");
+  const [assigning, setAssigning] = useState(false);
+  const [assignmentDone, setAssignmentDone] = useState("");
+  const ready = Boolean(
+    workload.data?.person?.id === person.id &&
+    workload.data?.permissions?.can_view_workload &&
+    !workload.error,
+  );
+  const data = ready ? workload.data : null;
+  const summary = data?.summary;
+  const works = list(data?.works);
+  const projects = list(data?.projects);
+  const cases = list(data?.cases);
+  const contributions = list(data?.contributions);
+  const currentPerson: Person = data?.person || person;
+  const assignable = Boolean(
+    ready &&
+    data.permissions?.can_assign_work &&
+    data.assignment?.allowed_target?.person_id === person.id,
+  );
+  if (assigning && assignable)
+    return (
+      <WorkAssignmentForm
+        defaultTarget={{
+          ...currentPerson,
+          primary_org_name: organizationName(currentPerson.primary_org_name),
+        }}
+        onClose={() => setAssigning(false)}
+        onCreated={(work) => {
+          setAssignmentDone(work?.title || "Yeni iş");
+          workload.refresh();
+        }}
+      />
+    );
   return (
     <Drawer
-      title={person.display_name || person.username}
-      subtitle="KİŞİ AYRINTISI"
+      title={currentPerson.display_name || currentPerson.username}
+      subtitle="KİŞİ VE İŞ GÖRÜNÜMÜ"
       onClose={onClose}
       wide
     >
-      <div className="atlas-org-person-profile">
+      <div className="atlas-person-header">
         <span className="atlas-org-avatar director">
-          {initials(person.display_name || person.username)}
+          {initials(currentPerson.display_name || currentPerson.username)}
         </span>
-        <h3>{personRole(person)}</h3>
-        <span title={person.primary_org_name}>
-          {organizationName(person.primary_org_name) ||
-            "Birim bilgisi paylaşılmamış"}
-        </span>
-        {person.profile_kind === "DEMO" && <Badge>Örnek hesap</Badge>}
-        {person.profile_kind === "OFFICIAL_REFERENCE" && (
-          <div className="atlas-org-reference-note">
-            <ShieldCheck size={17} />
-            <span>
-              Organizasyon şeması referansı. Kurumsal dizin doğrulaması bu
-              kayıttan ayrı yürütülür.
-            </span>
-          </div>
-        )}
-        {person.email && (
-          <a href={`mailto:${person.email}`}>
-            <Mail size={16} />
-            {person.email}
-          </a>
-        )}
-      </div>
-      {person.roles?.length ? (
-        <div className="detail-block">
-          <h3>Organizasyondaki sorumlulukları</h3>
-          {person.roles.map((role, index) => (
-            <div
-              className="atlas-org-person-role"
-              key={`${role.role}-${role.org_id || index}`}
-            >
-              <strong>{roleLabels[role.role] || "Çalışan"}</strong>
-              <span title={role.org_name}>
-                {organizationName(role.org_name) || "Tanımlı kapsam"}
-              </span>
-            </div>
-          ))}
-        </div>
-      ) : null}
-      <div className="detail-block">
-        <h3>Gönüllü uzmanlık alanları</h3>
-        <div className="expertise-tags">
-          {person.expertise?.length ? (
-            person.expertise.map((skill) => <span key={skill}>{skill}</span>)
-          ) : (
-            <p className="muted">Henüz uzmanlık bilgisi paylaşılmamış.</p>
+        <div>
+          <h3>{personRole(currentPerson)}</h3>
+          <span title={currentPerson.primary_org_name}>
+            {organizationName(currentPerson.primary_org_name) ||
+              "Birim bilgisi paylaşılmamış"}
+          </span>
+          {currentPerson.email && (
+            <a href={`mailto:${currentPerson.email}`}>
+              <Mail size={14} />
+              {currentPerson.email}
+            </a>
           )}
         </div>
-      </div>
-      <div className="detail-block">
-        <h3>Katkı geçmişi</h3>
-        <p className="muted">Yalnızca erişiminiz olan kayıtlar gösterilir.</p>
-        {activity.loading ? (
-          <Loading />
-        ) : activity.error ? (
-          <div className="atlas-org-empty-note">
-            Katkı ayrıntılarını görüntüleme yetkiniz bulunmuyor veya kayıt
-            alınamıyor.
-          </div>
-        ) : list(activity.data).length ? (
-          list(activity.data).map((entry: any) => (
-            <div className="timeline-item" key={entry.id}>
-              <i />
-              <div>
-                <strong>
-                  {entry.title || entry.action || "İlerleme kaydı"}
-                </strong>
-                <p>{entry.done || entry.summary || entry.description}</p>
-                <small>{date(entry.created_at, true)}</small>
-              </div>
-            </div>
-          ))
-        ) : (
-          <EmptyState title="Görünür katkı kaydı yok" />
+        {assignable && (
+          <Button onClick={() => setAssigning(true)}>
+            <Plus size={16} />
+            İş ata
+          </Button>
         )}
       </div>
+      {currentPerson.profile_kind === "DEMO" && <Badge>Örnek hesap</Badge>}
+      {currentPerson.profile_kind === "OFFICIAL_REFERENCE" && (
+        <div className="atlas-org-reference-note">
+          <ShieldCheck size={17} />
+          <span>
+            Organizasyon şeması referansı. Kurumsal dizin doğrulaması bu
+            kayıttan ayrı yürütülür.
+          </span>
+        </div>
+      )}
+      {assignmentDone && (
+        <div className="atlas-person-assigned" role="status">
+          <ShieldCheck size={18} />
+          <span>
+            <strong>{assignmentDone}</strong> kaydedildi. Uygulama bildirimi
+            oluşturuldu; e-posta teslimi bağlantı durumuna göre izlenir.
+          </span>
+        </div>
+      )}
+      {workload.loading && !data ? (
+        <Loading label="Kişinin yetkiniz kapsamındaki işleri yükleniyor…" />
+      ) : workload.error ? (
+        <div className="atlas-person-workload-denied">
+          <ShieldCheck size={23} />
+          <strong>İş ayrıntıları sınırlı erişimde</strong>
+          <p>
+            Kişinin iş yükünü kendisi ve güncel organizasyon yöneticileri
+            görebilir. Ekip rehberi bilgilerini aşağıda inceleyebilirsiniz.
+          </p>
+          <button className="text-button" onClick={workload.refresh}>
+            Yeniden dene
+          </button>
+        </div>
+      ) : null}
+      {ready && (
+        <>
+          <div className="atlas-person-workload-kpis">
+            <div>
+              <span>Açık iş</span>
+              <strong>{summary?.open_work ?? 0}</strong>
+              <small>{summary?.work_total ?? 0} toplam kayıt</small>
+            </div>
+            <div className={summary?.overdue_work ? "has-risk" : ""}>
+              <span>Geciken iş</span>
+              <strong>{summary?.overdue_work ?? 0}</strong>
+              <small>{summary?.critical_work ?? 0} kritik açık iş</small>
+            </div>
+            <div>
+              <span>Proje</span>
+              <strong>{summary?.projects ?? 0}</strong>
+              <small>Yetkiniz kapsamındaki</small>
+            </div>
+            <div>
+              <span>Vaka</span>
+              <strong>{summary?.cases ?? 0}</strong>
+              <small>İlişkili olduğu</small>
+            </div>
+          </div>
+          {summary?.overdue_work > 0 && (
+            <div className="atlas-person-overdue-note">
+              <AlertTriangle size={17} />
+              {summary.overdue_work} işin termini geçmiş. İşler sekmesinden
+              sorumlulukları ve sonraki adımları inceleyebilirsiniz.
+            </div>
+          )}
+          <div
+            className="atlas-person-tabs"
+            aria-label="Kişi ayrıntısı bölümleri"
+          >
+            {(
+              [
+                ["overview", "Genel bakış"],
+                ["work", `İşler (${summary?.work_total ?? 0})`],
+                ["projects", `Projeler (${summary?.projects ?? 0})`],
+                ["cases", `Vakalar (${summary?.cases ?? 0})`],
+                ["contributions", "Katkı geçmişi"],
+              ] as [PersonWorkloadTab, string][]
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                aria-pressed={tab === value}
+                className={tab === value ? "active" : ""}
+                onClick={() => setTab(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      {(!ready || tab === "overview") && (
+        <>
+          <div className="detail-block">
+            <h3>Organizasyondaki sorumlulukları</h3>
+            {currentPerson.roles?.length ? (
+              currentPerson.roles.map((role, index) => (
+                <div
+                  className="atlas-org-person-role"
+                  key={`${role.role}-${role.org_id || index}`}
+                >
+                  <strong>{roleLabels[role.role] || "Çalışan"}</strong>
+                  <span title={role.org_name}>
+                    {organizationName(role.org_name) || "Tanımlı kapsam"}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="muted">Sorumluluk bilgisi paylaşılmamış.</p>
+            )}
+          </div>
+          <div className="detail-block">
+            <h3>Gönüllü uzmanlık alanları</h3>
+            <div className="expertise-tags">
+              {currentPerson.expertise?.length ? (
+                currentPerson.expertise.map((skill) => (
+                  <span key={skill}>{skill}</span>
+                ))
+              ) : (
+                <p className="muted">Henüz uzmanlık bilgisi paylaşılmamış.</p>
+              )}
+            </div>
+          </div>
+          {ready && (
+            <>
+              <div className="atlas-person-context-totals">
+                <span>
+                  <GitBranch size={16} />
+                  {summary?.by_context?.UNIT_WORK ?? 0} birim işi
+                </span>
+                <span>
+                  <Layers3 size={16} />
+                  {summary?.by_context?.PROJECT_TASK ?? 0} proje görevi
+                </span>
+                <span>
+                  <ShieldCheck size={16} />
+                  {summary?.by_context?.CASE_ACTION ?? 0} vaka aksiyonu
+                </span>
+              </div>
+              <div className="atlas-person-section-head">
+                <h3>Üzerindeki işler</h3>
+                <button className="text-button" onClick={() => setTab("work")}>
+                  Tümünü gör <ChevronRight size={14} />
+                </button>
+              </div>
+              <PersonWorkloadRecords
+                records={works.slice(0, 3)}
+                kind="work"
+                personId={person.id}
+                onNavigate={onClose}
+              />
+            </>
+          )}
+        </>
+      )}
+      {ready && tab === "work" && (
+        <>
+          <PersonWorkloadRecords
+            records={works}
+            kind="work"
+            personId={person.id}
+            onNavigate={onClose}
+          />
+          {summary.work_total > works.length && (
+            <p className="atlas-org-limit-note">
+              İlk {works.length} / {summary.work_total} kayıt gösteriliyor.
+            </p>
+          )}
+        </>
+      )}
+      {ready && tab === "projects" && (
+        <>
+          <PersonWorkloadRecords
+            records={projects}
+            kind="project"
+            personId={person.id}
+            onNavigate={onClose}
+          />
+          {summary.projects > projects.length && (
+            <p className="atlas-org-limit-note">
+              İlk {projects.length} / {summary.projects} proje gösteriliyor.
+            </p>
+          )}
+        </>
+      )}
+      {ready && tab === "cases" && (
+        <>
+          <PersonWorkloadRecords
+            records={cases}
+            kind="case"
+            personId={person.id}
+            onNavigate={onClose}
+          />
+          {summary.cases > cases.length && (
+            <p className="atlas-org-limit-note">
+              İlk {cases.length} / {summary.cases} vaka gösteriliyor.
+            </p>
+          )}
+        </>
+      )}
+      {ready && tab === "contributions" && (
+        <div className="detail-block">
+          <h3>Katkı geçmişi</h3>
+          <p className="muted">
+            Yalnızca erişiminiz olan kaynaklardaki katkılar gösterilir.
+          </p>
+          {contributions.length ? (
+            contributions.map((entry: any) => (
+              <div
+                className="timeline-item atlas-person-contribution"
+                key={entry.id}
+              >
+                <i />
+                <div>
+                  <div className="atlas-person-contribution-head">
+                    <strong>
+                      {entry.visibility === "SUMMARY"
+                        ? "Proje katkısı · Yönetim özeti"
+                        : "İlerleme kaydı"}
+                    </strong>
+                    <small>{date(entry.created_at, true)}</small>
+                  </div>
+                  <p>{entry.done || "Açıklama paylaşılmamış."}</p>
+                  {entry.next_step && (
+                    <p>
+                      <strong>Sonraki adım:</strong> {entry.next_step}
+                    </p>
+                  )}
+                  {entry.blocker && (
+                    <p>
+                      <strong>Engel:</strong> {entry.blocker}
+                    </p>
+                  )}
+                  {entry.context_id &&
+                    ["work", "project", "case"].includes(
+                      entry.context_type,
+                    ) && (
+                      <Link
+                        to={workloadRoute(entry.context_type, entry.context_id)}
+                        onClick={onClose}
+                        className="text-button"
+                      >
+                        Kaydı aç <ArrowUpRight size={14} />
+                      </Link>
+                    )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <EmptyState title="Görünür katkı kaydı yok" />
+          )}
+          {summary.contributions > contributions.length && (
+            <p className="atlas-org-limit-note">
+              İlk {contributions.length} / {summary.contributions} katkı
+              gösteriliyor.
+            </p>
+          )}
+        </div>
+      )}
     </Drawer>
   );
 }

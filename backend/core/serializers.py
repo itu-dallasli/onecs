@@ -221,6 +221,21 @@ class ProgressSerializer(serializers.ModelSerializer):
         ]
 
 
+class PersonProgressSerializer(ProgressSerializer):
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        project = obj.project if obj.project_id else (obj.work.project if obj.work_id and obj.work.context == "PROJECT_TASK" else None)
+        summary = bool(project and not can_read_project_detail(self.context["request"].user, project))
+        data["visibility"] = "SUMMARY" if summary else "DETAIL"
+        data["context_type"] = "project" if obj.project_id else ("work" if obj.work_id else "case")
+        data["context_id"] = str(obj.project_id or obj.work_id or obj.case_id)
+        if summary:
+            data["done"] = "Proje katkısının teknik ayrıntıları sınırlı erişimdedir."
+            data["next_step"] = ""
+            data["blocker"] = ""
+        return data
+
+
 class SLASerializer(serializers.ModelSerializer):
     is_overdue = serializers.SerializerMethodField()
 
@@ -303,6 +318,21 @@ class WorkSerializer(serializers.ModelSerializer):
             "contributions",
             "permissions",
         ]
+
+
+class PersonWorkSerializer(WorkSerializer):
+    """Resource visibility does not expose the project's technical work notes."""
+
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        user = self.context["request"].user
+        summary_only = obj.context == "PROJECT_TASK" and not can_read_project_detail(user, obj.project)
+        data["visibility"] = "SUMMARY" if summary_only else "DETAIL"
+        if summary_only:
+            for field in ("description", "expected_outcome", "result", "blocker", "shared_parent_summary"):
+                data[field] = ""
+            data["contributions"] = []
+        return data
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -434,6 +464,13 @@ class CaseSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+
+
+class PersonCaseSerializer(CaseSerializer):
+    due_at = serializers.DateTimeField(source="sla.current_due_at", read_only=True, default=None)
+
+    class Meta(CaseSerializer.Meta):
+        fields = CaseSerializer.Meta.fields + ["due_at"]
 
 
 class NoticeSerializer(serializers.ModelSerializer):

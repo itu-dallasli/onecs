@@ -165,6 +165,7 @@ class IntegrationServiceTests(TestCase):
             self.user, [{"id": "allowed-id", "title": "Allowed"}]
         )
         self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failure_code"], "invalid_citations")
         usage = AIUsage.objects.get()
         self.assertEqual(usage.status, "unknown")
         self.assertIsNone(usage.input_tokens)
@@ -227,6 +228,96 @@ class IntegrationServiceTests(TestCase):
 
     def test_empty_ldap_password_never_authenticates(self):
         self.assertIsNone(authenticate_ldap("admin", ""))
+
+    @patch("administration.security.socket.getaddrinfo", return_value=[(None, None, None, None, ("93.184.216.34", 0))])
+    @patch("administration.services._ai_call")
+    def test_success_attaches_system_inventory_when_model_text_omits_critical_source(self, call, dns):
+        update_configuration(self.user, "ai", {"enabled": True, "base_url": "https://api.example.test/v1", "model": "unit-model"})
+        original = "Haftalık çalışma kısa özeti."
+        call.return_value = {"choices": [{"message": {"content": json.dumps({"text": original, "citations": ["ordinary-1"]})}}]}
+        sources = [{"id": "ordinary-1", "title": "Normal çalışma"}, {"id": "critical-9", "title": "Kritik erişim aksiyonu"}]
+        first = generate_ai_report(self.user, sources, request_id="source-index-job")
+        second = generate_ai_report(self.user, sources, request_id="source-index-job")
+        self.assertEqual(first["status"], "success", first)
+        self.assertEqual(first["ai_original_text"], original)
+        self.assertEqual(first["citations"], ["ordinary-1"])
+        inventory, cited = first["markdown"].split("## AI tarafından atıf yapılanlar", 1)
+        self.assertIn("## Dahil edilen kaynaklar (sistem kaydı)", inventory)
+        self.assertIn("critical-9", inventory)
+        self.assertIn("Kritik erişim aksiyonu", inventory)
+        self.assertNotIn("critical-9", cited)
+        self.assertIn("ordinary-1", cited)
+        self.assertEqual(first, second)
+        self.assertEqual(first["markdown"].count("## Dahil edilen kaynaklar (sistem kaydı)"), 1)
+        self.assertEqual(call.call_count, 1)
+
+    @patch("administration.security.socket.getaddrinfo", return_value=[(None, None, None, None, ("93.184.216.34", 0))])
+    @patch("administration.services._ai_call")
+    def test_project_brief_compacts_evidence_and_preserves_valid_metrics_within_configured_limit(self, call, dns):
+        update_configuration(self.user, "ai", {"enabled": True, "base_url": "https://api.example.test/v1", "model": "unit-model", "max_input_tokens": 6000, "max_output_tokens": 4096})
+        metrics = {"delivery": 76.25, "quality": None, "overall": None, "coverage": {"teams": 4, "deliverables": 18, "quality_rated": 9}, "formula": "Eksik kanıtla kesin başarı puanı üretilmez."}
+        metrics_json = json.dumps(metrics, ensure_ascii=False)
+        sources = [{"id": "project:metrics", "title": "Hesaplanan ölçümler", "type": "project_metrics", "status": "DETERMINISTIC", "summary": metrics_json}]
+        sources.extend({"id": f"00000000-0000-0000-0000-{index:012d}", "title": "Kapsamlı teslimat başlığı " * 12, "type": "project_deliverable", "status": "RECORDED", "summary": "Güvenlik değerlendirmesinin tam kaynak kanıtı korunur. " * 30} for index in range(1, 20))
+        call.return_value = {"choices": [{"message": {"content": json.dumps({"text": "Kısa yönetici taslağı.", "citations": ["project:metrics"]})}}]}
+        result = generate_ai_report(self.user, sources, report_kind="PROJECT_WEEKLY", request_id="compact-project-brief")
+        self.assertEqual(result["status"], "success", result)
+        config, _, messages, output_limit = call.call_args.args
+        self.assertEqual(config["max_input_tokens"], 6000)
+        self.assertEqual(config["max_output_tokens"], 4096)
+        self.assertEqual(output_limit, 4096)
+        self.assertLessEqual(sum(len(message["content"].encode()) for message in messages) + 100, 6000)
+        compact_sources = json.loads(messages[1]["content"])
+        compact_metrics = next(source for source in compact_sources if source["type"] == "project_metrics")
+        self.assertEqual(json.loads(compact_metrics["summary"]), metrics)
+        self.assertEqual(compact_metrics["summary"], metrics_json)
+        self.assertTrue(all(len(source["summary"]) <= 180 for source in compact_sources if source["type"] != "project_metrics"))
+        self.assertTrue(result["context_abridged"])
+        self.assertEqual(len(result["included_sources"]), len(sources))
+        self.assertTrue(all(source["id"] in result["markdown"] for source in sources))
+        self.assertIn("tam kaynak kanıtı", sources[1]["summary"])
+        call.reset_mock()
+        weekly = generate_ai_report(self.user, sources, report_kind="weekly", request_id="unchanged-weekly-limit")
+        self.assertEqual(weekly["status"], "input_limit")
+        call.assert_not_called()
+
+    @patch("administration.security.socket.getaddrinfo", return_value=[(None, None, None, None, ("93.184.216.34", 0))])
+    @patch("administration.services._ai_call")
+    def test_project_truncated_output_has_safe_diagnostics_without_retrying_unknown_usage(self, call, dns):
+        update_configuration(self.user, "ai", {"enabled": True, "base_url": "https://api.example.test/v1", "model": "unit-model", "max_output_tokens": 4096})
+        raw = '{"text":"provider-private-marker-with-secret-value'
+        call.return_value = {"choices": [{"finish_reason": "length", "message": {"content": raw, "reasoning_content": "private-reasoning"}}]}
+        sources = [{"id": "project:metrics", "type": "project_metrics", "title": "Ölçümler", "summary": '{"coverage":null}'}]
+        result = generate_ai_report(self.user, sources, report_kind="PROJECT_CLOSURE", request_id="truncated-project-job")
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["mode"], "RULE_BASED")
+        self.assertEqual(result["failure_code"], "output_truncated")
+        self.assertEqual(result["provider_diagnostics"], {"finish_reason": "length", "content_characters": len(raw), "valid_json": None})
+        self.assertEqual(result["ai_context"]["output_token_limit"], 4096)
+        self.assertEqual(call.call_args.args[3], 4096)
+        self.assertIn("150 kelime ve 3 kaynak atfı", call.call_args.args[2][0]["content"])
+        self.assertNotIn("provider-private-marker", json.dumps(result))
+        self.assertNotIn("private-reasoning", json.dumps(result))
+        usage = AIUsage.objects.get()
+        self.assertEqual(usage.status, "unknown")
+        self.assertGreater(usage.reserved_tokens, 0)
+        self.assertEqual(generate_ai_report(self.user, sources, report_kind="PROJECT_CLOSURE", request_id="truncated-project-job"), result)
+        self.assertEqual(call.call_count, 1)
+
+    @patch("administration.security.socket.getaddrinfo", return_value=[(None, None, None, None, ("93.184.216.34", 0))])
+    @patch("administration.services._ai_call")
+    def test_weekly_output_limit_is_unchanged_and_invalid_json_is_identified_safely(self, call, dns):
+        update_configuration(self.user, "ai", {"enabled": True, "base_url": "https://api.example.test/v1", "model": "unit-model", "max_output_tokens": 4096})
+        call.return_value = {"choices": [{"finish_reason": "stop", "message": {"content": "private-invalid-json"}}]}
+        result = generate_ai_report(self.user, [{"id": "work-1", "title": "İş"}], report_kind="weekly")
+        self.assertEqual(call.call_args.args[3], 4096)
+        self.assertEqual(result["failure_code"], "invalid_json")
+        self.assertEqual(result["provider_diagnostics"], {"finish_reason": "stop", "content_characters": 20, "valid_json": False})
+        self.assertNotIn("private-invalid-json", json.dumps(result))
+
+
+
+
 
 
 class AdministrationAPITests(TestCase):
@@ -436,3 +527,24 @@ class AdministrationAPITests(TestCase):
         self.assertEqual(second.status_code, 400)
         job.refresh_from_db()
         self.assertEqual(job.status, "PENDING")
+
+    def test_failed_project_insight_retry_reopens_report_with_same_pinned_job(self):
+        from django.utils import timezone
+        from core.models import BackgroundJob, PMAppointment, Project, ProjectInsightReport
+
+        appointment = PMAppointment.objects.create(user=self.employee, governing_org=self.org)
+        project = Project.objects.create(title="Synthetic project", created_by=self.employee, owner_org=self.org, appointment=appointment, status="ACTIVE")
+        job = BackgroundJob.objects.create(actor=self.employee, kind="PROJECT_INSIGHT", status="FAILED", attempts=3, payload={"ai_profile_id": None, "ai_configuration_version": 0, "ai_settings_version": 0})
+        report = ProjectInsightReport.objects.create(project=project, created_by=self.employee, kind="WEEKLY", period_start=timezone.localdate(), period_end=timezone.localdate(), status="FAILED", source_hash="synthetic-hash", job=job)
+        original_payload = dict(job.payload)
+        original_version = report.version
+        self.client.force_authenticate(self.admin)
+        response = self.client.post(f"/api/v1/admin/jobs/{job.pk}/retry/", {"kind": "job"}, format="json")
+        self.assertEqual(response.status_code, 200, response.data)
+        job.refresh_from_db()
+        report.refresh_from_db()
+        self.assertEqual((job.status, job.attempts), ("PENDING", 0))
+        self.assertEqual(report.status, "GENERATING")
+        self.assertEqual(report.job_id, job.pk)
+        self.assertEqual(report.version, original_version)
+        self.assertEqual(job.payload, original_payload)

@@ -1,14 +1,16 @@
 # Atlas çalışan sürümün kapsamı
 
-18 Kasım 2026 · Yerel geliştirme sürümü. Onaylı Revizyon 3 hedefi [uygulama planında](UYGULAMA_PLANI.md), testin gerçek kapsamı [QA raporunda](QA_REPORT.md) tutulur. Bu belge ilk çalışan sürümü ve sonraki işi ayırır; üretim kabulü vermez.
+18 Kasım 2026 · Yerel geliştirme sürümü. Onaylı Revizyon 4 hedefi [uygulama planında](UYGULAMA_PLANI.md), testin gerçek kapsamı [QA raporunda](QA_REPORT.md) tutulur. Bu belge ilk çalışan sürümü ve sonraki işi ayırır; üretim kabulü vermez.
 
 ## Çalışan uçtan uca kapsam
 
 | Alan | Mevcut davranış |
 | --- | --- |
 | Kimlik ve yetki | Yerel parola girişi, LDAP adaptörü ve süreli aktarım önizlemesi, cookie/CSRF, rol + organizasyon + kaynak ilişkisi; teknik adminin iş yetkisi ayrı |
-| Direktör görünümü | Dört KPI, kritik/geciken gündem, yönetici seçimine bağlı sertifika uyarı eşiği ve unitlere göre filtre; 7 unit, 7 yönetici alt ekibi, 37 kişilik referans/demo rehberi |
+| Direktör görünümü | Dört animasyonlu KPI, güncel birim iş/vaka grafiği, görünür gündem öncelik grafiği, daraltılabilir gezinme; kritik/geciken gündem, yönetici seçimine bağlı sertifika uyarı eşiği ve unitlere göre filtre; 7 unit, 7 yönetici alt ekibi, 37 kişilik referans/demo rehberi |
 | Projeler | Kişisel taslak, PM'ye gönderim, gerekçeli sürüm/karar, kontrollü yayın, kaynak talebi/kabulü, görev/katkı ve kapanış |
+| Proje ölçümü | Ağırlıklı ekip/teslimat ilerlemesi ve kalite, isimli paydaş anketi, kaynaklı AI/kurallı gerekçe, sürümlü metin ve yönetici puanı düzeltmesi; günlük/haftalık/kapanış raporları |
+| Kişi iş yükü | Kişi modalında yetkili iş/proje/vaka/katkı görünümü ve sorumlu yöneticiye iş atama; görünür kişi seçimi |
 | Unit işleri | Hiyerarşik atama, kişisel işin resmîleştirilmesi, alt iş ve üst sorumluluğun korunması, bağımsız sonuç kabulü |
 | Vakalar | Unit Head veya açık yetkiyle açılış, çalışan bildirimi, tek vaka altında ekip aksiyonları, ayrı kapanış doğrulaması |
 | SLA | 24 saat / 7 takvim günü / 1 takvim ayı başlangıç politikaları; sürümlü değişiklik, ilk termin ve ihlal geçmişi, tekilleştirilmiş uyarı |
@@ -39,7 +41,7 @@ Teknik `admin` hesabı iş rolü veremez. İş rolü yönetimini deneyebilmek i�
 
 ## Sonraki ürün fazları
 
-Teams ve kurumsal takvim, MCP adaptörü, güvenli belge/görsel yükleme ve galeri, mahremiyet tasarımlı anonim geri bildirim, bütçe ve ürün/lisans yenileme, ağırlıklı kilometre taşı, aylık tarihsel snapshot ve PPTX/sunucu PDF çıktısı henüz uygulanmadı. Direktörün doğrudan proje başlatmasına özel ayrı charter politikası kapalıdır; sıradan direktör rolü otomatik PM onayı vermez. Mesai/tatil/duraklama takvimi mevcut 7/24 SLA hesabına eklenmiş değildir.
+Teams ve kurumsal takvim, MCP adaptörü, güvenli belge/görsel yükleme ve galeri, mahremiyet tasarımlı anonim geri bildirim, bütçe ve ürün/lisans yenileme, geçmiş aylık durumun yeniden inşası ve PPTX/sunucu PDF çıktısı henüz uygulanmadı. Direktörün doğrudan proje başlatmasına özel ayrı charter politikası kapalıdır; sıradan direktör rolü otomatik PM onayı vermez. Mesai/tatil/duraklama takvimi mevcut 7/24 SLA hesabına eklenmiş değildir.
 
 Rapor dönem filtresi yıldız seçkisini belirler; kayıtların güncel snapshot'ı kullanılır. Bütün işlerin geçmiş günlük durumunu dönem içinde yeniden kuran tarihsel analitik değildir. İsimli ankette sonuçlar yetkiyle görünür; anonimlik vaat edilmez.
 

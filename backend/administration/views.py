@@ -647,6 +647,12 @@ class JobRetryView(AdminView):
             Report.objects.filter(job=record, status="FAILED").update(
                 status="GENERATING"
             )
+            if record.kind == "PROJECT_INSIGHT":
+                from core.models import ProjectInsightReport
+
+                ProjectInsightReport.objects.filter(job=record, status="FAILED").update(
+                    status="GENERATING"
+                )
         audit(
             request.user,
             "operations.manual_retry",

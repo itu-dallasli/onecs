@@ -6,7 +6,15 @@ Atlas, Siber Güvenlik Direktörlüğü için ortak yönetim ve koordinasyon uyg
 
 Çalışan modüller, pilotta gereken bağlantılar ve sonraki fazlar [Uygulama Durumu](docs/IMPLEMENTATION_STATUS.md) belgesinde ayrılır. Bu sürüm yerel geliştirme ve yönetici demosu içindir.
 
-18 Kasım 2026 doğrulamasında PostgreSQL üzerinde **193 backend testi ve 41 alt senaryo** ([kanıt](tests/artifacts/backend-tests.json)), ayrı rol oturumlarıyla **46 canlı HTTP kabul testi** ([kanıt](tests/artifacts/api-acceptance-ui-org-overhaul.json)) geçti. Frontend tip kontrolü, üretim derlemesi ve 9 API istemci testi de [başarılıdır](tests/artifacts/frontend-tests.json). Bu sonuçlar gerçek kurum LDAP/AI bağlantısının veya üretim yükünün doğrulandığı anlamına gelmez.
+Proje ölçümü ve kişi iş yükü sürümünün ayrı kaynak kopyasında **234 backend testi ve 45 alt senaryo**, **17 frontend testi**, strict tip kontrolü, üretim derlemesi, OpenAPI ve migration kontrolleri geçti. Yeni proje akışında **21 canlı HTTP kabul senaryosu** geçti; eski kabul setiyle toplam 67 farklı senaryo ayrı koşularda doğrulandı. [Sürüm kanıtı](tests/artifacts/project-feature-snapshot.json) ve [QA raporu](docs/QA_REPORT.md) koşu sınırlarını açıklar. Proje kapanışında canlı AI başarısı henüz doğrulanmadı; kaynaklı kurallı alternatif çalışır. Bu sonuçlar üretim yükü kabulü değildir.
+
+## Proje ölçümü ve günlük kullanım
+
+Proje ayrıntısında ekip ağırlıkları, kanıtlı teslimatlar, kalite ve paydaş anketi bulunur. Başarı endeksi teslimat %50, kalite %30, paydaş %20 bileşimidir; eksik bileşen varsa toplam belirsiz kalır. PM beyanı ayrı gösterilir. Günlük/haftalık/kapanış raporları kalıcı işte hazırlanır; metin ve insan değerlendirmesi gerekçeyle düzenlenebilir, hesaplanan temel ve özgün AI/kurallı çıktı korunur. Kapanış yayını tamamlanmış proje ister. [Formül ve yetki akışı](docs/flows/PROJECT_INSIGHTS.md).
+
+`seed_demo` dört ekipli biri devam eden biri tamamlanmış iki ek örnek proje, anketler ve düzenlenebilir kurallı raporlar ekler. Örnekler gerçek kurumsal ölçüm değildir; tekrar seed mevcut düzenlemeleri silmez. Sol menü daraltılabilir. Genel bakış grafikleri güncel yetkili kayıtları gösterir. Organizasyondaki kişi modalında işler, projeler, vakalar ve katkılar görünür; sorumlu yönetici buradan iş atar. `/work` kişi seçimiyle başlar. [Kişi iş yükü API'si](docs/services/PEOPLE_WORKLOAD.md).
+
+Ana README ve AI araç dizinleri dışındaki yardımcı Markdown belgeleri `docs/` altındadır.
 
 ## Yerel kurulum
 
@@ -68,7 +76,7 @@ npm test
 npm audit --omit=dev
 ```
 
-Canlı HTTP kabul testleri ayrı rol oturumlarını ve CSRF davranışını kullanır; sentetik uygulama açıkken [test yönergelerine](tests/README.md) göre çalıştırılır. Testler demo verisine yeni kayıtlar ekleyebilir. Test kanıtları ve pilotta gereken ek doğrulamalar QA raporunda belirtilir.
+Canlı HTTP kabul testleri ayrı rol oturumlarını ve CSRF davranışını kullanır; sentetik uygulama açıkken [test yönergelerine](docs/testing/README.md) göre çalıştırılır. Testler demo verisine yeni kayıtlar ekleyebilir. Test kanıtları ve pilotta gereken ek doğrulamalar QA raporunda belirtilir.
 
 ## Yapı ve işletim
 
@@ -96,6 +104,6 @@ Yerel yedekten ayrı veritabanına dönüş deneyi `scripts/verify_restore.py` i
 - [Organizasyon](docs/flows/ORGANIZATION.md), [Yetkilendirme](docs/flows/AUTHORIZATION.md), [Projeler](docs/flows/PROJECTS.md), [İşler](docs/flows/WORK.md), [Vakalar](docs/flows/CASES.md)
 - [Rapor ve AI](docs/flows/REPORTS_AI.md), [Ekip paylaşımı](docs/flows/COMMUNITY.md), [Etkinlik/anket](docs/flows/EVENTS.md), [Sertifikalar](docs/flows/CREDENTIALS.md)
 - [Entegrasyon servisleri](docs/services/INTEGRATIONS.md), [Rehber, arama ve bildirimler](docs/services/DIRECTORY_SEARCH_NOTIFICATIONS.md), [API sözleşmesi](docs/API.md), [OpenAPI YAML](docs/api/openapi.yaml)
-- [Geliştirme ve agent katkıları](docs/DEVELOPMENT.md), [Güvenlik](SECURITY.md), [Atlas geliştirme skill'i](.agents/skills/atlas-domain-change/SKILL.md)
+- [Geliştirme ve agent katkıları](docs/DEVELOPMENT.md), [Güvenlik](docs/SECURITY.md), [Atlas geliştirme skill'i](.agents/skills/atlas-domain-change/SKILL.md)
 
 Gerçek kurum entegrasyonu, yük ölçümü ve kurumsal işletim kabulü tamamlanmadan üretim kabulü verilmez. Bilinen geliştirme bağımlılığı uyarısı [Uygulama Durumu](docs/IMPLEMENTATION_STATUS.md) içinde kayıtlıdır.

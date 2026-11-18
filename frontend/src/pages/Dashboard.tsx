@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { api, date, list, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { organizationLabel } from "../lib/organization";
+import DashboardCharts, { dashboardCount } from "../components/DashboardCharts";
 import {
   Badge,
   Button,
@@ -69,17 +70,25 @@ export default function Dashboard() {
     return <ErrorState message={r.error} onRetry={r.refresh} />;
   const d = r.data || {};
   const agenda = list(d.agenda);
+  const updateTime = d.updated_at ? new Date(d.updated_at) : null;
+  const updatedLabel =
+    updateTime && !Number.isNaN(updateTime.getTime())
+      ? new Intl.DateTimeFormat("tr-TR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(updateTime)
+      : "Bilgi alınamadı";
   return (
-    <>
+    <div className="atlas-dashboard">
       <PageHeader
         eyebrow="DİREKTÖRLÜK OPERASYON MERKEZİ"
         title="Genel Bakış"
         description={`Merhaba ${user.display_name?.split(" ")[0] || user.username}, çalışma alanınızdaki öncelikler ve ekiplerin güncel durumu.`}
         actions={
           <>
-            <span className="live-label">
+            <span className={`live-label ${r.error ? "is-stale" : ""}`}>
               <span />
-              Canlı görünüm
+              {r.error ? "Son kayıtlı görünüm" : "Canlı görünüm"}
             </span>
             <Link className="btn btn-secondary" to="/reports">
               <FileText size={16} />
@@ -93,16 +102,25 @@ export default function Dashboard() {
       <div className="kpi-grid">
         {kpiConfig.map((k) => {
           const raw = d.kpis?.[k.key];
-          const value = typeof raw === "object" ? raw?.count : raw;
+          const value = dashboardCount(
+            typeof raw === "object" ? raw?.count : raw,
+          );
+          const displayValue =
+            value === null ? "—" : value.toLocaleString("tr-TR");
           return (
-            <Link className={`kpi-card kpi-${k.tone}`} key={k.key} to={k.to}>
+            <Link
+              className={`kpi-card kpi-${k.tone}`}
+              key={k.key}
+              to={k.to}
+              aria-label={`${k.label}: ${value === null ? "veri alınamadı" : displayValue}. ${k.description}`}
+            >
               <div className="kpi-label">
                 {k.label}
                 <span className="kpi-icon">
                   <k.icon size={17} />
                 </span>
               </div>
-              <strong>{value ?? 0}</strong>
+              <strong>{displayValue}</strong>
               <div className="kpi-bottom">
                 <span>{k.description}</span>
                 <ArrowUpRight size={15} />
@@ -233,6 +251,12 @@ export default function Dashboard() {
           </Card>
         </div>
       </div>
+      <DashboardCharts
+        units={list(d.unit_summaries)}
+        agenda={agenda.slice(0, 5)}
+        kpis={d.kpis || {}}
+        updatedAt={d.updated_at}
+      />
       <Card className="unit-overview">
         <SectionTitle
           title="Ekiplerin nabzı"
@@ -350,14 +374,10 @@ export default function Dashboard() {
       <div className="update-footer">
         <span>
           <span className="tiny-dot" />
-          Son güncelleme:{" "}
-          {new Intl.DateTimeFormat("tr-TR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }).format(new Date())}
+          Son güncelleme: {updatedLabel}
         </span>
         <span>20 saniyede bir yenilenir</span>
       </div>
-    </>
+    </div>
   );
 }

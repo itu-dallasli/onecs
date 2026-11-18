@@ -1,10 +1,10 @@
 # Atlas — Siber Güvenlik Yönetim Platformu Uygulama Planı
 
-18 Kasım 2026 · Revizyon 3 · Onaylı ürün planı. Geliştirme başlamıştır; çalışan sürümün kapsamı [README](../README.md), doğrulama sonuçları [QA Raporu](QA_REPORT.md) içindedir.
+18 Kasım 2026 · Revizyon 4 · Onaylı ürün planı. Geliştirme başlamıştır; çalışan sürümün kapsamı [README](../README.md), doğrulama sonuçları [QA Raporu](QA_REPORT.md) içindedir.
 
 Bu plan yaklaşık **200 kişi, 1 direktör ve 10–15 unit head** bulunan organizasyonda üç ayrı yönetim alanını birleştirir: **proje yöneticisinin yönettiği projeler, organizasyon yöneticilerinin dağıttığı işler ve unit head tarafından açılan vakalar**. Çalışan ilerlemesini bir kez girer; yetkili yöneticiler aynı kayıtlardan güncel durumu ve haftalık raporu görür. Ekiplerin birbirini tanıması ve çalışmalarından haberdar olması, paylaşılabilir içerikle beslenen **CS’de Neler Oluyor?** alanıyla desteklenir.
 
-Teknik tasarım, veri modeli ve erişim kuralları [Mimari Tasarım](MIMARI_TASARIM.md) belgesindedir. Bu iki belge güncel kapsamı birlikte tanımlar. Belgelerdeki kodlama, teslim ve test adımları gelecekte uygulanacak plandır; bu revizyonda uygulama kodu veya çalışan test üretildiği anlamına gelmez.
+Teknik tasarım, veri modeli ve erişim kuralları [Mimari Tasarım](MIMARI_TASARIM.md) belgesindedir. Bu iki belge güncel kapsamı birlikte tanımlar. Hedefler ile uygulanmış kapsam ayrıdır; çalışan özellikler ve gerçek test kanıtları README ve QA raporuyla doğrulanır. Yardımcı iş kuralı, güvenlik ve test Markdown belgeleri `docs/` altında tutulur; AI araçlarına ait yönergeler kendi ana dizinlerinde kalır.
 
 ## 1 Ürün hedefi ve kabul edilen kararlar
 
@@ -130,7 +130,7 @@ Amaç/ana kapsam, kaynak taahhüdü, bütçe etkisi veya okuyucu kitlesini geni�
 
 PM kapanış özetini, açık işleri ve teslim kanıtını tamamlar. Zorunlu işler bitmeden proje kapanmaz. Normal kapanış PM yetkisinde sonuç kaydıyla yapılabilir; kritik/denetime tabi projelerde bağımsız doğrulayıcı zorunluluğu proje politikasıyla etkinleştirilir. İstisna veya risk kabulü kurumun ayrı yetkisini gerektirir.
 
-MVP ilerleme yüzdesi **PM’nin beyanı + gerekçe + güncelleme zamanı** şeklindedir. Görev kapanma oranı ayrı ölçüdür. Ağırlıklı kilometre taşı ve aylık karşılaştırma sonraki fazda eklenir; farklı ilerleme yöntemleri aynı ölçüymüş gibi karşılaştırılmaz.
+MVP ilerleme yüzdesi **PM’nin beyanı + gerekçe + güncelleme zamanı** şeklindedir. Görev kapanma oranı ayrı ölçüdür. Revizyon 4 ile ağırlıklı ekip/teslimat ölçümü ayrı bir gösterge olarak eklenmiştir. Gerçek snapshot geçmişi görüntülenir; aylık geçmişin geriye dönük yeniden inşası sonraki fazdır. Farklı ilerleme yöntemleri aynı ölçüymüş gibi karşılaştırılmaz.
 
 ## 5 Unit işleri ve taahhütler
 
@@ -413,3 +413,11 @@ Bunlar mevcut sonuç değil, kabul hedefleridir. Katkı sayısını veya paylaş
 Geliştirme başlamadan/ilgili entegrasyon açılmadan organizasyon listesi, PM portföyleri ve bağlı yönetim birimleri, proje onay/delegasyon sahipleri, önemli değişiklik ölçütleri, SLA süreleri ve eskalasyon alıcıları, paylaşım yetkilileri, onaylı model/posta/LDAP erişimi belirlenir. Bu bilgiler gelene kadar belgelerdeki başlangıç seçenekleri sentetik test ayarları olarak kullanılır; gerçek kurum politikası diye sunulmaz.
 
 Pilot tamamlandığında proje ve unit yetkileri ayrılmış, vaka ve SLA davranışı doğrulanmış, kaynaklı rapor ve kontrollü paylaşım çalışmış, LDAP/posta bağlantıları gerçek test ortamında denenmiş ve kesinti/yedekten dönüş başarılı olmalıdır. Açık eksikler ve sonraki fazlar görünür tutulur; “kararlı sürüm” yalnız dokümanın ayrıntılı olmasıyla değil bu kabul sonuçlarıyla değerlendirilir.
+
+## Revizyon 4 — Ekip ölçümü ve karar desteği
+
+PM, aynı projedeki ekipleri teslimat ağırlığı ve kanıtlarıyla karşılaştırır. Kalite değerlendirmesi ve isimli paydaş anketi ayrı bileşenlerdir. AI bu ölçümleri kaynaklı gerekçelerle yorumlar; hesaplanmamış puanı uydurmaz. Sonuç metni ve yöneticinin değerlendirme puanları gerekçeyle düzenlenebilir; hesaplanan temel ve özgün üretim korunur. Günlük/haftalık raporlar düzenlenip yayımlanabilir, kapanış yayını tamamlanmış proje gerektirir. Detaylı formül, yetki ve dayanıklılık akışı [Proje İçgörüleri](flows/PROJECT_INSIGHTS.md) belgesindedir.
+
+Organizasyon kişi modalı, erişilebilir işleri, proje sorumluluklarını, vakaları ve katkı geçmişini gösterir. Güncel organizasyon kapsamında sorumlu yönetici buradan iş atayabilir. İş oluşturma formunda kişi seçimi ilk sıradadır; çalışan kendi kişisel işini açık biçimde görür. PM rolü tek başına unit işi atama hakkı vermez. Sol gezinme daraltılabilir; tercih cihazda saklanır. Genel bakış grafikleri gerçek API sayaçlarını ve görünür gündemi kullanır; geçmiş veri olmadan eğilim üretilmez.
+
+Planın 200 kişi ve 10–15 unit ifadesi kapasite hedefidir; doğrulanmış referans seed 7 unit ve 37 kişidir. Yeni proje ölçüm örnekleri ayrı, açıkça kurgu demo kayıtlarıdır.

@@ -6,6 +6,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
 from django.db import transaction
 from django.utils import timezone
 
@@ -651,6 +652,7 @@ class Command(BaseCommand):
             week_start=timezone.localdate()
             - timedelta(days=timezone.localdate().weekday()),
         )
+        call_command("seed_project_insights", stdout=self.stdout)
         self.stdout.write(
             self.style.SUCCESS(
                 f"Atlas hazır: 7 unit, 6 farklı unit yöneticisi ve direktör şema referansı; {len(employees)} açıkça işaretli örnek çalışan. Örnek alt ekip: {'açık' if options['with_demo_team'] else 'kapalı'}. Mevcut iş akışları korunmuştur."

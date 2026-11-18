@@ -1,0 +1,27 @@
+{
+  "application": "onecs",
+  "run_key": "QA-7efa202cd3",
+  "timestamp_utc": "2026-11-18T13:09:09.498560+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "duration_seconds": 10.22,
+  "tests_run": 1,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "selection": [
+    "test_50_report_star_sources_and_generation"
+  ],
+  "results": [
+    {
+      "test": "__main__.AtlasApiAcceptance.test_50_report_star_sources_and_generation",
+      "status": "passed"
+    }
+  ],
+  "external_integrations_verified": false,
+  "observations": {
+    "report_50_generation_mode": "AI",
+    "report_50_visible_source_references": 9,
+    "report_50_snapshot_sources": 9
+  }
+}

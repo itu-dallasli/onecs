@@ -1,5 +1,25 @@
 # Atlas test matrisi
 
+## Proje içgörüleri ek kabulü
+
+Yeni akışlar için **21/21 HTTP testi geçti**; mevcut regresyonun 45 geçen senaryosuna, kaynak dizini düzeltmesi sonrası geçen 1 hedefli gerçek AI testi eklendi. **67 farklı senaryo** ayrı koşularda doğrulandı; tek 67'lik tam koşu değildir. Kanıtlar: [yeni 21](../tests/artifacts/project-insights-acceptance.json), [46'lık koşunun korunmuş 45/46 sonucu](../tests/artifacts/api-acceptance-project-insights-regression.json), [düzeltilen testin gerçek AI tekrarı](../tests/artifacts/api-report-source-index-recheck.json). Yeni kapsamın bütün alt varyasyonları [FEATURE_ACCEPTANCE.md](testing/FEATURE_ACCEPTANCE.md) içinde geçen/bekleyen ayrımıyla izlenir.
+
+**Ayrı feature snapshot sonucu:** 234 backend testi + 45 alt senaryo (19,598 sn), 17 frontend testi, strict TypeScript/production build, uyarısız strict OpenAPI ve migration drift kontrolü geçti. Canlı DB yerine ayrı test DB kullanılıp kaldırıldı. Eşzamanlı LDAP ilk giriş, Atlas marka, ek dosya ve anons değişiklikleri bu snapshot'a dahil değildir. İki ldap3/pyasn1 deprecation uyarısı ve 543,22 kB entry bundle boyut uyarısı kaydedildi. [Snapshot kanıtı ve kaynak hash kapsamı](../tests/artifacts/project-feature-snapshot.json).
+
+| Yeni alan | Gerçek HTTP kanıtı | Sınır |
+| --- | --- | --- |
+| İki seviyeli ekip/teslimat ağırlığı | `project_insights_acceptance.py` 01–07 | Ayrı PostgreSQL yarış ve worker kontrolleri backend katmanıdır. |
+| Davetli anketi, yanıt değişimi ve gizlilik | 08, 09, 20 | Tekil yanıt, stale `response_version`, %50/%100 kapsam; kapanış yarışı ayrı. |
+| Günlük/haftalık/kapanış raporu | 10–14, 21 | Yerel kurallı üretim, değişmez kaynak/original, insan edit/yayın; canlı AI tüm yeni türlerde denenmiş sayılmaz. |
+| Kişi iş yükü ve hızlı atama | 15–19 | Org scope, JWT read-only, personel yöneticisine özel teknik kanıtın kapalı kalması. |
+| Genel raporun gerçek AI kaynak dizini | Eski suite `test_50`, hedefli tekrar | 9/9 UUID görünür; modelin tüm çıkarımlarının doğruluğu ölçülmedi. |
+| Proje kapanışında canlı AI | [Ayrı root UI kanıtı](../tests/artifacts/project-ai-live-check.json) | **AI başarısı doğrulanmadı**: 2048 çıkış `output_truncated`, yeni 4096 istek sağlayıcı öncesi `budget_or_request_limit`; RULE_BASED fallback READY geçti, limit artırılmadı. |
+| Yeni UI | Root tarayıcı gözlemleri [QA raporunda](QA_REPORT.md) | HTTP testleri görsel/klavye/reduced-motion kabulünün yerini almaz. |
+| Güncel restore | [62 tablo / 910 satır, 0,824 sn](../tests/artifacts/restore-project-insights.json) | Dump migration kapsamı core0006 + admin0004; sonradan gelen0007/0008 ve kurum RPO/RTO kapsam dışı. |
+
+Birleşik working tree son kontrolü root tarafından **293 backend + 96 alt senaryo** (19,68 sn) ve **24 frontend**, strict build (271 ms) olarak raporlandı; bağımsız LDAP/marka değişiklikleri de bu toplamın içindedir. Ayrı staged feature snapshot sonucu ayrıca değerlendirilir. Yerel temizleme sonrası 29 korunan model satır hash'i eşit kaldı; [klon](../tests/artifacts/cleanup-clone-proof.json) ve [yerel canlı temizleme](../tests/artifacts/cleanup-live-verification.json) kanıtları üretim geri yükleme tatbikatı yerine sayılmaz.
+
+
 18 Kasım 2026 · **193 backend testi + 41 alt senaryo, 46 gerçek HTTP testi ve 9 frontend testi geçti.** Sonuç ve sınırlar [QA raporunda](QA_REPORT.md), HTTP kanıtı [JSON artifact içinde](../tests/artifacts/api-acceptance.json) tutulur.
 
 Bu matris Revizyon 3 kabul maddelerini doğrulama katmanına bağlar. **Geçti**, belirtilen yerel kabul akışının çalışan kanıtı olduğunu gösterir. **Kısmi**, geçen kontrollerin bulunduğunu fakat kalan davranışın ayrıca kanıtlanması gerektiğini gösterir. Testlerin tamamının geçmesi K01–K40 maddelerinin tamamının kapandığı anlamına gelmez. Haricî entegrasyon veya kullanıcı ölçümü lokal testle tamamlanmış sayılmaz.
@@ -67,4 +87,4 @@ API testinin reddedilmesini beklediği istekte `403` ile `404` güvenlik politik
 
 ## Yeni arayüz ve entegrasyon ek kabulü
 
-[U01–U12 planı](../tests/UI_SMOKE_PLAN.md), yeni merkezlenen pencere, yazı ölçeği, kalkan/pusula logo, Türkçe profil, bildirim ve LDAP/AI profil akışlarını açıklar. Ek HTTP testleri 46 testlik tam koşuda geçti. Root IAB yeni kişi modalı merkez/odak/klavye ve bildirim tıklaması/read-unread akışını doğruladı; 390 px taşma/merkez ölçümü, arama Down/Enter, Türkçe profil ve ortak ayar modalı da geçti; sertifika bildirimi → sertifika ayrıntısı ve arama sonucu → iş ayrıntısı deep-link akışları, Escape sonrası URL kimliği temizliğiyle geçti. İç içe modal/tam Tab çevrimi ayrıca denenmiş sayılmaz. QA alt ajanının Chrome kontrolü kullanıcı aktif olduğunda durduruldu. Gerçek LDAP ve iki AI testi TLS sertifika süre dolumu nedeniyle başarısız; TLS korundu. [Canlı sonuç](../tests/artifacts/live-integrations.json). Önceki 200 kişi/12 unit ekran ve 41 test çıktıları önceki sürüm olarak korunur.
+[U01–U12 planı](testing/UI_SMOKE_PLAN.md), yeni merkezlenen pencere, yazı ölçeği, kalkan/pusula logo, Türkçe profil, bildirim ve LDAP/AI profil akışlarını açıklar. Ek HTTP testleri 46 testlik tam koşuda geçti. Root IAB yeni kişi modalı merkez/odak/klavye ve bildirim tıklaması/read-unread akışını doğruladı; 390 px taşma/merkez ölçümü, arama Down/Enter, Türkçe profil ve ortak ayar modalı da geçti; sertifika bildirimi → sertifika ayrıntısı ve arama sonucu → iş ayrıntısı deep-link akışları, Escape sonrası URL kimliği temizliğiyle geçti. İç içe modal/tam Tab çevrimi ayrıca denenmiş sayılmaz. QA alt ajanının Chrome kontrolü kullanıcı aktif olduğunda durduruldu. Gerçek LDAP ve iki AI testi TLS sertifika süre dolumu nedeniyle başarısız; TLS korundu. [Canlı sonuç](../tests/artifacts/live-integrations.json). Önceki 200 kişi/12 unit ekran ve 41 test çıktıları önceki sürüm olarak korunur.

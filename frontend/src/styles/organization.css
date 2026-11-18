@@ -907,3 +907,477 @@ html[data-theme="dark"] .atlas-org-reference {
   background: #254556;
   border-color: #3f6577;
 }
+.atlas-assignment-recipient {
+  padding: 20px;
+  border: 1px solid #c2d9e6;
+  border-radius: 12px;
+  background: var(--subtle);
+}
+.atlas-assignment-recipient-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #376b8c;
+  font-size: 0.73rem;
+  margin-bottom: 14px;
+}
+.atlas-assignment-recipient-heading > span {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.55rem;
+}
+.atlas-assignment-mode {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 14px;
+}
+.atlas-assignment-mode button {
+  padding: 8px 11px;
+  font-size: 0.62rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.atlas-assignment-mode button.active {
+  border-color: #8ab6cf;
+  color: #215d80;
+  background: #eaf4f9;
+}
+.atlas-assignment-selected {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.atlas-assignment-selected > span:nth-child(2) {
+  flex: 1;
+}
+.atlas-assignment-selected strong {
+  display: block;
+  font-size: 0.74rem;
+}
+.atlas-assignment-selected small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.6rem;
+  margin-top: 4px;
+}
+.atlas-assignment-selected > svg {
+  color: #337f70;
+}
+.atlas-assignment-selected > button {
+  display: grid;
+  place-items: center;
+  padding: 6px;
+  color: var(--muted);
+}
+.atlas-assignment-picker {
+  padding-top: 10px;
+}
+.atlas-assignment-picker .atlas-org-search {
+  width: 100%;
+  background: var(--surface);
+}
+.atlas-assignment-options {
+  margin-top: 10px;
+  max-height: 242px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.atlas-assignment-options > button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.atlas-assignment-options > button:last-child {
+  border-bottom: 0;
+}
+.atlas-assignment-options > button:hover,
+.atlas-assignment-options > button:focus-visible {
+  background: var(--subtle);
+}
+.atlas-assignment-options > button > span:nth-child(2) {
+  flex: 1;
+}
+.atlas-assignment-options strong {
+  display: block;
+  font-size: 0.68rem;
+}
+.atlas-assignment-options small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.57rem;
+}
+.atlas-assignment-options > button > svg {
+  color: var(--muted);
+  transform: rotate(-90deg);
+}
+.atlas-assignment-open-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.atlas-assignment-validation {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.6rem;
+}
+.atlas-assignment-form .info-strip {
+  font-size: 0.65rem;
+  line-height: 1.7;
+}
+.atlas-person-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 3px 0 22px;
+}
+.atlas-person-header > div {
+  flex: 1;
+  min-width: 0;
+}
+.atlas-person-header h3 {
+  margin: 0 0 4px;
+  font-size: 0.86rem;
+}
+.atlas-person-header > div > span {
+  font-size: 0.64rem;
+  color: var(--muted);
+}
+.atlas-person-header a {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 7px;
+  color: #53819a;
+  font-size: 0.61rem;
+}
+.atlas-person-assigned {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 14px;
+  border: 1px solid #c8e4d9;
+  border-radius: 8px;
+  background: #eff8f3;
+  color: #3c6f5c;
+  font-size: 0.65rem;
+  line-height: 1.6;
+  margin: 18px 0;
+}
+.atlas-person-assigned svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.atlas-person-workload-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 22px 0;
+}
+.atlas-person-workload-kpis > div {
+  background: var(--subtle);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+.atlas-person-workload-kpis span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+.atlas-person-workload-kpis strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1.35rem;
+  margin: 4px 0 2px;
+}
+.atlas-person-workload-kpis small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.52rem;
+}
+.atlas-person-workload-kpis .has-risk {
+  background: #fdf5f1;
+  border-color: #efd7c9;
+}
+.atlas-person-workload-kpis .has-risk strong {
+  color: #b56b3a;
+}
+.atlas-person-overdue-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff9ec;
+  border: 1px solid #eddfb7;
+  border-radius: 8px;
+  padding: 12px;
+  color: #98712f;
+  font-size: 0.62rem;
+  margin-bottom: 22px;
+}
+.atlas-person-overdue-note > svg {
+  flex-shrink: 0;
+}
+.atlas-person-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+  padding: 0 0 2px;
+  margin: 22px 0;
+}
+.atlas-person-tabs > button {
+  font-size: 0.65rem;
+  color: var(--muted);
+  white-space: nowrap;
+  padding: 11px 10px;
+  border-bottom: 2px solid transparent;
+}
+.atlas-person-tabs > button.active {
+  border-color: #22789e;
+  color: #24668c;
+  font-weight: 600;
+}
+.atlas-person-context-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 0 24px;
+}
+.atlas-person-context-totals > span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.6rem;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.atlas-person-section-head {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.atlas-person-section-head h3 {
+  font-size: 0.8rem;
+  margin: 0;
+}
+.atlas-person-records {
+  display: grid;
+  gap: 13px;
+}
+.atlas-person-record {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 17px;
+}
+.atlas-person-record-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.atlas-person-record-context {
+  font-size: 0.56rem;
+  font-weight: 600;
+  color: #6a8a9f;
+}
+.atlas-person-record-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 12px;
+  font-size: 0.77rem;
+  font-weight: 600;
+}
+.atlas-person-record-title > svg {
+  flex-shrink: 0;
+  color: #5d849c;
+}
+.atlas-person-record > p {
+  font-size: 0.64rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 9px 0 0;
+  white-space: pre-wrap;
+}
+.atlas-person-record > p.atlas-person-summary-access {
+  font-size: 0.58rem;
+  padding: 8px 10px;
+  border-radius: 5px;
+  background: var(--subtle);
+}
+.atlas-person-record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.58rem;
+}
+.atlas-person-record-meta > span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+.atlas-person-record-meta .is-overdue {
+  color: #b96647;
+}
+.atlas-person-record-progress {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+}
+.atlas-person-record-progress > div {
+  flex: 1;
+  height: 6px;
+  background: var(--hover);
+  overflow: hidden;
+  border-radius: 6px;
+}
+.atlas-person-record-progress > div > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #20618a, #36a5ba);
+  border-radius: inherit;
+}
+.atlas-person-record-progress > strong {
+  font-size: 0.61rem;
+  color: #48768e;
+}
+.atlas-person-workload-denied {
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--subtle);
+  text-align: center;
+  color: var(--muted);
+}
+.atlas-person-workload-denied > svg {
+  color: #6a91a6;
+  display: block;
+  margin: 0 auto 10px;
+}
+.atlas-person-workload-denied strong {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--ink);
+}
+.atlas-person-workload-denied p {
+  font-size: 0.64rem;
+  line-height: 1.7;
+}
+.atlas-person-workload-denied button {
+  margin: 0 auto;
+}
+.atlas-person-contribution .atlas-person-contribution-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.atlas-person-contribution .atlas-person-contribution-head strong {
+  font-size: 0.68rem;
+}
+.atlas-person-contribution .atlas-person-contribution-head small {
+  font-size: 0.55rem;
+  white-space: nowrap;
+}
+.atlas-person-contribution p {
+  font-size: 0.65rem;
+  line-height: 1.7;
+}
+.atlas-person-contribution .text-button {
+  font-size: 0.6rem;
+  margin-top: 8px;
+}
+html[data-theme="dark"] .atlas-assignment-mode button.active {
+  background: #26485c;
+  border-color: #426e85;
+  color: #adcee0;
+}
+html[data-theme="dark"] .atlas-person-workload-kpis .has-risk {
+  background: #47372f;
+  border-color: #72533d;
+}
+html[data-theme="dark"] .atlas-person-workload-kpis .has-risk strong {
+  color: #e9ba93;
+}
+html[data-theme="dark"] .atlas-person-overdue-note {
+  background: #423c2d;
+  border-color: #635a40;
+  color: #dcc893;
+}
+html[data-theme="dark"] .atlas-person-assigned {
+  background: #234636;
+  border-color: #3f6650;
+  color: #b7dbca;
+}
+@media (max-width: 650px) {
+  .atlas-assignment-recipient {
+    padding: 15px;
+  }
+  .atlas-assignment-recipient-heading > span {
+    display: none;
+  }
+  .atlas-assignment-mode {
+    flex-direction: column;
+  }
+  .atlas-assignment-selected {
+    padding: 10px;
+    gap: 9px;
+  }
+  .atlas-assignment-selected strong {
+    font-size: 0.69rem;
+  }
+  .atlas-person-header {
+    gap: 11px;
+    flex-wrap: wrap;
+  }
+  .atlas-person-header > .btn {
+    margin-left: auto;
+  }
+  .atlas-person-workload-kpis {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .atlas-person-workload-kpis > div {
+    padding: 13px;
+  }
+  .atlas-person-record {
+    padding: 14px;
+  }
+  .atlas-person-record-meta {
+    gap: 10px;
+  }
+  .atlas-person-contribution .atlas-person-contribution-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+}

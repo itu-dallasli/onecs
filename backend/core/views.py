@@ -1,3 +1,5 @@
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema
 import hashlib
 import json
 import uuid
@@ -87,6 +89,8 @@ from .policy import (
     visible_participations,
     visible_projects,
     visible_work,
+    can_read_project,
+    can_read_case,
 )
 from .serializers import (
     AnnouncementSerializer,
@@ -109,6 +113,9 @@ from .serializers import (
     ReportSerializer,
     SLAPolicySerializer,
     WorkSerializer,
+    PersonWorkSerializer,
+    PersonProgressSerializer,
+    PersonCaseSerializer,
 )
 from .services import (
     TERMINAL,
@@ -444,6 +451,8 @@ class PeopleViewSet(DomainViewSet):
             User.objects.filter(is_active=True).select_related("primary_org"),
             "primary_org_id",
         )
+        if self.request.query_params.get("assignable") == "true":
+            qs = qs.filter(primary_org_id__in=manager_scope_ids(self.request.user))
         org_id = self.request.query_params.get("org_id")
         if org_id:
             org = fetch(OrgNode, org_id, active=True)
@@ -532,6 +541,76 @@ class PeopleViewSet(DomainViewSet):
                 "count": len(entries),
             }
         )
+
+    def _assignment_permissions(self, person):
+        actor = self.request.user
+        manager = bool(actor.is_active and person.is_active and person.primary_org_id and can_manage_org(actor, person.primary_org_id))
+        assignable = manager and self.request.auth is None
+        target = {"person_id": str(person.pk), "org_id": str(person.primary_org_id), "org_name": person.primary_org.name} if assignable else None
+        return {
+            "permissions": {
+                "can_view_workload": bool(actor.is_active and person.is_active and (person.pk == actor.pk or manager)),
+                "can_assign_work": assignable,
+                "can_create_personal_work": bool(actor.is_active and person.pk == actor.pk and self.request.auth is None),
+            },
+            "assignment": {
+                "context": "UNIT_WORK",
+                "allowed_target": target,
+                "suggested_payload": {"assignee_id": str(person.pk), "personal": False, "kind": "TASK", "priority": "NORMAL"} if assignable else None,
+            },
+        }
+
+    @extend_schema(operation_id="people_assignable_scope", responses=OpenApiTypes.OBJECT)
+    @action(detail=True, methods=["get"], url_path="assignable-scope")
+    def assignable_scope(self, request, pk=None):
+        person = self.get_object()
+        return Response({"person": self.get_serializer(person).data, **self._assignment_permissions(person)})
+
+    @extend_schema(operation_id="people_workload", responses=OpenApiTypes.OBJECT)
+    @action(detail=True, methods=["get"])
+    def workload(self, request, pk=None):
+        person = self.get_object()
+        access = self._assignment_permissions(person)
+        ensure(access["permissions"]["can_view_workload"], "Kişinin iş ayrıntısını yalnız kendisi veya güncel organizasyon yöneticisi görebilir.")
+        context = {"request": request}
+        now = timezone.now()
+        work_candidates = api_narrow(request.user, WorkItem.objects.filter(assigned_to=person).select_related("parent", "owner_org", "sla", "assigned_to__primary_org", "project__appointment__user", "project__appointment__governing_org", "case")).prefetch_related("contributions__author", "contributions__author_org")
+        work_query = work_candidates.filter(pk__in=[item.pk for item in work_candidates if can_read_work(request.user, item)])
+        work_total = work_query.count()
+        open_work = work_query.exclude(status__in=TERMINAL)
+        project_candidates = api_narrow(request.user, Project.objects.filter(Q(memberships__user=person, memberships__active=True) | Q(appointment__user=person, appointment__active=True)).distinct().select_related("appointment__user", "appointment__governing_org", "owner_org")).prefetch_related("memberships", "revisions", "contributions__author", "contributions__author_org", "audience")
+        project_query = project_candidates.filter(pk__in=[item.pk for item in project_candidates if can_read_project(request.user, item)])
+        case_candidates = api_narrow(request.user, Case.objects.filter(Q(coordinator=person) | Q(members=person) | Q(contributions__author=person) | Q(actions__assigned_to=person) | Q(actions__contributions__author=person)).distinct().select_related("sla", "owner_org", "coordinator__primary_org")).prefetch_related("members", "contributions__author", "contributions__author_org")
+        case_query = case_candidates.filter(pk__in=[item.pk for item in case_candidates if can_read_case(request.user, item)])
+        contribution_query = ProgressEntry.objects.filter(author=person).select_related("author", "author_org", "project__appointment__user", "project__appointment__governing_org", "case", "work__project__appointment__user", "work__project__appointment__governing_org", "work__assigned_to", "work__case")
+        entries = [entry for entry in contribution_query.order_by("-created_at") if can_read_progress(request.user, entry)]
+        projects = []
+        for project in project_query.order_by("-updated_at")[:100]:
+            data = ProjectSerializer(project, context=context).data
+            membership = next((item for item in project.memberships.all() if item.user_id == person.pk and item.active), None)
+            data["membership_role"] = "PROJECT_MANAGER" if project.appointment.user_id == person.pk else (membership.role if membership else "MEMBER")
+            if data.get("visibility") == "SUMMARY":
+                data["contributions"] = []
+            projects.append(data)
+        return Response({
+            "person": self.get_serializer(person).data,
+            "summary": {
+                "work_total": work_total,
+                "open_work": open_work.count(),
+                "overdue_work": open_work.filter(due_at__lt=now).count(),
+                "critical_work": open_work.filter(priority="CRITICAL").count(),
+                "projects": project_query.count(),
+                "cases": case_query.count(),
+                "contributions": len(entries),
+                "by_context": {kind: work_query.filter(context=kind).count() for kind in ("UNIT_WORK", "PROJECT_TASK", "CASE_ACTION")},
+            },
+            "works": PersonWorkSerializer(work_query.order_by("due_at", "-updated_at")[:200], many=True, context=context).data,
+            "projects": projects,
+            "cases": PersonCaseSerializer(case_query.order_by("-updated_at")[:100], many=True, context=context).data,
+            "contributions": PersonProgressSerializer(entries[:100], many=True, context=context).data,
+            "limits": {"works": 200, "projects": 100, "cases": 100, "contributions": 100},
+            **access,
+        })
 
     def partial_update(self, request, pk=None):
         person = self.get_object()

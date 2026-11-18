@@ -582,3 +582,128 @@ class ApiClient(Record):
     active = models.BooleanField(default=True)
     org_node = models.ForeignKey(OrgNode, null=True, on_delete=models.PROTECT)
     token_version = models.PositiveIntegerField(default=1)
+
+
+class ProjectTeamPlan(Record):
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="team_plans"
+    )
+    org = models.ForeignKey(OrgNode, on_delete=models.PROTECT)
+    weight = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["project", "org"], name="project_team_plan_unique"
+            ),
+            models.CheckConstraint(
+                condition=Q(weight__gte=1, weight__lte=100),
+                name="project_team_weight_valid",
+            ),
+        ]
+
+
+
+class ProjectDeliverable(Record):
+    plan = models.ForeignKey(
+        ProjectTeamPlan, on_delete=models.PROTECT, related_name="deliverables"
+    )
+    title = models.CharField(max_length=240)
+    kind = models.CharField(max_length=20, default="DELIVERABLE")
+    weight = models.PositiveSmallIntegerField(default=1)
+    progress = models.PositiveSmallIntegerField(default=0)
+    evidence = models.TextField(blank=True)
+    quality_rating = models.PositiveSmallIntegerField(null=True)
+    due_at = models.DateTimeField(null=True)
+    updated_by = models.ForeignKey(User, on_delete=models.PROTECT)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=Q(weight__gte=1, weight__lte=100),
+                name="project_delivery_weight_valid",
+            ),
+            models.CheckConstraint(
+                condition=Q(progress__lte=100), name="project_delivery_progress_valid"
+            ),
+            models.CheckConstraint(
+                condition=Q(quality_rating__isnull=True)
+                | Q(quality_rating__gte=1, quality_rating__lte=5),
+                name="project_delivery_quality_valid",
+            ),
+        ]
+
+
+
+class ProjectProgressSnapshot(Record):
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="progress_snapshots"
+    )
+    scores = models.JSONField(default=dict)
+    teams = models.JSONField(default=list)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+
+
+
+class ProjectClosureSurvey(Record):
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="closure_surveys"
+    )
+    title = models.CharField(max_length=240)
+    questions = models.JSONField(default=list)
+    status = models.CharField(max_length=20, default="OPEN")
+    invitees = models.ManyToManyField(User, related_name="project_closure_surveys")
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="+")
+    closes_at = models.DateTimeField()
+
+
+
+class ProjectSurveyResponse(Record):
+    survey = models.ForeignKey(
+        ProjectClosureSurvey, on_delete=models.CASCADE, related_name="responses"
+    )
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    answers = models.JSONField(default=dict)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["survey", "user"], name="project_survey_person_unique"
+            )
+        ]
+
+
+
+class ProjectInsightReport(Record):
+    project = models.ForeignKey(
+        Project, on_delete=models.PROTECT, related_name="insight_reports"
+    )
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="+")
+    kind = models.CharField(max_length=20)
+    period_start = models.DateField()
+    period_end = models.DateField()
+    status = models.CharField(max_length=20, default="GENERATING")
+    generated_mode = models.CharField(max_length=20, default="RULE_BASED")
+    original_markdown = models.TextField(blank=True)
+    markdown = models.TextField(blank=True)
+    computed_values = models.JSONField(default=dict)
+    reviewed_scores = models.JSONField(default=dict)
+    sources = models.JSONField(default=list)
+    source_hash = models.CharField(max_length=64)
+    edit_reason = models.TextField(blank=True)
+    job = models.OneToOneField(BackgroundJob, null=True, on_delete=models.PROTECT)
+    published_by = models.ForeignKey(
+        User, null=True, on_delete=models.PROTECT, related_name="+"
+    )
+    published_at = models.DateTimeField(null=True)
+
+
+
+class ProjectInsightEdit(Record):
+    report = models.ForeignKey(
+        ProjectInsightReport, on_delete=models.CASCADE, related_name="edits"
+    )
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    markdown = models.TextField()
+    reviewed_scores = models.JSONField(default=dict)
+    reason = models.TextField()

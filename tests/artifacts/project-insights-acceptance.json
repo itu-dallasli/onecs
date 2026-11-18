@@ -1,0 +1,107 @@
+{
+  "application": "Atlas",
+  "suite": "project-insights-and-person-workload",
+  "timestamp_utc": "2026-11-18T12:57:21.042454+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "duration_seconds": 27.618,
+  "tests_run": 21,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "selection": "all",
+  "results": [
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_01_new_endpoints_require_login_and_csrf",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_02_two_level_weights_are_mathematically_correct",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_03_missing_evidence_is_unknown_not_success",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_04_invalid_plan_and_deliverable_leave_no_partial_record",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_05_org_management_does_not_grant_project_mutation",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_06_tasks_delegate_cannot_rate_or_survey",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_07_plan_delivery_stale_version_and_duplicate_request",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_08_survey_named_answers_are_management_only",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_09_survey_rejects_uninvited_invalid_and_closed_vote",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_10_daily_offline_report_edit_preserves_original",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_11_report_edits_and_publication_have_independent_rights",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_12_changed_source_invalidates_report_review",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_13_report_period_and_kind_validation",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_14_closure_publication_requires_human_completed_project",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_15_workload_self_manager_and_foreign_scope",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_16_assignable_scope_drives_form_without_widening_rights",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_17_personal_form_preserves_chosen_values",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_18_person_workload_keeps_project_evidence_private",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_19_jwt_new_surfaces_keep_org_scope_and_read_only",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_20_survey_versioned_change_keeps_one_person_one_response",
+      "status": "passed"
+    },
+    {
+      "test": "__main__.ProjectInsightsAcceptance.test_21_summary_source_privacy_and_read_grant_revocation",
+      "status": "passed"
+    }
+  ],
+  "generation_mode": "RULE_BASED",
+  "external_integrations_verified": false,
+  "baseline_not_rerun": {
+    "backend_tests": 193,
+    "backend_subtests": 41,
+    "http_tests": 46,
+    "frontend_tests": 9
+  }
+}

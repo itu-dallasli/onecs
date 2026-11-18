@@ -1,0 +1,47 @@
+{
+  "at": "2026-11-18T13:22:51.664287+00:00",
+  "scope": "Explicit new UI requests on synthetic closure project; no configuration or budget changes",
+  "reports_newest_first": [
+    {
+      "report_id": "f1ca3720-c245-4b89-981b-26e827437531",
+      "mode": "RULE_BASED",
+      "status": "READY",
+      "job_status": "COMPLETED",
+      "result": {
+        "mode": "RULE_BASED",
+        "report_id": "f1ca3720-c245-4b89-981b-26e827437531",
+        "fallback_reason": "budget_or_request_limit",
+        "context_abridged": false,
+        "generation_status": "budget_or_request_limit"
+      }
+    },
+    {
+      "report_id": "babf3cfd-f331-48a3-8b88-7023fbff5059",
+      "mode": "RULE_BASED",
+      "status": "READY",
+      "job_status": "COMPLETED",
+      "result": {
+        "mode": "RULE_BASED",
+        "report_id": "babf3cfd-f331-48a3-8b88-7023fbff5059",
+        "fallback_reason": "output_truncated",
+        "context_abridged": true,
+        "generation_status": "failed"
+      }
+    },
+    {
+      "report_id": "f9eb1e22-b898-4536-beb0-1f68a2fc89ee",
+      "mode": "RULE_BASED",
+      "status": "READY",
+      "job_status": "COMPLETED",
+      "result": {
+        "mode": "RULE_BASED",
+        "report_id": "f9eb1e22-b898-4536-beb0-1f68a2fc89ee"
+      }
+    }
+  ],
+  "project_ai_success_confirmed": false,
+  "general_weekly_ai_success": "Separate real HTTP test_50 passed with all nine source IDs present.",
+  "limitation": "2048 output was truncated; final configured 4096 request was blocked before provider by budget/request limit. No automatic retries or budget bypass.",
+  "fallback_verified": true,
+  "screenshot": "tests/artifacts/ui-project-ai-report.jpg"
+}

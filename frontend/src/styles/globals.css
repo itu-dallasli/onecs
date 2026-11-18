@@ -5148,3 +5148,129 @@ html[data-theme="dark"] .badge-brand {
   background: #234e6e;
   color: #a8d3f0;
 }
+/* Dashboard links use an accessible full-card tint on hover and keyboard focus. */
+.atlas-dashboard .kpi-card {
+  --kpi-accent: #326080;
+  --kpi-tint: #eef5fb;
+  position: relative;
+  isolation: isolate;
+  background: var(--surface);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+.atlas-dashboard .kpi-danger {
+  --kpi-accent: #b65360;
+  --kpi-tint: #fff0f2;
+}
+.atlas-dashboard .kpi-warning {
+  --kpi-accent: #b38a32;
+  --kpi-tint: #fff7e8;
+}
+.atlas-dashboard .kpi-brand {
+  --kpi-accent: #187d9e;
+  --kpi-tint: #ecf7fc;
+}
+.atlas-dashboard .kpi-success {
+  --kpi-accent: #3b806c;
+  --kpi-tint: #edf8f2;
+}
+.atlas-dashboard .kpi-card::before {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  opacity: 1;
+  background: var(--kpi-accent);
+  z-index: 2;
+  border-radius: 0;
+}
+.atlas-dashboard .kpi-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--kpi-tint);
+  transform: scaleY(0);
+  transform-origin: center top;
+  transition: transform 0.25s ease;
+  z-index: 0;
+  pointer-events: none;
+}
+.atlas-dashboard .kpi-card > * {
+  position: relative;
+  z-index: 1;
+}
+.atlas-dashboard .kpi-card:hover,
+.atlas-dashboard .kpi-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--kpi-accent);
+  box-shadow: 0 11px 28px #173f6212;
+}
+.atlas-dashboard .kpi-card:hover::after,
+.atlas-dashboard .kpi-card:focus-visible::after {
+  transform: scaleY(1);
+}
+.atlas-dashboard .kpi-card:focus-visible {
+  outline: 2px solid var(--kpi-accent);
+  outline-offset: 3px;
+}
+.atlas-dashboard .kpi-card .kpi-icon {
+  color: var(--kpi-accent);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+  background: var(--subtle);
+}
+.atlas-dashboard .kpi-card:hover .kpi-icon,
+.atlas-dashboard .kpi-card:focus-visible .kpi-icon {
+  background: var(--surface);
+  transform: scale(1.05);
+}
+.atlas-dashboard .kpi-bottom > svg {
+  transition: transform 0.22s ease;
+  color: var(--kpi-accent);
+}
+.atlas-dashboard .kpi-card:hover .kpi-bottom > svg,
+.atlas-dashboard .kpi-card:focus-visible .kpi-bottom > svg {
+  transform: translate(2px, -2px);
+}
+.atlas-dashboard .kpi-label,
+.atlas-dashboard .kpi-bottom {
+  color: var(--muted);
+}
+.atlas-dashboard .kpi-card > strong {
+  color: var(--ink);
+}
+html[data-theme="dark"] .atlas-dashboard .kpi-danger {
+  --kpi-accent: #dc949c;
+  --kpi-tint: #35252e;
+}
+html[data-theme="dark"] .atlas-dashboard .kpi-warning {
+  --kpi-accent: #cfb16d;
+  --kpi-tint: #332f23;
+}
+html[data-theme="dark"] .atlas-dashboard .kpi-brand {
+  --kpi-accent: #78bed7;
+  --kpi-tint: #1d3443;
+}
+html[data-theme="dark"] .atlas-dashboard .kpi-success {
+  --kpi-accent: #8bbda6;
+  --kpi-tint: #23382f;
+}
+@media (prefers-reduced-motion: reduce) {
+  .atlas-dashboard .kpi-card,
+  .atlas-dashboard .kpi-card::after,
+  .atlas-dashboard .kpi-icon,
+  .atlas-dashboard .kpi-bottom > svg {
+    transition: none !important;
+  }
+  .atlas-dashboard .kpi-card:hover,
+  .atlas-dashboard .kpi-card:focus-visible,
+  .atlas-dashboard .kpi-card:hover .kpi-icon,
+  .atlas-dashboard .kpi-card:focus-visible .kpi-icon,
+  .atlas-dashboard .kpi-card:hover .kpi-bottom > svg,
+  .atlas-dashboard .kpi-card:focus-visible .kpi-bottom > svg {
+    transform: none;
+  }
+}

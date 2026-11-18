@@ -24,6 +24,8 @@ import {
 import { api, date, list, personName, useResource } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import type { RecordItem } from "../lib/types";
+import WorkAssignmentForm from "../components/WorkAssignmentForm";
+import ProjectInsights from "../components/ProjectInsights";
 import {
   Badge,
   Button,
@@ -104,7 +106,18 @@ function PeopleSelect({
     </Field>
   );
 }
-function CreateRecord({
+function CreateRecord(props: {
+  kind: Kind;
+  onClose: () => void;
+  onCreated: () => void;
+}) {
+  return props.kind === "work" ? (
+    <WorkAssignmentForm onClose={props.onClose} onCreated={props.onCreated} />
+  ) : (
+    <CreateRecordFields {...props} />
+  );
+}
+function CreateRecordFields({
   kind,
   onClose,
   onCreated,
@@ -486,14 +499,24 @@ function Detail({
       {kind === "projects" && (
         <div className="detail-block">
           <div className="progress-heading">
-            <h3>Proje ilerlemesi</h3>
+            <h3>Proje yöneticisinin ilerleme beyanı</h3>
             <strong>%{row.progress || 0}</strong>
           </div>
           <div className="progress-track">
             <span style={{ width: `${row.progress || 0}%` }} />
           </div>
-          <small className="muted">Proje yöneticisinin son güncellemesi</small>
+          <small className="muted">Teslimatların hesaplanan ilerlemesinden ayrı takip edilir.</small>
         </div>
+      )}
+      {kind === "projects" && (
+        <ProjectInsights
+          project={row}
+          onUpdated={() => {
+            resource.refresh();
+            childResource.refresh();
+            onUpdate();
+          }}
+        />
       )}
       {kind === "projects" &&
         currentStatus === "SUBMITTED" &&

@@ -27,6 +27,7 @@ for prefix, view, base in [
 ]:
     router.register(prefix, view, basename=base)
 urlpatterns = [
+    path("", include("core.project_insight_views")),
     path("auth/csrf/", views.csrf_view),
     path("auth/login/", views.login_view),
     path("auth/me/", views.me_view),

@@ -1,0 +1,56 @@
+{
+  "at": "2026-11-18T13:23:42.194941+00:00",
+  "scope": "Root computer-use checks on synthetic local accounts; 390px mobile and default desktop viewport",
+  "checks": [
+    {
+      "name": "Collapsible sidebar persists after reload",
+      "status": "passed"
+    },
+    {
+      "name": "Manager selects visible assignee and creates unit work; person profile preselects subject",
+      "status": "passed"
+    },
+    {
+      "name": "PM team progress CDC52 IAM62 OS77 SAA42 and weighted58.25 distinguish PM declared62",
+      "status": "passed",
+      "screenshot": "ui-project-team-progress.jpg"
+    },
+    {
+      "name": "Weekly report edit reason/save/publish preserves original",
+      "status": "passed",
+      "screenshot": "ui-project-report-reviewed.jpg"
+    },
+    {
+      "name": "Reviewed quality80/overall90 remain separate from computed75/88.5",
+      "status": "passed",
+      "screenshot": "ui-project-score-reviewed.jpg"
+    },
+    {
+      "name": "Invited employee submits and changes current named survey response once per person",
+      "status": "passed"
+    },
+    {
+      "name": "Employee personal work form has no other assignee or formal SLA selector",
+      "status": "passed"
+    },
+    {
+      "name": "390px viewport: document390px dialog362px, no horizontal overflow",
+      "status": "passed",
+      "screenshot": "ui-work-personal-mobile.jpg"
+    },
+    {
+      "name": "Project AI fallback safely shows provider truncation and budget reason",
+      "status": "passed",
+      "screenshot": "ui-project-ai-report.jpg"
+    },
+    {
+      "name": "Project closure real AI generation at final4096 ceiling",
+      "status": "not_verified",
+      "reason": "Budget/request limit blocked provider request; no budget bypass"
+    },
+    {
+      "name": "Every reduced-motion, keyboard loop and theme variant",
+      "status": "not_exhaustively_verified"
+    }
+  ]
+}
