@@ -1,0 +1,13 @@
+{
+  "application": "Atlas",
+  "at": "2026-11-18T12:35:43.545818+00:00",
+  "command": ".venv/bin/python -m pytest -q --junitxml=.runtime/backend-final.xml",
+  "environment": "PostgreSQL17 / Python3.13 / Django5.2; separate synthetic test database",
+  "status": "passed",
+  "tests": 193,
+  "warnings": 2,
+  "subtests": 41,
+  "duration_seconds": 13.88,
+  "warning_summary": "ldap3/pyasn1 deprecated tagMap/typeMap; no failed or skipped tests",
+  "log": ".runtime/pytest-final.log"
+}

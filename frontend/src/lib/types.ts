@@ -1,0 +1,40 @@
+export type Role = { role: string; org_id?: string | null };
+export type Person = {
+  id: string;
+  username: string;
+  display_name: string;
+  email?: string;
+  primary_org?: { id: string; code: string; name: string };
+  roles?: Role[];
+  permissions?: Record<string, boolean>;
+  test_mode?: {
+    available?: boolean;
+    god_mode?: boolean;
+    effective_user_id?: string;
+    real_actor_id?: string;
+    environment?: string;
+  };
+  is_active?: boolean;
+};
+export type RecordItem = {
+  id: string;
+  title: string;
+  description?: string;
+  summary?: string;
+  status: string;
+  priority?: string;
+  criticality?: string;
+  owner?: Person | string;
+  assignee?: Person | string;
+  owner_name?: string;
+  assignee_name?: string;
+  created_at?: string;
+  updated_at?: string;
+  due_at?: string;
+  deadline?: string;
+  sla_due_at?: string;
+  version?: number;
+  report_candidate?: boolean;
+  [key: string]: any;
+};
+export type ListResponse<T> = { results: T[]; count: number };

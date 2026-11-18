@@ -1,0 +1,27 @@
+{
+  "ldap": {
+    "status": "failure",
+    "message": "{'ldap': ErrorDetail(string='LDAP TLS/servis bağlantısı doğrulanamadı.', code='invalid')}",
+    "checked_at": "2026-11-18 12:39:14.003940+00:00"
+  },
+  "ai_profiles": [
+    {
+      "name": "Bağlantı 1",
+      "status": "failure",
+      "message": "Model bağlantısı doğrulanamadı; hedef, TLS, anahtar ve model erişimini kontrol edin.",
+      "checked_at": "2026-11-18 12:26:12.420922+00:00"
+    },
+    {
+      "name": "Bağlantı 2",
+      "status": "failure",
+      "message": "Model bağlantısı doğrulanamadı; hedef, TLS, anahtar ve model erişimini kontrol edin.",
+      "checked_at": "2026-11-18 12:26:12.475897+00:00"
+    }
+  ],
+  "at": "2026-11-18T12:28:20.801516+00:00",
+  "configuration": "Local PostgreSQL encrypted configuration versions; credentials excluded from source and evidence",
+  "ldap_tls_diagnostic": "StartTLS certificate verification failed: certificate has expired; service credentials were not bound",
+  "ai_tls_diagnostic": "HTTPS certificate verification failed: certificate has expired; bearer credentials were not transmitted",
+  "personfinder": "SSO login required; no directory records imported from URUK",
+  "production_ready": false
+}

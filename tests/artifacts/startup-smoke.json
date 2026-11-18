@@ -1,0 +1,21 @@
+{
+  "application": "Atlas",
+  "at": "2026-11-18T12:37:21.513573+00:00",
+  "status": "passed",
+  "startup_command": ".venv/bin/python scripts/dev.py --seed",
+  "checks": [
+    "migration/check success",
+    "API/frontend/worker running",
+    "canonical organization7units/7teams/37people",
+    "clean demo without QA titles",
+    "two separately encrypted AI profiles persist after restart",
+    "LDAP expired TLS discovery returns controlled400",
+    "authenticated Swagger HTML"
+  ],
+  "dashboard_read_seconds": [
+    0.107,
+    0.108,
+    0.112
+  ],
+  "measurement_scope": "Three sequential loopback reads; not a concurrent load test."
+}

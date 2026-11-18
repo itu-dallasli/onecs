@@ -1,0 +1,83 @@
+{
+  "application": "Atlas",
+  "recorded_at": "2026-11-18T12:37:48.417421+00:00",
+  "status": "passed",
+  "runtime": "Node.js 22.15.1",
+  "working_directory": "frontend",
+  "checks": [
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "status": "passed",
+      "exit_code": 0
+    },
+    {
+      "command": "node node_modules/vite/bin/vite.js build",
+      "status": "passed",
+      "exit_code": 0,
+      "build_duration_ms": 181
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run --reporter=json --outputFile=../.runtime/frontend-final.json",
+      "status": "passed",
+      "exit_code": 0,
+      "test_files": 1,
+      "test_suites": 2,
+      "total_tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "duration_ms": 162.837,
+      "duration_source": "Vitest JSON endTime minus startTime",
+      "cases": [
+        {
+          "name": "Atlas API client contracts canonicalizes Django URLs before query parameters",
+          "status": "passed",
+          "duration_ms": 14.123
+        },
+        {
+          "name": "Atlas API client contracts does not duplicate a canonical trailing slash",
+          "status": "passed",
+          "duration_ms": 0.394
+        },
+        {
+          "name": "Atlas API client contracts uses session cookies, CSRF and a unique request id on mutation",
+          "status": "passed",
+          "duration_ms": 1.35
+        },
+        {
+          "name": "Atlas API client contracts uses rotated csrf token returned by the server",
+          "status": "passed",
+          "duration_ms": 0.791
+        },
+        {
+          "name": "Atlas API client contracts preserves human-readable integration test failures",
+          "status": "passed",
+          "duration_ms": 0.941
+        },
+        {
+          "name": "Atlas API client contracts turns field validation errors into actionable feedback",
+          "status": "passed",
+          "duration_ms": 0.323
+        },
+        {
+          "name": "Atlas API client contracts does not display a raw server traceback as user feedback",
+          "status": "passed",
+          "duration_ms": 0.254
+        },
+        {
+          "name": "Atlas API client contracts recovers list shape safely when optional results are absent",
+          "status": "passed",
+          "duration_ms": 0.359
+        },
+        {
+          "name": "Atlas API client contracts translates offline failures into a recoverable API error",
+          "status": "passed",
+          "duration_ms": 0.888
+        }
+      ],
+      "tests": 9
+    }
+  ],
+  "scope_note": "API client regression tests; deep-link, visual, keyboard and responsive UI checks are recorded separately."
+}

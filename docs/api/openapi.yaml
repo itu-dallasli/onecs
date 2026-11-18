@@ -1,0 +1,5918 @@
+openapi: 3.0.3
+info:
+  title: Atlas API
+  version: 1.0.0
+  description: Rol ve kayıt kapsamı ile korunan Atlas yönetişim API. Dış JWT tüketicileri
+    salt okunurdur.
+paths:
+  /api/v1/activity/:
+    get:
+      operationId: activity_retrieve
+      tags:
+      - Overview
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ai/profiles/:
+    get:
+      operationId: admin_ai_profiles_list
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_ai_profiles_create
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ai/profiles/{profile_id}/:
+    get:
+      operationId: admin_ai_profile_retrieve
+      parameters:
+      - in: path
+        name: profile_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_ai_profiles_partial_update
+      parameters:
+      - in: path
+        name: profile_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_ai_profiles_destroy
+      parameters:
+      - in: path
+        name: profile_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/ai/profiles/{profile_id}/default/:
+    post:
+      operationId: admin_ai_profiles_default_create
+      parameters:
+      - in: path
+        name: profile_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ai/profiles/{profile_id}/test/:
+    post:
+      operationId: admin_ai_profiles_test_create
+      parameters:
+      - in: path
+        name: profile_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ai/usage/:
+    get:
+      operationId: admin_ai_usage_retrieve
+      description: Provider usage and estimated cost with from/to YYYY-MM-DD, model
+        and operation filters; unknown values remain null.
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/audit/:
+    get:
+      operationId: admin_audit_retrieve
+      description: Metadata-only audit trail. Restricted domain payloads and secrets
+        are excluded.
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/integrations/{section}/test/:
+    post:
+      operationId: admin_integrations_test_create
+      description: Run an actual bounded connection test against a deployment-authorized
+        target.
+      parameters:
+      - in: path
+        name: section
+        schema:
+          type: string
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/jobs/:
+    get:
+      operationId: admin_jobs_retrieve
+      description: Durable jobs and outbox delivery metadata. Domain payload, report
+        text and email body are excluded.
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/jobs/{job_id}/retry/:
+    post:
+      operationId: admin_jobs_retry_create
+      description: Deliberate retry of a failed durable job/delivery. UNKNOWN email
+        requires acknowledge_unknown=true because delivery may already have happened.
+      parameters:
+      - in: path
+        name: job_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ldap/discover/:
+    post:
+      operationId: admin_ldap_discover_create
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ldap/import/:
+    post:
+      operationId: admin_ldap_import_create
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/ldap/search/:
+    post:
+      operationId: admin_ldap_search_create
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/roles/:
+    get:
+      operationId: admin_roles_retrieve
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/settings/:
+    get:
+      operationId: admin_settings_index
+      description: List available configuration sections without exposing stored secret
+        values.
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/settings/{section}/:
+    get:
+      operationId: admin_settings_retrieve
+      description: Versioned integration configuration. Secret values are never returned.
+      parameters:
+      - in: path
+        name: section
+        schema:
+          type: string
+        required: true
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_settings_partial_update
+      description: Change config/secrets with expected_version optimistic concurrency.
+        Requires an actual administrator session.
+      parameters:
+      - in: path
+        name: section
+        schema:
+          type: string
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/admin/users/:
+    get:
+      operationId: admin_users_retrieve
+      tags:
+      - Administration
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_users_create
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/admin/users/{user_id}/:
+    patch:
+      operationId: admin_users_partial_update
+      description: A technical administrator cannot grant business roles, change their
+        own access, or reset a business manager's credentials without director authority.
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Administration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/announcements/:
+    get:
+      operationId: announcements_list
+      tags:
+      - announcements
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Announcement'
+          description: ''
+    post:
+      operationId: announcements_create
+      tags:
+      - announcements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Announcement'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Announcement'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Announcement'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Announcement'
+          description: ''
+  /api/v1/announcements/{id}/:
+    get:
+      operationId: announcements_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - announcements
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Announcement'
+          description: ''
+  /api/v1/announcements/{id}/publish/:
+    post:
+      operationId: announcements_publish_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Announcement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Announcement'
+          description: ''
+  /api/v1/announcements/{id}/withdraw/:
+    post:
+      operationId: announcements_withdraw_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Announcement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Announcement'
+          description: ''
+  /api/v1/api-clients/:
+    get:
+      operationId: api_clients_list
+      tags:
+      - api-clients
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiClient'
+          description: ''
+    post:
+      operationId: api_clients_create
+      tags:
+      - api-clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClient'
+          description: ''
+  /api/v1/api-clients/{id}/:
+    get:
+      operationId: api_clients_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api-clients
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClient'
+          description: ''
+  /api/v1/api-clients/{id}/revoke/:
+    post:
+      operationId: api_clients_revoke_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api-clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClient'
+          description: ''
+  /api/v1/api-clients/{id}/token/:
+    post:
+      operationId: api_clients_token_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - api-clients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApiClient'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClient'
+          description: ''
+  /api/v1/auth/csrf/:
+    get:
+      operationId: auth_csrf_retrieve
+      tags:
+      - Identity
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/auth/login/:
+    post:
+      operationId: auth_login_create
+      tags:
+      - Identity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      tags:
+      - Identity
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/auth/me/:
+    get:
+      operationId: auth_me_retrieve
+      tags:
+      - Identity
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/case-notices/:
+    get:
+      operationId: case_notices_list
+      tags:
+      - case-notices
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notice'
+          description: ''
+    post:
+      operationId: case_notices_create
+      tags:
+      - case-notices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notice'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notice'
+          description: ''
+  /api/v1/case-notices/{id}/:
+    get:
+      operationId: case_notices_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - case-notices
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notice'
+          description: ''
+  /api/v1/case-notices/{id}/convert/:
+    post:
+      operationId: case_notices_convert_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - case-notices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notice'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notice'
+          description: ''
+  /api/v1/case-notices/{id}/dismiss/:
+    post:
+      operationId: case_notices_dismiss_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - case-notices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notice'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notice'
+          description: ''
+  /api/v1/cases/:
+    get:
+      operationId: cases_list
+      tags:
+      - cases
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Case'
+          description: ''
+    post:
+      operationId: cases_create
+      tags:
+      - Case
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CaseCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CaseCreate'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/:
+    get:
+      operationId: cases_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - cases
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/actions/:
+    get:
+      operationId: cases_actions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Case
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+    post:
+      operationId: cases_actions_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Case
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseActionCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CaseActionCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CaseActionCreate'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/members/:
+    post:
+      operationId: cases_members_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - cases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Case'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Case'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Case'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/progress/:
+    post:
+      operationId: cases_progress_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Case
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/request-close/:
+    post:
+      operationId: cases_request_close_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Case
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseCloseRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CaseCloseRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CaseCloseRequest'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/sla-adjust/:
+    post:
+      operationId: cases_sla_adjust_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - cases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Case'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Case'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Case'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/status/:
+    post:
+      operationId: cases_status_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - cases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Case'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Case'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Case'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/cases/{id}/verify-close/:
+    post:
+      operationId: cases_verify_close_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Case
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseVerifyClose'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CaseVerifyClose'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CaseVerifyClose'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+          description: ''
+  /api/v1/community/:
+    get:
+      operationId: community_list
+      tags:
+      - community
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+          description: ''
+    post:
+      operationId: community_create
+      tags:
+      - community
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Card'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Card'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/community/{id}/:
+    get:
+      operationId: community_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - community
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/community/{id}/approve-content/:
+    post:
+      operationId: community_approve_content_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - community
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Card'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Card'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Card'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/community/{id}/interest/:
+    post:
+      operationId: community_interest_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Community
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/community/{id}/publish/:
+    post:
+      operationId: community_publish_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Community
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/community/{id}/submit/:
+    post:
+      operationId: community_submit_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Community
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/community/{id}/withdraw/:
+    post:
+      operationId: community_withdraw_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Community
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+          description: ''
+  /api/v1/contributions/:
+    get:
+      operationId: contributions_list
+      tags:
+      - contributions
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Progress'
+          description: ''
+  /api/v1/contributions/{id}/:
+    get:
+      operationId: contributions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - contributions
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Progress'
+          description: ''
+    patch:
+      operationId: contributions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - contributions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProgress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProgress'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProgress'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Progress'
+          description: ''
+  /api/v1/credentials/:
+    get:
+      operationId: credentials_list
+      tags:
+      - credentials
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Credential'
+          description: ''
+    post:
+      operationId: credentials_create
+      tags:
+      - credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Credential'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Credential'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: ''
+  /api/v1/credentials/{id}/:
+    get:
+      operationId: credentials_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - credentials
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: ''
+    patch:
+      operationId: credentials_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCredential'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCredential'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCredential'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: ''
+  /api/v1/dashboard/:
+    get:
+      operationId: dashboard_retrieve
+      tags:
+      - Overview
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/events/:
+    get:
+      operationId: events_list
+      tags:
+      - events
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+          description: ''
+    post:
+      operationId: events_create
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Event'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/:
+    get:
+      operationId: events_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - events
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/attendance/:
+    post:
+      operationId: events_attendance_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Event'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/participants/:
+    get:
+      operationId: events_participants_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - events
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/poll/:
+    post:
+      operationId: events_poll_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Event'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/poll-response/:
+    post:
+      operationId: events_poll_response_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PollResponseAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PollResponseAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PollResponseAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/events/{id}/rsvp/:
+    post:
+      operationId: events_rsvp_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRSVPAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventRSVPAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EventRSVPAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: ''
+  /api/v1/health/:
+    get:
+      operationId: health_retrieve
+      tags:
+      - Overview
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/notifications/:
+    get:
+      operationId: notifications_list
+      tags:
+      - notifications
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/{id}/:
+    get:
+      operationId: notifications_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - notifications
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/{id}/read/:
+    post:
+      operationId: notifications_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationReadState'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationReadState'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationReadState'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/mark-all-read/:
+    post:
+      operationId: notifications_mark_all_read_create
+      tags:
+      - Notification
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/organization/:
+    get:
+      operationId: organization_list
+      tags:
+      - organization
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Org'
+          description: ''
+  /api/v1/organization/{id}/:
+    get:
+      operationId: organization_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - organization
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Org'
+          description: ''
+    patch:
+      operationId: organization_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrg'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrg'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrg'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Org'
+          description: ''
+  /api/v1/participation-requests/:
+    get:
+      operationId: participation_requests_list
+      tags:
+      - participation-requests
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Participation'
+          description: ''
+  /api/v1/participation-requests/{id}/:
+    get:
+      operationId: participation_requests_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - participation-requests
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Participation'
+          description: ''
+  /api/v1/participation-requests/{id}/decide/:
+    post:
+      operationId: participation_requests_decide_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Participation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceDecision'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResourceDecision'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResourceDecision'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Participation'
+          description: ''
+  /api/v1/people/:
+    get:
+      operationId: people_list
+      tags:
+      - people
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+          description: ''
+  /api/v1/people/{id}/:
+    get:
+      operationId: people_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - people
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+          description: ''
+    patch:
+      operationId: people_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - people
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPerson'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPerson'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPerson'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+          description: ''
+  /api/v1/people/{id}/contributions/:
+    get:
+      operationId: people_contributions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - people
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+          description: ''
+  /api/v1/project-managers/:
+    get:
+      operationId: project_managers_list
+      tags:
+      - project-managers
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PM'
+          description: ''
+    post:
+      operationId: project_managers_create
+      tags:
+      - project-managers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PM'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PM'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PM'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PM'
+          description: ''
+  /api/v1/project-managers/{id}/:
+    get:
+      operationId: project_managers_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - project-managers
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PM'
+          description: ''
+  /api/v1/projects/:
+    get:
+      operationId: projects_list
+      tags:
+      - projects
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+          description: ''
+    post:
+      operationId: projects_create
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/:
+    get:
+      operationId: projects_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    patch:
+      operationId: projects_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProject'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/authorities/:
+    get:
+      operationId: projects_authorities_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    post:
+      operationId: projects_authorities_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/authority-revoke/:
+    post:
+      operationId: projects_authority_revoke_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/close/:
+    post:
+      operationId: projects_close_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectClose'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectClose'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectClose'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/members/:
+    get:
+      operationId: projects_members_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    post:
+      operationId: projects_members_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectResourceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectResourceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectResourceRequest'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/progress/:
+    post:
+      operationId: projects_progress_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/propose-change/:
+    post:
+      operationId: projects_propose_change_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/review/:
+    post:
+      operationId: projects_review_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectReview'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/revisions/:
+    get:
+      operationId: projects_revisions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/submit/:
+    post:
+      operationId: projects_submit_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/tasks/:
+    get:
+      operationId: projects_tasks_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+    post:
+      operationId: projects_tasks_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectTaskCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectTaskCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectTaskCreate'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/projects/{id}/transfer/:
+    post:
+      operationId: projects_transfer_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+  /api/v1/report-selections/:
+    get:
+      operationId: report_selections_list
+      tags:
+      - report-selections
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportSelection'
+          description: ''
+    post:
+      operationId: report_selections_create
+      tags:
+      - report-selections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportSelection'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReportSelection'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReportSelection'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSelection'
+          description: ''
+  /api/v1/report-selections/{id}/:
+    get:
+      operationId: report_selections_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - report-selections
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSelection'
+          description: ''
+  /api/v1/reports/:
+    get:
+      operationId: reports_list
+      tags:
+      - reports
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+          description: ''
+    post:
+      operationId: reports_create
+      tags:
+      - Report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReportCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReportCreate'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/reports/{id}/:
+    get:
+      operationId: reports_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - reports
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/reports/{id}/approve/:
+    post:
+      operationId: reports_approve_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportApproval'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReportApproval'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReportApproval'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/reports/{id}/generate/:
+    post:
+      operationId: reports_generate_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VersionedAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+          description: ''
+  /api/v1/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/search/:
+    get:
+      operationId: search_retrieve
+      tags:
+      - Overview
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/sla-policies/:
+    get:
+      operationId: sla_policies_list
+      tags:
+      - sla-policies
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SLAPolicy'
+          description: ''
+  /api/v1/sla-policies/{id}/:
+    get:
+      operationId: sla_policies_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - sla-policies
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SLAPolicy'
+          description: ''
+    patch:
+      operationId: sla_policies_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - sla-policies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSLAPolicy'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSLAPolicy'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSLAPolicy'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SLAPolicy'
+          description: ''
+  /api/v1/test-mode/:
+    get:
+      operationId: test_mode_retrieve
+      tags:
+      - Overview
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: test_mode_create
+      tags:
+      - Overview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestModeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TestModeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TestModeRequest'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/work/:
+    get:
+      operationId: work_list
+      tags:
+      - work
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Work'
+          description: ''
+    post:
+      operationId: work_create
+      tags:
+      - Work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnitWorkCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnitWorkCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnitWorkCreate'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/:
+    get:
+      operationId: work_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - work
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+    patch:
+      operationId: work_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWork'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWork'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWork'
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/accept/:
+    post:
+      operationId: work_accept_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Work'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Work'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Work'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/adopt/:
+    post:
+      operationId: work_adopt_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkAdopt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkAdopt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkAdopt'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/assign/:
+    post:
+      operationId: work_assign_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkAssign'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkAssign'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkAssign'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/children/:
+    get:
+      operationId: work_children_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Work
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/progress/:
+    post:
+      operationId: work_progress_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProgressAction'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/sla-adjust/:
+    post:
+      operationId: work_sla_adjust_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SLAAdjustment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SLAAdjustment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SLAAdjustment'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/v1/work/{id}/status/:
+    post:
+      operationId: work_status_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Work
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkStatus'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkStatus'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkStatus'
+        required: true
+      security:
+      - AtlasBearer: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+components:
+  schemas:
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        body:
+          type: string
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        all_cs:
+          type: boolean
+        status:
+          type: string
+          maxLength: 20
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+        pinned:
+          type: boolean
+        author_name:
+          type: string
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author_name
+      - body
+      - created_at
+      - id
+      - owner_org_id
+      - title
+    AnswerEnum:
+      enum:
+      - 'YES'
+      - 'NO'
+      - MAYBE
+      type: string
+      description: |-
+        * `YES` - YES
+        * `NO` - NO
+        * `MAYBE` - MAYBE
+    ApiClient:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 180
+        scopes: {}
+        org_node_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        active:
+          type: boolean
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - id
+      - name
+      - org_node_id
+    Card:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        body:
+          type: string
+        kind:
+          type: string
+          maxLength: 30
+        author:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        owner_org_name:
+          type: string
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        source_type:
+          type: string
+          readOnly: true
+        source_id:
+          type: string
+          readOnly: true
+        source_accessible:
+          type: boolean
+          readOnly: true
+        status:
+          type: string
+          maxLength: 20
+        all_cs:
+          type: boolean
+        interest_count:
+          type: integer
+          readOnly: true
+        interested:
+          type: boolean
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - body
+      - created_at
+      - id
+      - interest_count
+      - interested
+      - owner_org_id
+      - owner_org_name
+      - source_accessible
+      - source_id
+      - source_type
+      - title
+    Case:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        kind:
+          type: string
+          maxLength: 30
+        priority:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 30
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_name:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        coordinator:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        owner_name:
+          type: string
+        verifier_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          readOnly: true
+        closure_summary:
+          type: string
+        verification_evidence:
+          type: string
+        closed_at:
+          type: string
+          format: date-time
+          nullable: true
+        sla:
+          allOf:
+          - $ref: '#/components/schemas/SLA'
+          readOnly: true
+        contributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Progress'
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contributions
+      - coordinator
+      - created_at
+      - created_by_id
+      - id
+      - members
+      - owner_name
+      - owner_org_id
+      - owner_org_name
+      - permissions
+      - sla
+      - title
+      - updated_at
+      - verifier_id
+    CaseActionCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        assignee_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        due_at:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - assignee_id
+      - title
+      - version
+    CaseCloseRequest:
+      type: object
+      properties:
+        summary:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - summary
+      - version
+    CaseCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        owner_org_id:
+          type: string
+          format: uuid
+        coordinator_id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+      required:
+      - priority
+      - title
+    CaseVerifyClose:
+      type: object
+      properties:
+        evidence:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - evidence
+      - version
+    ContextEnum:
+      enum:
+      - UNIT_WORK
+      - PROJECT_TASK
+      - CASE_ACTION
+      type: string
+      description: |-
+        * `UNIT_WORK` - Unit işi
+        * `PROJECT_TASK` - Proje görevi
+        * `CASE_ACTION` - Vaka aksiyonu
+    Credential:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        issuer:
+          type: string
+          maxLength: 180
+        issued_on:
+          type: string
+          format: date
+          nullable: true
+        expires_on:
+          type: string
+          format: date
+          nullable: true
+        no_expiry:
+          type: boolean
+        important:
+          type: boolean
+        verification_status:
+          type: string
+          maxLength: 20
+        reference:
+          type: string
+          maxLength: 300
+        alert_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - issuer
+      - name
+      - permissions
+      - user
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        location:
+          type: string
+          maxLength: 200
+        starts_at:
+          type: string
+          format: date-time
+          nullable: true
+        ends_at:
+          type: string
+          format: date-time
+          nullable: true
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_name:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          type: string
+          maxLength: 20
+        polls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poll'
+          readOnly: true
+        rsvp:
+          type: string
+          readOnly: true
+        counts:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        invitee_ids:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        my_attendance:
+          type: boolean
+          nullable: true
+          readOnly: true
+        invitee_version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - counts
+      - created_at
+      - created_by_id
+      - id
+      - invitee_ids
+      - my_attendance
+      - owner_org_id
+      - owner_org_name
+      - permissions
+      - polls
+      - rsvp
+      - title
+    EventRSVPAction:
+      type: object
+      properties:
+        answer:
+          $ref: '#/components/schemas/AnswerEnum'
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - answer
+      - version
+    Grant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        role:
+          type: string
+          maxLength: 40
+        org_node:
+          type: string
+          format: uuid
+          nullable: true
+        includes_descendants:
+          type: boolean
+        active:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        permissions: {}
+      required:
+      - id
+      - role
+    KindEnum:
+      enum:
+      - TASK
+      - COMMITMENT
+      type: string
+      description: |-
+        * `TASK` - TASK
+        * `COMMITMENT` - COMMITMENT
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+      required:
+      - password
+      - username
+    MethodEnum:
+      enum:
+      - local
+      - ldap
+      type: string
+      description: |-
+        * `local` - local
+        * `ldap` - ldap
+    ModeEnum:
+      enum:
+      - simulate
+      - god
+      - stop
+      type: string
+      description: |-
+        * `simulate` - simulate
+        * `god` - god
+        * `stop` - stop
+    Notice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          type: string
+          maxLength: 20
+        case_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - case_id
+      - created_at
+      - created_by_id
+      - description
+      - id
+      - owner_org_id
+      - title
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        message:
+          type: string
+        resource_type:
+          type: string
+          maxLength: 60
+        resource_id:
+          type: string
+          maxLength: 80
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+        is_read:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - is_read
+      - title
+    NotificationReadState:
+      type: object
+      properties:
+        read:
+          type: boolean
+    Org:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 80
+        name:
+          type: string
+          maxLength: 180
+        kind:
+          type: string
+          maxLength: 20
+        parent_id:
+          type: string
+          format: uuid
+          readOnly: true
+        active:
+          type: boolean
+        description:
+          type: string
+        expertise: {}
+        contact:
+          type: string
+          maxLength: 180
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        manager_name:
+          type: string
+          readOnly: true
+        manager_id:
+          type: string
+          format: uuid
+          readOnly: true
+        manager_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        managers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          readOnly: true
+        is_demo:
+          type: boolean
+        member_count:
+          type: integer
+          readOnly: true
+      required:
+      - code
+      - id
+      - manager_id
+      - manager_ids
+      - manager_name
+      - managers
+      - member_count
+      - name
+      - parent_id
+    PM:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        governing_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        governing_org_name:
+          type: string
+        name:
+          type: string
+          maxLength: 160
+        active:
+          type: boolean
+      required:
+      - governing_org_id
+      - governing_org_name
+      - id
+      - user
+    Participation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        project_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        case_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        target_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        target_org_name:
+          type: string
+        summary:
+          type: string
+        status:
+          type: string
+          maxLength: 20
+        decision_note:
+          type: string
+        decided_by_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - case_id
+      - created_at
+      - decided_by_id
+      - id
+      - project_id
+      - summary
+      - target_org_id
+      - target_org_name
+      - user
+    PatchedCredential:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        issuer:
+          type: string
+          maxLength: 180
+        issued_on:
+          type: string
+          format: date
+          nullable: true
+        expires_on:
+          type: string
+          format: date
+          nullable: true
+        no_expiry:
+          type: boolean
+        important:
+          type: boolean
+        verification_status:
+          type: string
+          maxLength: 20
+        reference:
+          type: string
+          maxLength: 300
+        alert_days:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOrg:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        code:
+          type: string
+          maxLength: 80
+        name:
+          type: string
+          maxLength: 180
+        kind:
+          type: string
+          maxLength: 20
+        parent_id:
+          type: string
+          format: uuid
+          readOnly: true
+        active:
+          type: boolean
+        description:
+          type: string
+        expertise: {}
+        contact:
+          type: string
+          maxLength: 180
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        manager_name:
+          type: string
+          readOnly: true
+        manager_id:
+          type: string
+          format: uuid
+          readOnly: true
+        manager_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        managers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          readOnly: true
+        is_demo:
+          type: boolean
+        member_count:
+          type: integer
+          readOnly: true
+    PatchedPerson:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          title: Kullanıcı adı
+          description: Zorunlu. 150 karakter ya da daha az olmalı. Sadece harfler,
+            rakamlar ve @/./+/-/_ karakterleri kullanılabilir.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        display_name:
+          type: string
+          maxLength: 160
+        email:
+          type: string
+          format: email
+          title: E-posta adresi
+          maxLength: 254
+        primary_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        primary_org_name:
+          type: string
+          default: ''
+        expertise: {}
+        is_active:
+          type: boolean
+          title: Etkin
+          description: Bu kullanıcının etkin olarak işlem görüp görmediğini belirler.
+            Hesapları silmek yerine bunun işaretini kaldırın.
+        identity_source:
+          type: string
+          maxLength: 20
+        profile_kind:
+          $ref: '#/components/schemas/ProfileKindEnum'
+        roles:
+          type: array
+          items:
+            type: object
+          readOnly: true
+        role_label:
+          type: string
+          readOnly: true
+    PatchedProgress:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        done:
+          type: string
+        next_step:
+          type: string
+        blocker:
+          type: string
+        author:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        author_org_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        previous_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+    PatchedProject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        expected_outcome:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_name:
+          type: string
+        appointment_id:
+          type: string
+          format: uuid
+          readOnly: true
+        pm:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        owner_name:
+          type: string
+        status:
+          type: string
+          maxLength: 30
+        priority:
+          type: string
+          maxLength: 20
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        progress:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        progress_note:
+          type: string
+        published_revision:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        submitted_revision:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        approval_note:
+          type: string
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          readOnly: true
+        audience_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        contributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Progress'
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+    PatchedSLAPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        priority:
+          type: string
+          maxLength: 20
+        context:
+          type: string
+          maxLength: 20
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        unit:
+          type: string
+          maxLength: 15
+        warning_percent:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        active:
+          type: boolean
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          title: Kullanıcı adı
+          description: Zorunlu. 150 karakter ya da daha az olmalı. Sadece harfler,
+            rakamlar ve @/./+/-/_ karakterleri kullanılabilir.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        display_name:
+          type: string
+          maxLength: 160
+        email:
+          type: string
+          format: email
+          title: E-posta adresi
+          maxLength: 254
+        is_active:
+          type: boolean
+          title: Etkin
+          description: Bu kullanıcının etkin olarak işlem görüp görmediğini belirler.
+            Hesapları silmek yerine bunun işaretini kaldırın.
+        identity_source:
+          type: string
+          maxLength: 20
+        primary_org:
+          type: string
+          format: uuid
+          nullable: true
+        primary_org_name:
+          type: string
+          readOnly: true
+          nullable: true
+        expertise: {}
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Grant'
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access_version:
+          type: integer
+          readOnly: true
+        ldap_metadata:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+    PatchedWork:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        expected_outcome:
+          type: string
+        context:
+          $ref: '#/components/schemas/ContextEnum'
+        kind:
+          type: string
+          maxLength: 20
+        project_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        case_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        parent_id:
+          type: string
+          format: uuid
+          readOnly: true
+        shared_parent_summary:
+          type: string
+        mandatory:
+          type: boolean
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_name:
+          type: string
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        assigned_to_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_name:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        assignment_version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        formal:
+          type: boolean
+        priority:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 30
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        result:
+          type: string
+        blocker:
+          type: string
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sla:
+          allOf:
+          - $ref: '#/components/schemas/SLA'
+          readOnly: true
+        contributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Progress'
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          title: Kullanıcı adı
+          description: Zorunlu. 150 karakter ya da daha az olmalı. Sadece harfler,
+            rakamlar ve @/./+/-/_ karakterleri kullanılabilir.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        display_name:
+          type: string
+          maxLength: 160
+        email:
+          type: string
+          format: email
+          title: E-posta adresi
+          maxLength: 254
+        primary_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        primary_org_name:
+          type: string
+          default: ''
+        expertise: {}
+        is_active:
+          type: boolean
+          title: Etkin
+          description: Bu kullanıcının etkin olarak işlem görüp görmediğini belirler.
+            Hesapları silmek yerine bunun işaretini kaldırın.
+        identity_source:
+          type: string
+          maxLength: 20
+        profile_kind:
+          $ref: '#/components/schemas/ProfileKindEnum'
+        roles:
+          type: array
+          items:
+            type: object
+          readOnly: true
+        role_label:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - primary_org_id
+      - role_label
+      - roles
+      - username
+    Poll:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        question:
+          type: string
+          maxLength: 300
+        options: {}
+        max_choices:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        closes_at:
+          type: string
+          format: date-time
+        result:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        my_choices:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - closes_at
+      - id
+      - my_choices
+      - question
+      - result
+    PollResponseAction:
+      type: object
+      properties:
+        poll_id:
+          type: string
+          format: uuid
+        choices:
+          type: array
+          items:
+            type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - choices
+      - poll_id
+      - version
+    PriorityEnum:
+      enum:
+      - CRITICAL
+      - HIGH
+      - NORMAL
+      type: string
+      description: |-
+        * `CRITICAL` - CRITICAL
+        * `HIGH` - HIGH
+        * `NORMAL` - NORMAL
+    ProfileKindEnum:
+      enum:
+      - LOCAL
+      - LDAP
+      - OFFICIAL_REFERENCE
+      - DEMO
+      type: string
+      description: |-
+        * `LOCAL` - Yerel kullanıcı
+        * `LDAP` - Kurumsal dizin
+        * `OFFICIAL_REFERENCE` - Organizasyon şeması referansı
+        * `DEMO` - Örnek kullanıcı
+    Progress:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        done:
+          type: string
+        next_step:
+          type: string
+        blocker:
+          type: string
+        author:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        author_org_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        previous_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+      required:
+      - author
+      - author_org_name
+      - created_at
+      - done
+      - id
+      - previous_id
+    ProgressAction:
+      type: object
+      properties:
+        done:
+          type: string
+        next_step:
+          type: string
+        blocker:
+          type: string
+        progress:
+          type: integer
+          maximum: 100
+          minimum: 0
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - done
+      - version
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        expected_outcome:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_name:
+          type: string
+        appointment_id:
+          type: string
+          format: uuid
+          readOnly: true
+        pm:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        owner_name:
+          type: string
+        status:
+          type: string
+          maxLength: 30
+        priority:
+          type: string
+          maxLength: 20
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        progress:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        progress_note:
+          type: string
+        published_revision:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        submitted_revision:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        approval_note:
+          type: string
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          readOnly: true
+        audience_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        contributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Progress'
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - appointment_id
+      - audience_ids
+      - contributions
+      - created_at
+      - created_by_id
+      - id
+      - members
+      - owner_name
+      - owner_org_id
+      - owner_org_name
+      - permissions
+      - pm
+      - title
+      - updated_at
+    ProjectClose:
+      type: object
+      properties:
+        summary:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - summary
+      - version
+    ProjectCreate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        expected_outcome:
+          type: string
+        appointment_id:
+          type: string
+          format: uuid
+        pm_id:
+          type: string
+          format: uuid
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        due_at:
+          type: string
+          format: date-time
+      required:
+      - description
+      - title
+    ProjectResourceRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        summary:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - summary
+      - user_id
+      - version
+    ProjectReview:
+      type: object
+      properties:
+        decision:
+          $ref: '#/components/schemas/ProjectReviewDecisionEnum'
+        note:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - decision
+      - version
+    ProjectReviewDecisionEnum:
+      enum:
+      - APPROVE
+      - REVISION
+      - REJECT
+      type: string
+      description: |-
+        * `APPROVE` - APPROVE
+        * `REVISION` - REVISION
+        * `REJECT` - REJECT
+    ProjectTaskCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        assignee_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        due_at:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - assignee_id
+      - title
+      - version
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        status:
+          type: string
+          maxLength: 20
+        sources: {}
+        markdown:
+          type: string
+        generated_mode:
+          type: string
+          maxLength: 30
+        content_hash:
+          type: string
+          maxLength: 64
+        approved_by_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        job_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        job_status:
+          type: string
+        author_name:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - approved_by_id
+      - author_name
+      - created_at
+      - created_by_id
+      - id
+      - job_id
+      - period_end
+      - period_start
+      - permissions
+      - title
+      - updated_at
+    ReportApproval:
+      type: object
+      properties:
+        content_hash:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - content_hash
+      - version
+    ReportCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+    ReportSelection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        source_type:
+          type: string
+          maxLength: 30
+        source_id:
+          type: string
+          format: uuid
+        week_start:
+          type: string
+          format: date
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - id
+      - source_id
+      - source_type
+      - week_start
+    ResourceDecision:
+      type: object
+      properties:
+        decision:
+          $ref: '#/components/schemas/ResourceDecisionDecisionEnum'
+        note:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - decision
+      - version
+    ResourceDecisionDecisionEnum:
+      enum:
+      - ACCEPT
+      - REJECT
+      type: string
+      description: |-
+        * `ACCEPT` - ACCEPT
+        * `REJECT` - REJECT
+    SLA:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+        original_due_at:
+          type: string
+          format: date-time
+        current_due_at:
+          type: string
+          format: date-time
+        stopped_at:
+          type: string
+          format: date-time
+          nullable: true
+        breached_at:
+          type: string
+          format: date-time
+          nullable: true
+        revision:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        policy_snapshot: {}
+        is_overdue:
+          type: boolean
+          readOnly: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+      required:
+      - current_due_at
+      - id
+      - is_overdue
+      - original_due_at
+      - policy_snapshot
+      - started_at
+    SLAAdjustment:
+      type: object
+      properties:
+        due_at:
+          type: string
+          format: date-time
+        reason:
+          type: string
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - due_at
+      - reason
+      - version
+    SLAPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        priority:
+          type: string
+          maxLength: 20
+        context:
+          type: string
+          maxLength: 20
+        amount:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        unit:
+          type: string
+          maxLength: 15
+        warning_percent:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        active:
+          type: boolean
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - created_at
+      - id
+      - priority
+      - unit
+    TestModeRequest:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/ModeEnum'
+        user_id:
+          type: string
+          format: uuid
+      required:
+      - mode
+    UnitWorkCreate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        expected_outcome:
+          type: string
+        assignee_id:
+          type: string
+          format: uuid
+        personal:
+          type: boolean
+        kind:
+          $ref: '#/components/schemas/KindEnum'
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        due_at:
+          type: string
+          format: date-time
+      required:
+      - title
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          title: Kullanıcı adı
+          description: Zorunlu. 150 karakter ya da daha az olmalı. Sadece harfler,
+            rakamlar ve @/./+/-/_ karakterleri kullanılabilir.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        display_name:
+          type: string
+          maxLength: 160
+        email:
+          type: string
+          format: email
+          title: E-posta adresi
+          maxLength: 254
+        is_active:
+          type: boolean
+          title: Etkin
+          description: Bu kullanıcının etkin olarak işlem görüp görmediğini belirler.
+            Hesapları silmek yerine bunun işaretini kaldırın.
+        identity_source:
+          type: string
+          maxLength: 20
+        primary_org:
+          type: string
+          format: uuid
+          nullable: true
+        primary_org_name:
+          type: string
+          readOnly: true
+          nullable: true
+        expertise: {}
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Grant'
+          readOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access_version:
+          type: integer
+          readOnly: true
+        ldap_metadata:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          readOnly: true
+      required:
+      - access_version
+      - id
+      - ldap_metadata
+      - primary_org_name
+      - roles
+      - username
+    VersionedAction:
+      type: object
+      properties:
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - version
+    Work:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 240
+        description:
+          type: string
+        expected_outcome:
+          type: string
+        context:
+          $ref: '#/components/schemas/ContextEnum'
+        kind:
+          type: string
+          maxLength: 20
+        project_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        case_id:
+          type: string
+          format: uuid
+          nullable: true
+          readOnly: true
+        parent_id:
+          type: string
+          format: uuid
+          readOnly: true
+        shared_parent_summary:
+          type: string
+        mandatory:
+          type: boolean
+        owner_org_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_org_name:
+          type: string
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/Person'
+          readOnly: true
+        assigned_to_id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner_name:
+          type: string
+        created_by_id:
+          type: string
+          format: uuid
+          readOnly: true
+        assignment_version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        formal:
+          type: boolean
+        priority:
+          type: string
+          maxLength: 20
+        status:
+          type: string
+          maxLength: 30
+        due_at:
+          type: string
+          format: date-time
+          nullable: true
+        result:
+          type: string
+        blocker:
+          type: string
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        version:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sla:
+          allOf:
+          - $ref: '#/components/schemas/SLA'
+          readOnly: true
+        contributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Progress'
+          readOnly: true
+        permissions:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - assigned_to
+      - assigned_to_id
+      - case_id
+      - contributions
+      - created_at
+      - created_by_id
+      - id
+      - owner_name
+      - owner_org_id
+      - owner_org_name
+      - parent_id
+      - permissions
+      - project_id
+      - sla
+      - title
+      - updated_at
+    WorkAdopt:
+      type: object
+      properties:
+        priority:
+          $ref: '#/components/schemas/PriorityEnum'
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - priority
+      - version
+    WorkAssign:
+      type: object
+      properties:
+        assignee_id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - assignee_id
+      - version
+    WorkStatus:
+      type: object
+      properties:
+        status:
+          type: string
+        result:
+          type: string
+        blocker:
+          type: string
+        version:
+          type: integer
+          minimum: 1
+      required:
+      - status
+      - version
+  securitySchemes:
+    AtlasBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Salt okunur servis tokenı; scope ve güncel kayıt yetkisi birlikte
+        uygulanır.
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: atlas_sessionid

@@ -1,0 +1,21 @@
+{
+  "application": "Atlas",
+  "at": "2026-11-18T12:04:44.733427+00:00",
+  "status": "passed",
+  "startup_command": ".venv/bin/python scripts/dev.py --seed",
+  "checks": [
+    "migration/check success",
+    "API and frontend and worker running",
+    "director dashboard 12 units",
+    "clean synthetic demo without QA titles",
+    "fulladmin role management permission",
+    "authenticated Swagger HTML",
+    "200 seeded users"
+  ],
+  "dashboard_read_seconds": [
+    0.111,
+    0.098,
+    0.121
+  ],
+  "measurement_scope": "Three sequential reads on clean local demo; not a concurrent load test."
+}
